@@ -2,7 +2,7 @@
   "name": "oshavery-server",
   "version": "0.0.1",
   "description": "Oshavery ServerSide Project",
-  "main": "index.js",
+  "main": "main.js",
   "repository": "https://github.com/undecided-discord/oshavery-server",
   "author": "Undecided Oshavery Development Team",
   "license": "MIT",
