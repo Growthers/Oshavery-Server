@@ -1,5 +1,5 @@
 import express from "express";
-const app: express.Express = express()
+const app: express.Express = express();
 const infoRouter = require("./routes/info");
 const userRouter = require("./routes/user");
 const guildRouter = require("./routes/guild");
