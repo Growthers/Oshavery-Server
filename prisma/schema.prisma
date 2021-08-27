@@ -84,3 +84,12 @@ model users {
   guilds               guilds?                @relation(fields: [guildsId], references: [id])
   guildsId             String?
 }
+
+model server_info {
+  instance_name String @unique
+  user_count  Int
+  message_count Int
+  admin_id String
+  tos String
+  privacy_policy
+}
