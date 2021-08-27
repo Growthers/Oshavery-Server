@@ -20,6 +20,8 @@ model messages {
   guild_id   String
   channels   channels @relation(fields: [channel_id], references: [id])
   channel_id String
+  user       users?   @relation(fields: [userId], references: [id])
+  userId     String?
 }
 
 model invitations {
@@ -36,11 +38,11 @@ model invitations {
 }
 
 model channels {
-  id          String        @id @default(uuid())
-  name        String
-  type        String
-  topic       String?
-  
+  id    String  @id @default(uuid())
+  name  String
+  type  String
+  topic String?
+
   position    Int
   messages    messages[]
   invitations invitations[]
@@ -50,18 +52,35 @@ model channels {
 }
 
 model guilds {
-  id          String        @id @default(uuid())
-  name        String
-  topic       String?
-  created_at  DateTime      @default(now())
-  updated_at  DateTime?
-  deleted_at  DateTime?
-  messages    messages[]
-  invitations invitations[]
+  id                   String                 @id @default(uuid())
+  name                 String
+  topic                String?
+  created_at           DateTime               @default(now())
+  updated_at           DateTime?
+  deleted_at           DateTime?
+  messages             messages[]
+  invitations          invitations[]
+  users                users[]
+  guild_users_mappings guild_users_mappings[]
 }
 
 model guild_users_mappings {
-  id String @id @default(uuid())
+  id   String @id @default(uuid())
+  name String
 
+  guild    guilds? @relation(fields: [guild_id], references: [id])
+  guild_id String?
+  users    users?  @relation(fields: [usersId], references: [id])
+  usersId  String?
+}
 
+model users {
+  id                   String                 @id @default(uuid())
+  name                 String
+  bot                  Boolean
+  origin               String
+  messages             messages[]
+  guild_users_mappings guild_users_mappings[]
+  guilds               guilds?                @relation(fields: [guildsId], references: [id])
+  guildsId             String?
 }
