@@ -1,11 +1,67 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider = "mysql"
+  url      = ""
 }
 
 generator client {
   provider = "prisma-client-js"
+}
+
+model messages {
+  id      String @id @default(uuid())
+  content String
+  ip      String
+
+  created_at DateTime  @default(now())
+  updated_at DateTime?
+  deleted_at DateTime?
+
+  guild      guilds   @relation(fields: [guild_id], references: [id])
+  guild_id   String
+  channels   channels @relation(fields: [channel_id], references: [id])
+  channel_id String
+}
+
+model invitations {
+  id       String    @id @default(uuid())
+  enable   Boolean   @default(false)
+  max      Int?
+  count    Int       @default(0)
+  deadline DateTime?
+
+  guild      guilds?   @relation(fields: [guildsId], references: [id])
+  guildsId   String?
+  channels   channels? @relation(fields: [channelsId], references: [id])
+  channelsId String?
+}
+
+model channels {
+  id          String        @id @default(uuid())
+  name        String
+  type        String
+  topic       String?
+  
+  position    Int
+  messages    messages[]
+  invitations invitations[]
+  created_at  DateTime      @default(now())
+  updated_at  DateTime?
+  deleted_at  DateTime?
+}
+
+model guilds {
+  id          String        @id @default(uuid())
+  name        String
+  topic       String?
+  created_at  DateTime      @default(now())
+  updated_at  DateTime?
+  deleted_at  DateTime?
+  messages    messages[]
+  invitations invitations[]
+}
+
+model guild_users_mappings {
+  id String @id @default(uuid())
+
+
 }
