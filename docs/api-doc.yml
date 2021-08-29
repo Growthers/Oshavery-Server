@@ -1,0 +1,1592 @@
+openapi: 3.0.0
+info:
+  title: GodChat
+  version: '1.0'
+  description: Oshavery v0.5 API
+  contact:
+    name: Undecided
+    url: 'https://github.com/Undecided-discord/GodChat'
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /version:
+    get:
+      summary: get-version
+      tags:
+        - others
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                properties:
+                  version:
+                    type: string
+                    minLength: 1
+                  revision:
+                    type: string
+                    minLength: 1
+                required:
+                  - version
+                  - revision
+                x-examples:
+                  example-1:
+                    version: string
+                    revision: string
+              examples:
+                example:
+                  value:
+                    version: Oshavery v.0.05.0
+                    revision: 'Official build v.0.05.0 hash: ******'
+      operationId: get-version
+      description: インスタンスのOshaveryバージョン、その他の情報を取得
+  /server-info:
+    get:
+      summary: サーバー情報を取得
+      tags:
+        - info
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                x-examples:
+                  example-1:
+                    instance-name: string
+                    user-count: int
+                    message-count: int
+                    admin:
+                      account: string
+                      mail: string
+                    tos: string
+                    privacy-policy: string
+                properties:
+                  instance-name:
+                    type: string
+                    minLength: 1
+                  user-count:
+                    type: string
+                    minLength: 1
+                  message-count:
+                    type: string
+                    minLength: 1
+                  admin:
+                    type: object
+                    required:
+                      - account
+                      - mail
+                    properties:
+                      account:
+                        type: string
+                        minLength: 1
+                      mail:
+                        type: string
+                        minLength: 1
+                  tos:
+                    type: string
+                    minLength: 1
+                  privacy-policy:
+                    type: string
+                    minLength: 1
+                required:
+                  - instance-name
+                  - user-count
+                  - message-count
+                  - admin
+                  - tos
+                  - privacy-policy
+              examples:
+                example-1:
+                  value:
+                    instance-name: string
+                    user-count: string
+                    message-count: string
+                    admin:
+                      account: string
+                      mail: string
+                    tos: string
+                    privacy-policy: string
+      operationId: get-server-info
+      description: サーバー情報を取得
+    post:
+      summary: ''
+      operationId: post-server-info
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                properties:
+                  instance-name:
+                    type: string
+                    minLength: 1
+                  user-count:
+                    type: string
+                    minLength: 1
+                  message-count:
+                    type: string
+                    minLength: 1
+                  admin:
+                    type: object
+                    properties:
+                      account:
+                        type: string
+                        minLength: 1
+                      mail:
+                        type: string
+                        minLength: 1
+                    required:
+                      - account
+                      - mail
+                  tos:
+                    type: string
+                    minLength: 1
+                  privacy-policy:
+                    type: string
+                    minLength: 1
+                required:
+                  - instance-name
+                  - user-count
+                  - message-count
+                  - admin
+                  - tos
+                  - privacy-policy
+                x-examples:
+                  example-1:
+                    instance-name: string
+                    user-count: string
+                    message-count: string
+                    admin:
+                      account: string
+                      mail: string
+                    tos: string
+                    privacy-policy: string
+              examples:
+                example-1:
+                  value:
+                    instance-name: string
+                    user-count: string
+                    message-count: string
+                    admin:
+                      account: string
+                      mail: string
+                    tos: string
+                    privacy-policy: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: ''
+              type: object
+              x-examples:
+                example-1:
+                  instance-name: string
+                  user-count: string
+                  message-count: string
+                  admin:
+                    account: string
+                    mail: string
+                  tos: string
+                  privacy-policy: string
+              properties:
+                instance-name:
+                  type: string
+                  minLength: 1
+                admin:
+                  type: object
+                  required:
+                    - account
+                    - mail
+                  properties:
+                    account:
+                      type: string
+                      minLength: 1
+                    mail:
+                      type: string
+                      minLength: 1
+                tos:
+                  type: string
+                  minLength: 1
+                privacy-policy:
+                  type: string
+                  minLength: 1
+              required:
+                - instance-name
+                - admin
+            examples:
+              example-1:
+                value:
+                  instance-name: string
+                  admin:
+                    account: string
+                    mail: string
+                  tos: string
+                  privacy-policy: string
+        description: ''
+    patch:
+      summary: ''
+      operationId: patch-server-info
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                properties:
+                  instance-name:
+                    type: string
+                    minLength: 1
+                  admin:
+                    type: object
+                    properties:
+                      account:
+                        type: string
+                        minLength: 1
+                      mail:
+                        type: string
+                        minLength: 1
+                    required:
+                      - account
+                      - mail
+                  tos:
+                    type: string
+                    minLength: 1
+                  privacy-policy:
+                    type: string
+                    minLength: 1
+                required:
+                  - instance-name
+                  - admin
+                  - tos
+                  - privacy-policy
+                x-examples:
+                  example-1:
+                    instance-name: string
+                    admin:
+                      account: string
+                      mail: string
+                    tos: string
+                    privacy-policy: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: ''
+              type: object
+              x-examples:
+                example-1:
+                  instance-name: string
+                  admin:
+                    account: string
+                    mail: string
+                  tos: string
+                  privacy-policy: string
+              properties:
+                instance-name:
+                  type: string
+                  minLength: 1
+                admin:
+                  type: object
+                  properties:
+                    account:
+                      type: string
+                      minLength: 1
+                    mail:
+                      type: string
+                      minLength: 1
+                tos:
+                  type: string
+                  minLength: 1
+                privacy-policy:
+                  type: string
+                  minLength: 1
+            examples:
+              example-1:
+                value:
+                  instance-name: string
+                  admin:
+                    account: string
+                    mail: string
+                  tos: string
+                  privacy-policy: string
+        description: ''
+      description: ''
+  '/users/{userId}':
+    parameters:
+      - schema:
+          type: integer
+        name: userId
+        in: path
+        required: true
+        description: Id of an existing user.
+    get:
+      summary: Get User Info by User ID
+      tags:
+        - user
+      responses:
+        '200':
+          description: User Found
+          content:
+            application/json:
+              schema:
+                $ref: ../models/users.json
+              examples:
+                example:
+                  value:
+                    id: string
+                    name: string
+                    avator: string
+                    bot: string
+                    state: 0
+        '404':
+          description: User Not Found
+      operationId: get-users-userId
+      description: 指定されたユーザーIDのユーザー情報を返します
+      parameters: []
+    patch:
+      summary: Update User Information
+      operationId: patch-users-userId
+      responses:
+        '200':
+          description: User Updated
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                properties:
+                  user_id:
+                    type: string
+                    minLength: 1
+                  user_name:
+                    type: string
+                    minLength: 1
+                  user_avator:
+                    type: string
+                    minLength: 1
+                  bot:
+                    type: string
+                    minLength: 1
+                required:
+                  - user_id
+                  - user_name
+                  - user_avator
+                  - bot
+                x-examples:
+                  example-1:
+                    user_id: string
+                    user_name: string
+                    user_avator: string
+                    bot: bool
+              examples: {}
+        '404':
+          description: User Not Found
+        '409':
+          description: Email Already Taken
+      description: ユーザ情報を更新
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: ''
+              type: object
+              properties:
+                name:
+                  type: string
+                  minLength: 1
+              required:
+                - name
+              x-examples:
+                example-1:
+                  name: test
+            examples: {}
+        description: Patch user properties to update.
+      tags:
+        - user
+      parameters: []
+  /users:
+    post:
+      summary: ユーザーを作成
+      operationId: post-user
+      responses:
+        '201':
+          description: User Created
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                properties:
+                  id:
+                    type: string
+                    minLength: 1
+                  bot:
+                    type: boolean
+                  name:
+                    type: string
+                    minLength: 1
+                required:
+                  - id
+                  - bot
+                  - name
+                x-examples:
+                  example-1:
+                    id: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+                    bot: true
+                    name: testtest
+              examples: {}
+        '400':
+          description: Missing Required Information
+        '403':
+          description: Forbidden
+        '409':
+          description: Conflict
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                firstName:
+                  type: string
+                lastName:
+                  type: string
+                email:
+                  type: string
+                dateOfBirth:
+                  type: string
+                  format: date
+              required:
+                - firstName
+                - lastName
+                - email
+                - dateOfBirth
+            examples: {}
+        description: Post the necessary fields for the API to create a new user.
+      description: ユーザー作成
+      tags:
+        - user
+    get:
+      summary: ユーザー一覧の取得
+      operationId: get-user
+      description: ユーザー情報の取得
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                description: ''
+                minItems: 1
+                uniqueItems: true
+                x-examples:
+                  example-1:
+                    - id: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+                      name: testtest
+                      icon: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+                      bot: false
+                items:
+                  $ref: ../models/users.json
+              examples: {}
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+              examples: {}
+      tags:
+        - user
+    parameters: []
+  '/guilds/{guildId}':
+    parameters:
+      - schema:
+          type: string
+          format: uuid
+        name: guildId
+        in: path
+        required: true
+        description: ギルドのUUID
+    get:
+      summary: ギルド情報の取得
+      tags:
+        - guild
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/guild.json
+              examples:
+                example:
+                  value:
+                    id: string
+                    name: string
+                    topic: string
+                    icon: string
+                    owner_id: string
+                    users:
+                      - id: string
+                        name: string
+                        avator: string
+                        bot: string
+                        state: 0
+                    channels:
+                      - id: string
+                        channel_name: string
+                        channel_topics: string
+                        channel_type: string
+                        channel_position: 0
+                        creator_id: string
+        '404':
+          description: Not Found
+      operationId: get-guilds-guildId
+      description: ギルド情報の取得
+      parameters: []
+    patch:
+      summary: ギルド情報を変更
+      tags:
+        - guild
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '409':
+          description: Conflict
+      operationId: patch-guilds-guildId
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: ''
+              type: object
+              properties:
+                name:
+                  type: string
+                  minLength: 1
+                icon:
+                  type: string
+                  minLength: 1
+                owner_id:
+                  type: string
+                  minLength: 1
+              required:
+                - name
+                - icon
+                - owner_id
+              x-examples:
+                example-1:
+                  name: string
+                  icon: 5e482911-d8bb-459a-9c41-22e9a0b9fb15
+                  owner_id: 5e482911-d8bb-459a-9c41-22e9a0b9fb15
+      description: ギルド情報を変更
+  '/guilds/{guildId}/chanels':
+    parameters:
+      - schema:
+          type: string
+        name: guildId
+        in: path
+        required: true
+    get:
+      summary: ギルドのチャンネルリストの取得
+      tags:
+        - channel
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: array
+                x-examples:
+                  example-1:
+                    id: 5e482911-d8bb-459a-9c41-22e9a0b9fb15
+                    channel_name: test
+                    channel_topics: test channel
+                    channel_type: text
+                    channel_position: 1
+                    creator_id: 48a6fd4f-ab1e-7b3f-222a-2534d2905a10
+                items:
+                  $ref: ../models/channel.json
+              examples:
+                example-2:
+                  value:
+                    - id: 5a213407-5782-4b61-8605-22f75c1fdfeb
+                      channel_name: test channel
+                      channel_topics: channel for test
+                      channel_type: text
+                      channel_position: 0
+                      creator_id: 87cb349f-ac45-4075-b842-068ab2f6a8a4
+                      permissions:
+                        - id: d3db1cda-bf62-44ad-a8bd-3e69d5827fb0
+                          name: base
+                          permissions: '123456'
+                          mentionable: true
+        '400':
+          description: Bad Request
+        '403':
+          description: Forbidden
+        '409':
+          description: Conflict
+      operationId: get-guilds-guildId-chanels
+      description: チャンネルの取得
+    post:
+      summary: ギルドのチャンネルの作成
+      description: チャンネル作成
+      tags:
+        - channel
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                properties:
+                  name:
+                    type: string
+                    minLength: 1
+                  type:
+                    type: number
+                  topic:
+                    type: string
+                    minLength: 1
+                required:
+                  - name
+                  - type
+                  - topic
+                x-examples:
+                  example-1:
+                    name: test
+                    type: 1
+                    topic: testtesttest
+        '400':
+          description: Bad Request
+        '403':
+          description: Forbidden
+        '409':
+          description: Conflict
+      operationId: post-guilds-guildId-chanels
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: ../models/create_channel.json
+            examples:
+              example:
+                value:
+                  channel_name: string
+                  channel_topics: string
+                  channel_type: string
+                  channel_position: 0
+    patch:
+      summary: チャンネル位置の変更
+      description: チャンネル設定の変更
+      tags:
+        - channel
+      responses:
+        '204':
+          description: No Content
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '409':
+          description: Conflict
+      operationId: patch-guilds-guildId-chanels
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: aiu
+              type: object
+              properties:
+                name:
+                  type: string
+                  minLength: 1
+                position:
+                  type: number
+                topic:
+                  type: string
+                  minLength: 1
+              required:
+                - name
+                - position
+                - topic
+              x-examples:
+                example-1:
+                  name: test
+                  position: 1
+                  topic: testtesttest
+  '/guilds/{guildId}/roles':
+    parameters:
+      - schema:
+          type: string
+        name: guildId
+        in: path
+        required: true
+        description: ギルドのID
+    get:
+      summary: ロール一覧を取得
+      tags:
+        - guild
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                description: ''
+                minItems: 1
+                uniqueItems: true
+                x-examples:
+                  example-1:
+                    - id: string
+                      name: string
+                      permissions: string
+                      mentionable: boolean
+                items:
+                  $ref: ../models/permissions.json
+              examples:
+                example:
+                  value:
+                    - id: ef6f6eb4-0a0e-4d1b-ad44-a10063b96127
+                      name: test
+                      permissions: '123456789'
+                      mentionable: true
+      operationId: get-guilds-guildId-roles
+      description: ロール一覧の取得
+    post:
+      summary: ロールを作成
+      tags:
+        - guild
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: ../models/permissions.json
+              examples:
+                example:
+                  value:
+                    id: 7ba20160-a628-41c5-a018-aa9ae8710762
+                    name: test
+                    permissions: '123456'
+                    mentionable: true
+        '400':
+          description: Bad Request
+      operationId: post-guilds-guildId-roles
+      description: ロールの作成
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: ../models/create_role.json
+            examples:
+              example-1:
+                value:
+                  name: string
+                  permissions: string
+                  mentionable: true
+    patch:
+      summary: ロールの編集
+      tags:
+        - guild
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+      operationId: patch-guilds-guildId-roles
+      description: ロールの編集
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: ../models/permissions.json
+            examples:
+              example-1:
+                value:
+                  id: string
+                  name: string
+                  permissions: string
+                  mentionable: true
+    delete:
+      summary: ''
+      operationId: delete-guilds-guildId-roles
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+      description: ロールの削除
+  /users/me:
+    get:
+      summary: 自分の情報を取得
+      description: get account data
+      tags:
+        - user
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                description: '123'
+                x-examples:
+                  example-1:
+                    id: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+                    name: testtest
+                    icon: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+                    bot: false
+                    guilds:
+                      - 3fa85f64-5717-4562-b3fc-2c963f66afa6
+                type: array
+                items:
+                  $ref: ../models/me.json
+              examples:
+                example:
+                  value:
+                    - id: string
+                      name: string
+                      avator: string
+                      bot: string
+                      state: 0
+                      guilds:
+                        - id: string
+                          name: string
+                          topic: string
+                          icon: string
+                          owner_id: string
+                          users:
+                            - id: string
+                              name: string
+                              avator: string
+                              bot: string
+                              state: 0
+                          channels:
+                            - id: string
+                              channel_name: string
+                              channel_topics: string
+                              channel_type: string
+                              channel_position: 0
+                              creator_id: string
+      operationId: get-users-me
+    patch:
+      summary: ユーザー情報変更
+      description: '123'
+      tags:
+        - user
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+      operationId: patch-users-me
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: ''
+              type: object
+              properties:
+                name:
+                  type: string
+                  minLength: 1
+              required:
+                - name
+              x-examples:
+                example-1:
+                  name: testtest
+  '/channels/{channelId}/messages':
+    parameters:
+      - schema:
+          type: string
+        name: channelId
+        in: path
+        required: true
+    post:
+      summary: メッセージを投稿
+      description: 投稿
+      tags:
+        - message
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                properties:
+                  id:
+                    type: string
+                    minLength: 1
+                  timestamp:
+                    type: string
+                    minLength: 1
+                  author:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        minLength: 1
+                      user_name:
+                        type: string
+                        minLength: 1
+                    required:
+                      - id
+                      - user_name
+                  content:
+                    type: string
+                    minLength: 1
+                  guild_id:
+                    type: string
+                    minLength: 1
+                  channel_id:
+                    type: string
+                    minLength: 1
+                  edited_timestamp:
+                    type: string
+                    minLength: 1
+                required:
+                  - id
+                  - timestamp
+                  - author
+                  - content
+                  - guild_id
+                  - channel_id
+                  - edited_timestamp
+                x-examples:
+                  example-1:
+                    id: 5e482911-d8bb-459a-9c41-22e9a0b9fb15
+                    timestamp: '2021-06-15T12:00:00+09:00'
+                    author:
+                      id: 5e482911-d8bb-459a-9c41-22e9a0b9fb15
+                      user_name: test
+                    content: testtesttest
+                    guild_id: 5e482911-d8bb-459a-9c41-22e9a0b9fb15
+                    channel_id: 5e482911-d8bb-459a-9c41-22e9a0b9fb15
+                    edited_timestamp: '2021-06-15T12:00:00+09:00'
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+      operationId: post-channels-channelId-messages
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: ''
+              type: object
+              properties:
+                content:
+                  type: string
+                  minLength: 1
+              required:
+                - content
+              x-examples:
+                example-1:
+                  content: testtesttest
+    get:
+      operationId: get-channels-channelId-messages
+      description: チャンネルメッセージ取得
+      tags:
+        - message
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                minItems: 1
+                uniqueItems: true
+                x-examples:
+                  example-1:
+                    - channel_id: 5e482911-d8bb-459a-9c41-22e9a0b9fb15
+                      channel_name: test
+                      channel_topics: test channel
+                      channel_type: text
+                      channel_position: 1
+                      owner_id: 48a6fd4f-ab1e-7b3f-222a-2534d2905a10
+                      allow_roles:
+                        - 5e482911-d8bb-459a-9c41-22e9a0b9fb15
+                      members:
+                        - user_id: 5e482911-d8bb-459a-9c41-22e9a0b9fb15
+                          user_name: test
+                items:
+                  $ref: ../models/message.json
+              examples:
+                example-1:
+                  value:
+                    - id: string
+                      timestamp: string
+                      author:
+                        id: string
+                        name: string
+                        avator: string
+                        bot: string
+                        state: 0
+                      content: string
+                      guild_id: string
+                      channel_id: string
+                      edited_timestamp: string
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+      parameters:
+        - schema:
+            type: number
+          in: query
+          name: limit
+          description: 取得件数
+  '/channels/{channelId}/messages/{messageId}':
+    parameters:
+      - schema:
+          type: string
+        name: channelId
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: messageId
+        in: path
+        required: true
+    get:
+      summary: メッセージを取得
+      description: メッセージ取得
+      tags:
+        - message
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/message.json
+              examples:
+                example-1:
+                  value:
+                    id: string
+                    timestamp: string
+                    author:
+                      id: string
+                      name: string
+                      avator: string
+                      bot: string
+                      state: 0
+                    content: string
+                    guild_id: string
+                    channel_id: string
+                    edited_timestamp: string
+        '404':
+          description: Not Found
+      operationId: get-channels-channelId-messages-messageId
+    put:
+      summary: メッセージ編集
+      description: メッセージを編集
+      tags:
+        - message
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      operationId: put-channels-channelId-messages-messageId
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: ''
+              type: object
+              properties:
+                content:
+                  type: string
+                  minLength: 1
+              required:
+                - content
+              x-examples:
+                example-1:
+                  content: testtest
+    delete:
+      summary: メッセージ削除
+      description: メッセージを削除
+      tags:
+        - message
+      responses:
+        '204':
+          description: No Content
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      operationId: delete-channels-channelId-messages-messageId
+  '/guilds/{guildId}/members':
+    parameters:
+      - schema:
+          type: string
+        name: guildId
+        in: path
+        required: true
+    get:
+      summary: ギルドメンバーの取得
+      description: ギルドのメンバーリストを取得
+      tags:
+        - guild
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                description: ''
+                minItems: 1
+                uniqueItems: true
+                x-examples:
+                  example-1:
+                    - id: 48a6fd4f-ab1e-7b3f-222a-2534d2905a10
+                      name: ''
+                      roles: []
+                items:
+                  $ref: ../models/users.json
+              examples:
+                example-1:
+                  value:
+                    - id: string
+                      name: string
+                      avator: string
+                      bot: string
+                      state: 0
+        '404':
+          description: Not Found
+      operationId: get-guilds-guildId-members
+  '/guilds/{guildId}/members/{userId}':
+    parameters:
+      - schema:
+          type: string
+        name: guildId
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: userId
+        in: path
+        required: true
+    get:
+      summary: ギルドに参加している特定ユーザー情報を取得
+      tags:
+        - guild
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                description: ''
+                minItems: 1
+                uniqueItems: true
+                items:
+                  type: object
+                  required:
+                    - id
+                    - name
+                    - nick
+                    - joined_at
+                    - roles
+                  properties:
+                    id:
+                      type: string
+                    name:
+                      type: string
+                      minLength: 1
+                    nick:
+                      type: string
+                      minLength: 1
+                    joined_at:
+                      type: string
+                      minLength: 1
+                    roles:
+                      type: array
+                      uniqueItems: true
+                      minItems: 1
+                      items:
+                        required:
+                          - id
+                          - name
+                          - permission
+                          - mentionable
+                        properties:
+                          id:
+                            type: string
+                            minLength: 1
+                          name:
+                            type: string
+                            minLength: 1
+                          permission:
+                            type: string
+                            minLength: 1
+                          mentionable:
+                            type: boolean
+                x-examples:
+                  example-1:
+                    - id: ''
+                      name: Cottyan
+                      nick: CotTyan
+                      joined_at: '2021-08-11T22:38:13+09:00'
+                      roles:
+                        - id: 1d5896af-7e55-4c5b-85f4-4bc658784faa
+                          name: test
+                          permission: '123123'
+                          mentionable: true
+              examples:
+                example:
+                  value:
+                    - id: 5389d31d-c36e-4f4d-adfb-af112d738118
+                      name: Cottyan
+                      nick: CotTyan
+                      joined_at: '2021-08-11T22:38:13+09:00'
+                      roles:
+                        - id: 1d5896af-7e55-4c5b-85f4-4bc658784faa
+                          name: test
+                          permission: '123123'
+                          mentionable: true
+        '400':
+          description: Bad Request
+      operationId: get-guilds-guildId-members-userId
+      description: ギルド内の特定のユーザーを取得
+    put:
+      summary: 特定のユーザーの情報を編集
+      tags:
+        - guild
+      responses:
+        '201':
+          description: Created
+        '404':
+          description: Not Found
+      operationId: put-guilds-guildId-members-userId
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: ''
+              type: object
+              properties:
+                nick:
+                  type: string
+                  minLength: 1
+              required:
+                - nick
+              x-examples:
+                example-1:
+                  nick: CotTyan
+    delete:
+      summary: ユーザーをキック
+      tags:
+        - guild
+      responses:
+        '204':
+          description: No Content
+        '404':
+          description: Not Found
+      operationId: delete-guilds-guildId-members-userId
+      description: ユーザーをキック
+  '/guilds/{guildId}/invites':
+    parameters:
+      - schema:
+          type: string
+        name: guildId
+        in: path
+        required: true
+        description: ギルドID
+    get:
+      summary: 招待リンク一覧を取得
+      tags:
+        - guild
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                description: ''
+                minItems: 1
+                uniqueItems: true
+                x-examples:
+                  example-1:
+                    - id: string
+                      guild_id: string
+                      channel_id: string
+                      expries_at: string
+                items:
+                  $ref: ../models/invites.json
+              examples:
+                example:
+                  value:
+                    - id: 296c4cb5-c5fc-494b-9b06-b72995a79f5f
+                      guild_id: 3de4eac9-4db8-4425-9060-cb0822331dd8
+                      channel_id: 9e00ab9f-69b8-43a5-8d9a-d86285c0b805
+                      expries_at: '2021-08-11T22:38:13+09:00'
+      operationId: get-guilds-guildId-invites
+      description: ギルドへの招待リンク一覧を取得
+    post:
+      summary: 招待リンクの生成
+      tags:
+        - guild
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                properties:
+                  id:
+                    type: string
+                    minLength: 1
+                  guild_id:
+                    type: string
+                    minLength: 1
+                  channel_id:
+                    type: string
+                    minLength: 1
+                  expries_at:
+                    type: string
+                    minLength: 1
+                required:
+                  - id
+                  - guild_id
+                  - channel_id
+                  - expries_at
+                x-examples:
+                  example-1:
+                    id: string
+                    guild_id: string
+                    channel_id: string
+                    expries_at: string
+              examples:
+                example-1:
+                  value:
+                    id: string
+                    guild_id: string
+                    channel_id: string
+                    expries_at: string
+      operationId: post-guilds-guildId-invites
+      description: 招待リンクの生成
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: ../models/create_invite.json
+            examples:
+              example-1:
+                value:
+                  guild_id: string
+                  channel_id: string
+                  expries_at: string
+  '/guilds/{guildId}/invites/{inviteId}':
+    parameters:
+      - schema:
+          type: string
+        name: guildId
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: inviteId
+        in: path
+        required: true
+    put:
+      summary: 特定の招待リンクの編集
+      tags:
+        - guild
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/invites.json
+              examples:
+                example-1:
+                  value:
+                    id: string
+                    guild_id: string
+                    channel_id: string
+                    expries_at: string
+      operationId: put-guilds-guildId-invites-inviteId
+      description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: ''
+              type: object
+              properties:
+                expries_at:
+                  type: string
+                  minLength: 1
+              required:
+                - expries_at
+              x-examples:
+                example-1:
+                  expries_at: string
+    delete:
+      summary: 招待リンクの削除
+      tags:
+        - guild
+      responses:
+        '204':
+          description: No Content
+        '404':
+          description: Not Found
+      operationId: delete-guilds-guildId-invites-inviteId
+  '/channels/{channelId}/permissions':
+    parameters:
+      - schema:
+          type: string
+        name: channelId
+        in: path
+        required: true
+    get:
+      summary: 現在のチャンネル権限を取得
+      tags:
+        - channel
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: ../models/permissions.json
+        '400':
+          description: Bad Request
+      operationId: get-channels-channelId-permissions
+    post:
+      summary: 権限設定の作成
+      tags:
+        - channel
+      responses:
+        '201':
+          description: Created
+        '403':
+          description: Forbidden
+      operationId: post-channels-channelId-permissions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: ../models/create_role.json
+            examples:
+              example-1:
+                value:
+                  name: string
+                  permissions: string
+                  mentionable: true
+    put:
+      summary: 権限設定の更新
+      tags:
+        - channel
+      responses:
+        '200':
+          description: OK
+      operationId: put-channels-channelId-permissions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: ../models/create_role.json
+            examples:
+              example-1:
+                value:
+                  name: string
+                  permissions: string
+                  mentionable: true
+    delete:
+      summary: ''
+      operationId: delete-channels-channelId-permissions
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+  /bots:
+    post:
+      summary: Botのアカウントを作成
+      tags:
+        - user
+      responses:
+        '201':
+          description: Created
+      operationId: post-bots
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: ../models/creare_bot.json
+            examples:
+              example-1:
+                value:
+                  description: string
+                  name: string
+    get:
+      summary: Botのリストを取得
+      tags:
+        - user
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/bots.json
+      operationId: get-bots
+    delete:
+      summary: Botを削除
+      tags:
+        - user
+      responses:
+        '204':
+          description: No Content
+      operationId: delete-bots
+tags:
+  - name: user
+  - name: guild
+  - name: channel
+  - name: message
+components:
+  securitySchemes: {}
