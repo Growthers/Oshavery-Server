@@ -75,5 +75,3 @@ export const infoController = {
         return;
   }
 }
-
-// module.exports = infoController;
