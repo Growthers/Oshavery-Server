@@ -1,0 +1,50 @@
+{
+  "description": "",
+  "type": "object",
+  "x-examples": {
+    "example-1": {
+      "id": "string",
+      "name": "string",
+      "avator": "string",
+      "bot": "boolean",
+      "state": "int"
+    }
+  },
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "avator": {
+      "type": "string",
+      "minLength": 1
+    },
+    "bot": {
+      "type": "string",
+      "minLength": 1
+    },
+    "state": {
+      "type": "number"
+    }
+  },
+  "required": [
+    "id",
+    "name",
+    "avator",
+    "bot",
+    "state"
+  ],
+  "examples": [
+    {
+      "id": "string",
+      "name": "string",
+      "avator": "string",
+      "bot": "string",
+      "state": 0
+    }
+  ]
+}
