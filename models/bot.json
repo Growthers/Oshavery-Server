@@ -1,0 +1,75 @@
+{
+  "description": "",
+  "type": "object",
+  "x-examples": {
+    "example-1": {
+      "id": "string",
+      "botUserId": "string",
+      "description": "string",
+      "owner": {
+        "id": "string",
+        "name": "string",
+        "avator": "string",
+        "bot": "string",
+        "state": 0
+      },
+      "state": 0,
+      "created_at": "string",
+      "updated_at": "string"
+    }
+  },
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "botUserId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "owner": {
+      "$ref": "./users.json"
+    },
+    "state": {
+      "type": "number"
+    },
+    "created_at": {
+      "type": "string",
+      "minLength": 1
+    },
+    "updated_at": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "id",
+    "botUserId",
+    "description",
+    "owner",
+    "state",
+    "created_at",
+    "updated_at"
+  ],
+  "examples": [
+    {
+      "id": "string",
+      "botUserId": "string",
+      "description": "string",
+      "owner": {
+        "id": "string",
+        "name": "string",
+        "avator": "string",
+        "bot": "string",
+        "state": 0
+      },
+      "state": 0,
+      "created_at": "string",
+      "updated_at": "string"
+    }
+  ]
+}

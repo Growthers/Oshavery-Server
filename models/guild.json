@@ -1,0 +1,106 @@
+{
+  "description": "",
+  "type": "object",
+  "x-examples": {
+    "example-1": {
+      "id": "string",
+      "name": "string",
+      "topic": "string",
+      "icon": "string",
+      "owner_id": "string",
+      "users": [
+        {
+          "id": "string",
+          "name": "string",
+          "icon": "string",
+          "bot": true
+        }
+      ],
+      "channels": [
+        {
+          "id": "string",
+          "channel_name": "string",
+          "channel_topics": "string",
+          "channel_type": "string",
+          "channel_position": 0,
+          "creator_id": "string"
+        }
+      ]
+    }
+  },
+  "examples": [
+    {
+      "id": "string",
+      "name": "string",
+      "topic": "string",
+      "icon": "string",
+      "owner_id": "string",
+      "users": [
+        {
+          "id": "string",
+          "name": "string",
+          "avator": "string",
+          "bot": "string",
+          "state": 0
+        }
+      ],
+      "channels": [
+        {
+          "id": "string",
+          "channel_name": "string",
+          "channel_topics": "string",
+          "channel_type": "string",
+          "channel_position": 0,
+          "creator_id": "string"
+        }
+      ]
+    }
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "topic": {
+      "type": "string",
+      "minLength": 1
+    },
+    "icon": {
+      "type": "string",
+      "minLength": 1
+    },
+    "owner_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "users": {
+      "type": "array",
+      "uniqueItems": true,
+      "minItems": 1,
+      "items": {
+        "$ref": "./users.json"
+      }
+    },
+    "channels": {
+      "type": "array",
+      "uniqueItems": true,
+      "minItems": 1,
+      "items": {
+        "$ref": "./channel.json"
+      }
+    }
+  },
+  "required": [
+    "id",
+    "name",
+    "topic",
+    "icon",
+    "owner_id",
+    "users",
+    "channels"
+  ]
+}

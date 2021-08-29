@@ -1,0 +1,29 @@
+{
+  "description": "",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "permissions": {
+      "type": "string",
+      "minLength": 1
+    },
+    "mentionable": {
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "name",
+    "permissions",
+    "mentionable"
+  ],
+  "x-examples": {
+    "example-1": {
+      "name": "string",
+      "permissions": "string",
+      "mentionable": true
+    }
+  }
+}
