@@ -1,0 +1,41 @@
+{
+  "type": "array",
+  "description": "",
+  "minItems": 1,
+  "uniqueItems": true,
+  "x-examples": {
+    "example-1": [
+      {
+        "id": "string",
+        "botUserId": "string",
+        "description": "string",
+        "owner": "",
+        "state": 0,
+        "created_at": "",
+        "updated_at": ""
+      }
+    ]
+  },
+  "examples": [
+    [
+      {
+        "id": "string",
+        "botUserId": "string",
+        "description": "string",
+        "owner": {
+          "id": "string",
+          "name": "string",
+          "avator": "string",
+          "bot": "string",
+          "state": 0
+        },
+        "state": 0,
+        "created_at": "string",
+        "updated_at": "string"
+      }
+    ]
+  ],
+  "items": {
+    "$ref": "./bot.json"
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "description": "",
+  "type": "object",
+  "x-examples": {
+    "example-1": {
+      "id": "string",
+      "name": "string",
+      "permissions": "string",
+      "mentionable": "string"
+    }
+  },
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "permissions": {
+      "type": "string",
+      "minLength": 1
+    },
+    "mentionable": {
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "id",
+    "name",
+    "permissions",
+    "mentionable"
+  ],
+  "examples": [
+    {
+      "id": "string",
+      "name": "string",
+      "permissions": "string",
+      "mentionable": true
+    }
+  ]
+}

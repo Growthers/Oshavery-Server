@@ -1,0 +1,73 @@
+{
+  "description": "",
+  "type": "object",
+  "x-examples": {
+    "example-1": {
+      "id": "string",
+      "timestamp": "string",
+      "author": {
+        "id": "string",
+        "user_name": "string"
+      },
+      "content": "string",
+      "guild_id": "string",
+      "channel_id": "string",
+      "edited_timestamp": "string"
+    }
+  },
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "timestamp": {
+      "type": "string",
+      "minLength": 1
+    },
+    "author": {
+      "$ref": "./users.json"
+    },
+    "content": {
+      "type": "string",
+      "minLength": 1
+    },
+    "guild_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "channel_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "edited_timestamp": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "id",
+    "timestamp",
+    "author",
+    "content",
+    "guild_id",
+    "channel_id",
+    "edited_timestamp"
+  ],
+  "examples": [
+    {
+      "id": "string",
+      "timestamp": "string",
+      "author": {
+        "id": "string",
+        "name": "string",
+        "avator": "string",
+        "bot": "string",
+        "state": 0
+      },
+      "content": "string",
+      "guild_id": "string",
+      "channel_id": "string",
+      "edited_timestamp": "string"
+    }
+  ]
+}

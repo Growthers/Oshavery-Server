@@ -1,0 +1,44 @@
+{
+  "description": "",
+  "type": "object",
+  "x-examples": {
+    "example-1": {
+      "id": "string",
+      "guild_id": "string",
+      "channel_id": "string",
+      "expries_at": "string"
+    }
+  },
+  "examples": [
+    {
+      "id": "string",
+      "guild_id": "string",
+      "channel_id": "string",
+      "expries_at": "string"
+    }
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "guild_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "channel_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "expries_at": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "id",
+    "guild_id",
+    "channel_id",
+    "expries_at"
+  ]
+}

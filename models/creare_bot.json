@@ -1,0 +1,23 @@
+{
+  "description": "",
+  "type": "object",
+  "properties": {
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "name": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "description",
+    "name"
+  ],
+  "x-examples": {
+    "example-1": {
+      "description": "string",
+      "name": ""
+    }
+  }
+}

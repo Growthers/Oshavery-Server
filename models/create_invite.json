@@ -1,0 +1,30 @@
+{
+  "description": "",
+  "type": "object",
+  "properties": {
+    "guild_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "channel_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "expries_at": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "guild_id",
+    "channel_id",
+    "expries_at"
+  ],
+  "x-examples": {
+    "example-1": {
+      "guild_id": "string",
+      "channel_id": "string",
+      "expries_at": "string"
+    }
+  }
+}
