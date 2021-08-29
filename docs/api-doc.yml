@@ -73,7 +73,7 @@ paths:
                   user_count:
                     type: string
                     minLength: 1
-                  message_count
+                  message_count:
                     type: string
                     minLength: 1
                   admin:
@@ -104,14 +104,14 @@ paths:
               examples:
                 example-1:
                   value:
-                    instance-name: string
-                    user-count: string
-                    message-count: string
+                    instance_name: string
+                    user_count: string
+                    message_count: string
                     admin:
                       account: string
                       mail: string
                     tos: string
-                    privacy-policy: string
+                    privacy_policy: string
       operationId: get-server-info
       description: サーバー情報を取得
     post:
@@ -173,14 +173,14 @@ paths:
               examples:
                 example-1:
                   value:
-                    instance-name: string
-                    user-count: string
-                    message-count: string
+                    instance_name: string
+                    user_count: string
+                    message_count: string
                     admin:
                       account: string
                       mail: string
                     tos: string
-                    privacy-policy: string
+                    privacy_policy: string
       requestBody:
         content:
           application/json:
@@ -225,12 +225,12 @@ paths:
             examples:
               example-1:
                 value:
-                  instance-name: string
+                  instance_name: string
                   admin:
                     account: string
                     mail: string
                   tos: string
-                  privacy-policy: string
+                  privacy_policy: string
         description: ''
       tags:
         - info
@@ -311,7 +311,6 @@ paths:
                   type: string
                   minLength: 1
                 privacy_policy:
-
                   type: string
                   minLength: 1
             examples:
@@ -848,6 +847,8 @@ paths:
         '400':
           description: Bad Request
       description: ロールの削除
+      tags:
+        - guild
   /users/me:
     get:
       summary: 自分の情報を取得
@@ -1549,6 +1550,8 @@ paths:
           description: No Content
         '400':
           description: Bad Request
+      tags:
+        - channel
   /bots:
     post:
       summary: Botのアカウントを作成
