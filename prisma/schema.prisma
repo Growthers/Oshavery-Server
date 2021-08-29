@@ -1,6 +1,6 @@
 datasource db {
   provider = "mysql"
-  url      = ""
+  url      = env("DATABASE_URL")
 }
 
 generator client {
@@ -87,6 +87,7 @@ model users {
 }
 
 model server_info {
+  id Int @id @default(autoincrement())
   instance_name  String @unique
   user_count     Int
   message_count  Int

@@ -1,5 +1,6 @@
 import express from "express";
 const app: express.Express = express();
+app.use(express.json());
 const infoRouter = require("./routes/info");
 const userRouter = require("./routes/user");
 const guildRouter = require("./routes/guild");
