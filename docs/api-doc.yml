@@ -73,7 +73,7 @@ paths:
                   user_count:
                     type: string
                     minLength: 1
-                  message_count:
+                  message_count
                     type: string
                     minLength: 1
                   admin:
@@ -311,6 +311,7 @@ paths:
                   type: string
                   minLength: 1
                 privacy_policy:
+
                   type: string
                   minLength: 1
             examples:
