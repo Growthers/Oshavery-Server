@@ -67,13 +67,13 @@ paths:
                     tos: string
                     privacy-policy: string
                 properties:
-                  instance-name:
+                  instance_name:
                     type: string
                     minLength: 1
-                  user-count:
+                  user_count:
                     type: string
                     minLength: 1
-                  message-count:
+                  message_count:
                     type: string
                     minLength: 1
                   admin:
@@ -91,16 +91,16 @@ paths:
                   tos:
                     type: string
                     minLength: 1
-                  privacy-policy:
+                  privacy_policy:
                     type: string
                     minLength: 1
                 required:
-                  - instance-name
-                  - user-count
-                  - message-count
+                  - instance_name
+                  - user_count
+                  - message_count
                   - admin
                   - tos
-                  - privacy-policy
+                  - privacy_policy
               examples:
                 example-1:
                   value:
@@ -125,41 +125,6 @@ paths:
               schema:
                 description: ''
                 type: object
-                properties:
-                  instance-name:
-                    type: string
-                    minLength: 1
-                  user-count:
-                    type: string
-                    minLength: 1
-                  message-count:
-                    type: string
-                    minLength: 1
-                  admin:
-                    type: object
-                    properties:
-                      account:
-                        type: string
-                        minLength: 1
-                      mail:
-                        type: string
-                        minLength: 1
-                    required:
-                      - account
-                      - mail
-                  tos:
-                    type: string
-                    minLength: 1
-                  privacy-policy:
-                    type: string
-                    minLength: 1
-                required:
-                  - instance-name
-                  - user-count
-                  - message-count
-                  - admin
-                  - tos
-                  - privacy-policy
                 x-examples:
                   example-1:
                     instance-name: string
@@ -170,6 +135,41 @@ paths:
                       mail: string
                     tos: string
                     privacy-policy: string
+                properties:
+                  instance_name:
+                    type: string
+                    minLength: 1
+                  user_count:
+                    type: string
+                    minLength: 1
+                  message_count:
+                    type: string
+                    minLength: 1
+                  admin:
+                    type: object
+                    required:
+                      - account
+                      - mail
+                    properties:
+                      account:
+                        type: string
+                        minLength: 1
+                      mail:
+                        type: string
+                        minLength: 1
+                  tos:
+                    type: string
+                    minLength: 1
+                  privacy_policy:
+                    type: string
+                    minLength: 1
+                required:
+                  - instance_name
+                  - user_count
+                  - message_count
+                  - admin
+                  - tos
+                  - privacy_policy
               examples:
                 example-1:
                   value:
@@ -198,7 +198,7 @@ paths:
                   tos: string
                   privacy-policy: string
               properties:
-                instance-name:
+                instance_name:
                   type: string
                   minLength: 1
                 admin:
@@ -216,11 +216,11 @@ paths:
                 tos:
                   type: string
                   minLength: 1
-                privacy-policy:
+                privacy_policy:
                   type: string
                   minLength: 1
               required:
-                - instance-name
+                - instance_name
                 - admin
             examples:
               example-1:
@@ -245,33 +245,6 @@ paths:
               schema:
                 description: ''
                 type: object
-                properties:
-                  instance-name:
-                    type: string
-                    minLength: 1
-                  admin:
-                    type: object
-                    properties:
-                      account:
-                        type: string
-                        minLength: 1
-                      mail:
-                        type: string
-                        minLength: 1
-                    required:
-                      - account
-                      - mail
-                  tos:
-                    type: string
-                    minLength: 1
-                  privacy-policy:
-                    type: string
-                    minLength: 1
-                required:
-                  - instance-name
-                  - admin
-                  - tos
-                  - privacy-policy
                 x-examples:
                   example-1:
                     instance-name: string
@@ -280,6 +253,33 @@ paths:
                       mail: string
                     tos: string
                     privacy-policy: string
+                properties:
+                  instance_name:
+                    type: string
+                    minLength: 1
+                  admin:
+                    type: object
+                    required:
+                      - account
+                      - mail
+                    properties:
+                      account:
+                        type: string
+                        minLength: 1
+                      mail:
+                        type: string
+                        minLength: 1
+                  tos:
+                    type: string
+                    minLength: 1
+                  privacy_policy:
+                    type: string
+                    minLength: 1
+                required:
+                  - instance_name
+                  - admin
+                  - tos
+                  - privacy_policy
       requestBody:
         content:
           application/json:
@@ -295,7 +295,7 @@ paths:
                   tos: string
                   privacy-policy: string
               properties:
-                instance-name:
+                instance_name:
                   type: string
                   minLength: 1
                 admin:
@@ -310,7 +310,7 @@ paths:
                 tos:
                   type: string
                   minLength: 1
-                privacy-policy:
+                privacy_policy:
                   type: string
                   minLength: 1
             examples:
