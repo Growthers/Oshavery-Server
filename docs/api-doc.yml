@@ -460,24 +460,33 @@ paths:
         content:
           application/json:
             schema:
+              description: ''
               type: object
+              x-examples:
+                example-1:
+                  name: string
+                  password: string
+                  bot: ''
               properties:
-                firstName:
+                name:
                   type: string
-                lastName:
+                  minLength: 1
+                password:
                   type: string
-                email:
-                  type: string
-                dateOfBirth:
-                  type: string
-                  format: date
+                  minLength: 1
+                bot:
+                  type: boolean
               required:
-                - firstName
-                - lastName
-                - email
-                - dateOfBirth
-            examples: {}
-        description: Post the necessary fields for the API to create a new user.
+                - name
+                - password
+                - bot
+            examples:
+              example:
+                value:
+                  name: string
+                  password: string
+                  bot: true
+        description: ''
       description: ユーザー作成
       tags:
         - user
