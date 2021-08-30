@@ -10,6 +10,15 @@
       "state": "int"
     }
   },
+  "examples": [
+    {
+      "id": "string",
+      "name": "string",
+      "avator": "string",
+      "bot": "string",
+      "state": 0
+    }
+  ],
   "properties": {
     "id": {
       "type": "string",
@@ -24,8 +33,7 @@
       "minLength": 1
     },
     "bot": {
-      "type": "string",
-      "minLength": 1
+      "type": "boolean"
     },
     "state": {
       "type": "number"
@@ -37,14 +45,5 @@
     "avator",
     "bot",
     "state"
-  ],
-  "examples": [
-    {
-      "id": "string",
-      "name": "string",
-      "avator": "string",
-      "bot": "string",
-      "state": 0
-    }
   ]
 }
