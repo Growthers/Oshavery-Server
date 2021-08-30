@@ -1008,6 +1008,17 @@ paths:
               schema:
                 description: ''
                 type: object
+                x-examples:
+                  example-1:
+                    id: 5e482911-d8bb-459a-9c41-22e9a0b9fb15
+                    timestamp: '2021-06-15T12:00:00+09:00'
+                    author:
+                      id: 5e482911-d8bb-459a-9c41-22e9a0b9fb15
+                      user_name: test
+                    content: testtesttest
+                    guild_id: 5e482911-d8bb-459a-9c41-22e9a0b9fb15
+                    channel_id: 5e482911-d8bb-459a-9c41-22e9a0b9fb15
+                    edited_timestamp: '2021-06-15T12:00:00+09:00'
                 properties:
                   id:
                     type: string
@@ -1015,18 +1026,6 @@ paths:
                   timestamp:
                     type: string
                     minLength: 1
-                  author:
-                    type: object
-                    properties:
-                      id:
-                        type: string
-                        minLength: 1
-                      user_name:
-                        type: string
-                        minLength: 1
-                    required:
-                      - id
-                      - user_name
                   content:
                     type: string
                     minLength: 1
@@ -1042,30 +1041,15 @@ paths:
                 required:
                   - id
                   - timestamp
-                  - author
                   - content
                   - guild_id
                   - channel_id
                   - edited_timestamp
-                x-examples:
-                  example-1:
-                    id: 5e482911-d8bb-459a-9c41-22e9a0b9fb15
-                    timestamp: '2021-06-15T12:00:00+09:00'
-                    author:
-                      id: 5e482911-d8bb-459a-9c41-22e9a0b9fb15
-                      user_name: test
-                    content: testtesttest
-                    guild_id: 5e482911-d8bb-459a-9c41-22e9a0b9fb15
-                    channel_id: 5e482911-d8bb-459a-9c41-22e9a0b9fb15
-                    edited_timestamp: '2021-06-15T12:00:00+09:00'
               examples:
                 example:
                   value:
                     id: string
                     timestamp: string
-                    author:
-                      id: string
-                      user_name: string
                     content: string
                     guild_id: string
                     channel_id: string
@@ -1132,7 +1116,7 @@ paths:
                         id: string
                         name: string
                         avator: string
-                        bot: string
+                        bot: true
                         state: 0
                       content: string
                       guild_id: string
