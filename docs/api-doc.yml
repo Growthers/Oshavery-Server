@@ -1299,75 +1299,56 @@ paths:
           content:
             application/json:
               schema:
-                type: array
                 description: ''
-                minItems: 1
-                uniqueItems: true
-                items:
-                  type: object
-                  required:
-                    - id
-                    - name
-                    - nick
-                    - joined_at
-                    - roles
-                  properties:
-                    id:
-                      type: string
-                    name:
-                      type: string
-                      minLength: 1
-                    nick:
-                      type: string
-                      minLength: 1
-                    joined_at:
-                      type: string
-                      minLength: 1
-                    roles:
-                      type: array
-                      uniqueItems: true
-                      minItems: 1
-                      items:
-                        required:
-                          - id
-                          - name
-                          - permission
-                          - mentionable
-                        properties:
-                          id:
-                            type: string
-                            minLength: 1
-                          name:
-                            type: string
-                            minLength: 1
-                          permission:
-                            type: string
-                            minLength: 1
-                          mentionable:
-                            type: boolean
+                type: object
                 x-examples:
                   example-1:
-                    - id: ''
-                      name: Cottyan
-                      nick: CotTyan
-                      joined_at: '2021-08-11T22:38:13+09:00'
-                      roles:
-                        - id: 1d5896af-7e55-4c5b-85f4-4bc658784faa
-                          name: test
-                          permission: '123123'
-                          mentionable: true
+                    id: 5389d31d-c36e-4f4d-adfb-af112d738118
+                    name: Cottyan
+                    nick: CotTyan
+                    joined_at: '2021-08-11T22:38:13+09:00'
+                    roles:
+                      - id: 1d5896af-7e55-4c5b-85f4-4bc658784faa
+                        name: test
+                        permission: '123123'
+                        mentionable: true
+                properties:
+                  id:
+                    type: string
+                    minLength: 1
+                  name:
+                    type: string
+                    minLength: 1
+                  nick:
+                    type: string
+                    minLength: 1
+                  joined_at:
+                    type: string
+                    minLength: 1
+                  roles:
+                    type: array
+                    uniqueItems: true
+                    minItems: 1
+                    items:
+                      $ref: ../models/permissions.json
+                required:
+                  - id
+                  - name
+                  - nick
+                  - joined_at
+                  - roles
               examples:
                 example:
                   value:
-                    - id: 5389d31d-c36e-4f4d-adfb-af112d738118
-                      name: Cottyan
-                      nick: CotTyan
-                      joined_at: '2021-08-11T22:38:13+09:00'
-                      roles:
-                        - id: 1d5896af-7e55-4c5b-85f4-4bc658784faa
-                          name: test
-                          permission: '123123'
-                          mentionable: true
+                    id: string
+                    name: string
+                    nick: string
+                    joined_at: string
+                    roles:
+                      - id: string
+                        name: string
+                        permissions: string
+                        mentionable: true
         '400':
           description: Bad Request
       operationId: get-guilds-guildId-members-userId
