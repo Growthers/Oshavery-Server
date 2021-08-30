@@ -102,7 +102,7 @@ paths:
                   - tos
                   - privacy_policy
               examples:
-                example-1:
+                example:
                   value:
                     instance_name: string
                     user_count: string
@@ -171,7 +171,7 @@ paths:
                   - tos
                   - privacy_policy
               examples:
-                example-1:
+                example:
                   value:
                     instance_name: string
                     user_count: string
@@ -223,7 +223,7 @@ paths:
                 - instance_name
                 - admin
             examples:
-              example-1:
+              example:
                 value:
                   instance_name: string
                   admin:
@@ -280,6 +280,15 @@ paths:
                   - admin
                   - tos
                   - privacy_policy
+              examples:
+                example:
+                  value:
+                    instance_name: string
+                    admin:
+                      account: string
+                      mail: string
+                    tos: string
+                    privacy_policy: string
       requestBody:
         content:
           application/json:
@@ -314,7 +323,7 @@ paths:
                   type: string
                   minLength: 1
             examples:
-              example-1:
+              example:
                 value:
                   instance-name: string
                   admin:
@@ -351,7 +360,7 @@ paths:
                     id: string
                     name: string
                     avator: string
-                    bot: string
+                    bot: true
                     state: 0
         '404':
           description: User Not Found
@@ -369,6 +378,12 @@ paths:
               schema:
                 description: ''
                 type: object
+                x-examples:
+                  example-1:
+                    user_id: string
+                    user_name: string
+                    user_avator: string
+                    bot: bool
                 properties:
                   user_id:
                     type: string
@@ -380,20 +395,19 @@ paths:
                     type: string
                     minLength: 1
                   bot:
-                    type: string
-                    minLength: 1
+                    type: boolean
                 required:
                   - user_id
                   - user_name
                   - user_avator
                   - bot
-                x-examples:
-                  example-1:
+              examples:
+                example:
+                  value:
                     user_id: string
                     user_name: string
                     user_avator: string
-                    bot: bool
-              examples: {}
+                    bot: true
         '404':
           description: User Not Found
         '409':
@@ -414,7 +428,10 @@ paths:
               x-examples:
                 example-1:
                   name: test
-            examples: {}
+            examples:
+              example:
+                value:
+                  name: string
         description: Patch user properties to update.
       tags:
         - user
@@ -449,7 +466,12 @@ paths:
                     id: 3fa85f64-5717-4562-b3fc-2c963f66afa6
                     bot: true
                     name: testtest
-              examples: {}
+              examples:
+                example:
+                  value:
+                    id: string
+                    bot: true
+                    name: string
         '400':
           description: Missing Required Information
         '403':
@@ -512,7 +534,14 @@ paths:
                       bot: false
                 items:
                   $ref: ../models/users.json
-              examples: {}
+              examples:
+                example:
+                  value:
+                    - id: string
+                      name: string
+                      avator: string
+                      bot: true
+                      state: 0
         '400':
           description: Bad Request
           content:
@@ -556,7 +585,7 @@ paths:
                       - id: string
                         name: string
                         avator: string
-                        bot: string
+                        bot: true
                         state: 0
                     channels:
                       - id: string
@@ -611,6 +640,12 @@ paths:
                   name: string
                   icon: 5e482911-d8bb-459a-9c41-22e9a0b9fb15
                   owner_id: 5e482911-d8bb-459a-9c41-22e9a0b9fb15
+            examples:
+              example:
+                value:
+                  name: string
+                  icon: string
+                  owner_id: string
       description: ギルド情報を変更
   '/guilds/{guildId}/chanels':
     parameters:
@@ -642,7 +677,7 @@ paths:
                 items:
                   $ref: ../models/channel.json
               examples:
-                example-2:
+                example:
                   value:
                     - id: 5a213407-5782-4b61-8605-22f75c1fdfeb
                       channel_name: test channel
@@ -694,6 +729,12 @@ paths:
                     name: test
                     type: 1
                     topic: testtesttest
+              examples:
+                example:
+                  value:
+                    name: string
+                    type: 0
+                    topic: string
         '400':
           description: Bad Request
         '403':
@@ -752,6 +793,12 @@ paths:
                   name: test
                   position: 1
                   topic: testtesttest
+            examples:
+              example:
+                value:
+                  name: string
+                  position: 0
+                  topic: string
   '/guilds/{guildId}/roles':
     parameters:
       - schema:
@@ -785,9 +832,9 @@ paths:
               examples:
                 example:
                   value:
-                    - id: ef6f6eb4-0a0e-4d1b-ad44-a10063b96127
-                      name: test
-                      permissions: '123456789'
+                    - id: string
+                      name: string
+                      permissions: string
                       mentionable: true
       operationId: get-guilds-guildId-roles
       description: ロール一覧の取得
@@ -805,9 +852,9 @@ paths:
               examples:
                 example:
                   value:
-                    id: 7ba20160-a628-41c5-a018-aa9ae8710762
-                    name: test
-                    permissions: '123456'
+                    id: string
+                    name: string
+                    permissions: string
                     mentionable: true
         '400':
           description: Bad Request
@@ -819,7 +866,7 @@ paths:
             schema:
               $ref: ../models/create_role.json
             examples:
-              example-1:
+              example:
                 value:
                   name: string
                   permissions: string
@@ -841,7 +888,7 @@ paths:
             schema:
               $ref: ../models/permissions.json
             examples:
-              example-1:
+              example:
                 value:
                   id: string
                   name: string
@@ -936,6 +983,11 @@ paths:
               x-examples:
                 example-1:
                   name: testtest
+            examples:
+              example:
+                value:
+                  name: string
+        description: ''
   '/channels/{channelId}/messages':
     parameters:
       - schema:
@@ -1006,6 +1058,18 @@ paths:
                     guild_id: 5e482911-d8bb-459a-9c41-22e9a0b9fb15
                     channel_id: 5e482911-d8bb-459a-9c41-22e9a0b9fb15
                     edited_timestamp: '2021-06-15T12:00:00+09:00'
+              examples:
+                example:
+                  value:
+                    id: string
+                    timestamp: string
+                    author:
+                      id: string
+                      user_name: string
+                    content: string
+                    guild_id: string
+                    channel_id: string
+                    edited_timestamp: string
         '400':
           description: Bad Request
         '404':
@@ -1026,6 +1090,10 @@ paths:
               x-examples:
                 example-1:
                   content: testtesttest
+            examples:
+              example:
+                value:
+                  content: string
     get:
       operationId: get-channels-channelId-messages
       description: チャンネルメッセージ取得
@@ -1056,7 +1124,7 @@ paths:
                 items:
                   $ref: ../models/message.json
               examples:
-                example-1:
+                example:
                   value:
                     - id: string
                       timestamp: string
@@ -1105,7 +1173,7 @@ paths:
               schema:
                 $ref: ../models/message.json
               examples:
-                example-1:
+                example:
                   value:
                     id: string
                     timestamp: string
@@ -1113,7 +1181,7 @@ paths:
                       id: string
                       name: string
                       avator: string
-                      bot: string
+                      bot: true
                       state: 0
                     content: string
                     guild_id: string
@@ -1152,6 +1220,10 @@ paths:
               x-examples:
                 example-1:
                   content: testtest
+            examples:
+              example:
+                value:
+                  content: string
     delete:
       summary: メッセージ削除
       description: メッセージを削除
@@ -1195,12 +1267,12 @@ paths:
                 items:
                   $ref: ../models/users.json
               examples:
-                example-1:
+                example:
                   value:
                     - id: string
                       name: string
                       avator: string
-                      bot: string
+                      bot: true
                       state: 0
         '404':
           description: Not Found
@@ -1325,6 +1397,10 @@ paths:
               x-examples:
                 example-1:
                   nick: CotTyan
+            examples:
+              example:
+                value:
+                  nick: string
     delete:
       summary: ユーザーをキック
       tags:
@@ -1412,7 +1488,7 @@ paths:
                     channel_id: string
                     expries_at: string
               examples:
-                example-1:
+                example:
                   value:
                     id: string
                     guild_id: string
@@ -1455,7 +1531,7 @@ paths:
               schema:
                 $ref: ../models/invites.json
               examples:
-                example-1:
+                example:
                   value:
                     id: string
                     guild_id: string
@@ -1477,6 +1553,10 @@ paths:
                 - expries_at
               x-examples:
                 example-1:
+                  expries_at: string
+            examples:
+              example:
+                value:
                   expries_at: string
     delete:
       summary: 招待リンクの削除
@@ -1508,6 +1588,13 @@ paths:
                 type: array
                 items:
                   $ref: ../models/permissions.json
+              examples:
+                example:
+                  value:
+                    - id: string
+                      name: string
+                      permissions: string
+                      mentionable: true
         '400':
           description: Bad Request
       operationId: get-channels-channelId-permissions
@@ -1527,7 +1614,7 @@ paths:
             schema:
               $ref: ../models/create_role.json
             examples:
-              example-1:
+              example:
                 value:
                   name: string
                   permissions: string
@@ -1576,7 +1663,7 @@ paths:
             schema:
               $ref: ../models/creare_bot.json
             examples:
-              example-1:
+              example:
                 value:
                   description: string
                   name: string
@@ -1591,6 +1678,21 @@ paths:
             application/json:
               schema:
                 $ref: ../models/bots.json
+              examples:
+                example:
+                  value:
+                    - id: string
+                      botUserId: string
+                      description: string
+                      owner:
+                        id: string
+                        name: string
+                        avator: string
+                        bot: true
+                        state: 0
+                      state: 0
+                      created_at: string
+                      updated_at: string
       operationId: get-bots
     delete:
       summary: Botを削除
