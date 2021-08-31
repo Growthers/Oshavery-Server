@@ -1,9 +1,9 @@
 import express from "express";
-import { info, serverInfo } from "../models/info"
+import { info, serverInfo } from "../models/info";
 
 export const infoController = {
   getVersion(req: express.Request, res: express.Response) {
-    const version: string = "Oshavery v.0.0.1"
+    const version: string = "Oshavery v.0.0.1";
     const revision: string = "";
     // バージョンを返す
     console.log(req.path);
@@ -17,7 +17,7 @@ export const infoController = {
   async getServerInfo(req: express.Request, res: express.Response) {
     // サーバー情報を返す
     console.log(req.path);
-    const inf = await info.get()
+    const inf = await info.get();
     // console.log(inf[0]);
     res.json(inf[0]);
   },
@@ -40,7 +40,7 @@ export const infoController = {
     await info.create(serverInfo)
       .then(()=> {
         res.status(201).json(serverInfo);
-        return
+        return;
       })
       .catch((e) => {
         console.log(e);
@@ -65,7 +65,7 @@ export const infoController = {
 
     await info.update(serverInfo)
       .then(()=> {
-        res.status(200).json(serverInfo)
+        res.status(200).json(serverInfo);
       })
       .catch((e) => {
         console.log(e);
