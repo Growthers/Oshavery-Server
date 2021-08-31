@@ -22,8 +22,8 @@ export const channelController = {
     };
 
     await channels.create(channel)
-      .then(() => {
-        res.status(201).json(channel);
+      .then((r) => {
+        res.status(201).json(r);
         return;
       })
       .catch((e) => {
