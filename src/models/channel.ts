@@ -30,6 +30,6 @@ export const channels = {
       }
     })
     return;
-  },
+  }
 
 }
