@@ -31,5 +31,13 @@
       "channel_type": "text",
       "channel_position": 0
     }
-  }
+  },
+  "examples": [
+    {
+      "channel_name": "string",
+      "channel_topics": "string",
+      "channel_type": "string",
+      "channel_position": 0
+    }
+  ]
 }
