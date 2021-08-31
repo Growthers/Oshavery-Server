@@ -1,5 +1,4 @@
 import { PrismaClient } from "@prisma/client";
-import { create } from "domain";
 const prisma = new PrismaClient();
 
 // post時のbodyの型
@@ -31,5 +30,6 @@ export const channels = {
       }
     })
     return;
-  }
+  },
+
 }
