@@ -1,7 +1,10 @@
-const router_channel = require("express").Router();
+import express from "express";
+const router_channel = express.Router();
+
+import {channelController} from "../controllers/channelcontroller"
 
 router_channel.route("/guilds/:guildId/channels")
-  .get(() => {console.log("げっとうえー")})
+  .get(channelController.getUser)
   .post(() => {console.log("ぽすとうえー")})
   .patch(() => {console.log("ぱっちうえー")})
 
