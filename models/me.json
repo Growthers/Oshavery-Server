@@ -6,9 +6,36 @@
       "id": "string",
       "name": "string",
       "avator": "string",
-      "bot": "string",
+      "bot": true,
       "state": 0,
-      "guilds": []
+      "guilds": [
+        {
+          "id": "string",
+          "name": "string",
+          "topic": "string",
+          "icon": "string",
+          "owner_id": "string",
+          "users": [
+            {
+              "id": "string",
+              "name": "string",
+              "avator": "string",
+              "bot": "string",
+              "state": 0
+            }
+          ],
+          "channels": [
+            {
+              "id": "string",
+              "channel_name": "string",
+              "channel_topics": "string",
+              "channel_type": "string",
+              "channel_position": 0,
+              "creator_id": "string"
+            }
+          ]
+        }
+      ]
     }
   },
   "properties": {
@@ -25,14 +52,15 @@
       "minLength": 1
     },
     "bot": {
-      "type": "string",
-      "minLength": 1
+      "type": "boolean"
     },
     "state": {
       "type": "number"
     },
     "guilds": {
       "type": "array",
+      "uniqueItems": true,
+      "minItems": 1,
       "items": {
         "$ref": "./guild.json"
       }
@@ -51,7 +79,7 @@
       "id": "string",
       "name": "string",
       "avator": "string",
-      "bot": "string",
+      "bot": true,
       "state": 0,
       "guilds": [
         {
