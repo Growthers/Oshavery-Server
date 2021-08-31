@@ -1,8 +1,15 @@
-const router_guild = require("express").Router();
+import express from "express";
+const router_guild = express.Router();
+
+import {guildController} from "../controllers/guildcontroller";
+
+router_guild.route("/")
+  .post(guildController.createGuild);
 
 router_guild.route("/:guildId")
-  .get(() => {console.log("げっとうえー")})
-  .patch(() => {console.log("ぱっちうえー")})
+  .get(guildController.getGuild)
+  .patch(guildController.updateGuild)
+  .delete(guildController.deleteGuild);
 
 router_guild.route("/:guildId/roles")
   .get(() => {console.log("げっとうえー")})
