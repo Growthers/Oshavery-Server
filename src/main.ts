@@ -13,4 +13,19 @@ app.use("/guilds", guildRouter);
 app.use("/", channelRouter);
 app.use("/channels", messageRouter);
 
-app.listen(3000);
+app.listen(3000,() => {
+  console.log(`
+  #######
+  #     #  ####  #    #   ##   #    # ###### #####  #   #
+  #     # #      #    #  #  #  #    # #      #    #  # #
+  #     #  ####  ###### #    # #    # #####  #    #   #
+  #     #      # #    # ###### #    # #      #####    #
+  #     # #    # #    # #    #  #  #  #      #   #    #
+  #######  ####  #    # #    #   ##   ###### #    #   #
+
+  Oshavery(alpha)
+  |c| 2021 Oshavery Developers
+
+  [info] listening at http://localhost:3000
+  `)
+});

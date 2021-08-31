@@ -647,6 +647,12 @@ paths:
                   icon: string
                   owner_id: string
       description: ギルド情報を変更
+    delete:
+      summary: ギルドの削除
+      operationId: delete-guilds-guildId
+      responses:
+        '204':
+          description: No Content
   '/guilds/{guildId}/chanels':
     parameters:
       - schema:
@@ -709,32 +715,21 @@ paths:
           content:
             application/json:
               schema:
-                description: ''
-                type: object
-                properties:
-                  name:
-                    type: string
-                    minLength: 1
-                  type:
-                    type: number
-                  topic:
-                    type: string
-                    minLength: 1
-                required:
-                  - name
-                  - type
-                  - topic
-                x-examples:
-                  example-1:
-                    name: test
-                    type: 1
-                    topic: testtesttest
+                $ref: ../models/channel.json
               examples:
                 example:
                   value:
-                    name: string
-                    type: 0
-                    topic: string
+                    id: 5a213407-5782-4b61-8605-22f75c1fdfeb
+                    channel_name: test channel
+                    channel_topics: channel for test
+                    channel_type: text
+                    channel_position: 0
+                    creator_id: 87cb349f-ac45-4075-b842-068ab2f6a8a4
+                    permissions:
+                      - id: d3db1cda-bf62-44ad-a8bd-3e69d5827fb0
+                        name: base
+                        permissions: '123456'
+                        mentionable: true
         '400':
           description: Bad Request
         '403':
@@ -760,8 +755,26 @@ paths:
       tags:
         - channel
       responses:
-        '204':
-          description: No Content
+        '202':
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: ../models/channel.json
+              examples:
+                example-1:
+                  value:
+                    id: 5a213407-5782-4b61-8605-22f75c1fdfeb
+                    channel_name: test channel
+                    channel_topics: channel for test
+                    channel_type: text
+                    channel_position: 0
+                    creator_id: 87cb349f-ac45-4075-b842-068ab2f6a8a4
+                    permissions:
+                      - id: d3db1cda-bf62-44ad-a8bd-3e69d5827fb0
+                        name: base
+                        permissions: '123456'
+                        mentionable: true
         '403':
           description: Forbidden
         '404':
@@ -911,52 +924,41 @@ paths:
       description: get account data
       tags:
         - user
+      operationId: get-users-me
       responses:
         '200':
           description: OK
           content:
             application/json:
               schema:
-                description: '123'
-                x-examples:
-                  example-1:
-                    id: 3fa85f64-5717-4562-b3fc-2c963f66afa6
-                    name: testtest
-                    icon: 3fa85f64-5717-4562-b3fc-2c963f66afa6
-                    bot: false
-                    guilds:
-                      - 3fa85f64-5717-4562-b3fc-2c963f66afa6
-                type: array
-                items:
-                  $ref: ../models/me.json
+                $ref: ../models/me.json
               examples:
-                example:
+                example-1:
                   value:
-                    - id: string
-                      name: string
-                      avator: string
-                      bot: string
-                      state: 0
-                      guilds:
-                        - id: string
-                          name: string
-                          topic: string
-                          icon: string
-                          owner_id: string
-                          users:
-                            - id: string
-                              name: string
-                              avator: string
-                              bot: string
-                              state: 0
-                          channels:
-                            - id: string
-                              channel_name: string
-                              channel_topics: string
-                              channel_type: string
-                              channel_position: 0
-                              creator_id: string
-      operationId: get-users-me
+                    id: string
+                    name: string
+                    avator: string
+                    bot: true
+                    state: 0
+                    guilds:
+                      - id: string
+                        name: string
+                        topic: string
+                        icon: string
+                        owner_id: string
+                        users:
+                          - id: string
+                            name: string
+                            avator: string
+                            bot: string
+                            state: 0
+                        channels:
+                          - id: string
+                            channel_name: string
+                            channel_topics: string
+                            channel_type: string
+                            channel_position: 0
+                            creator_id: string
     patch:
       summary: ユーザー情報変更
       description: '123'
@@ -1667,6 +1669,69 @@ paths:
         '204':
           description: No Content
       operationId: delete-bots
+  /guilds:
+    post:
+      summary: ギルドの作成
+      tags:
+        - guild
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/guild.json
+              examples:
+                example-1:
+                  value:
+                    id: string
+                    name: string
+                    topic: string
+                    icon: string
+                    owner_id: string
+                    users:
+                      - id: string
+                        name: string
+                        avator: string
+                        bot: boolean
+                        state: 0
+                    channels:
+                      - id: string
+                        channel_name: string
+                        channel_topics: string
+                        channel_type: string
+                        channel_position: 0
+                        creator_id: string
+      operationId: post-guilds
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: ''
+              type: object
+              properties:
+                guild_name:
+                  type: string
+                  minLength: 1
+                guild_topics:
+                  type: string
+                  minLength: 1
+              required:
+                - guild_name
+                - guild_topics
+              x-examples:
+                example-1:
+                  guild_name: string
+                  guild_topics: string
+            examples:
+              example-1:
+                value:
+                  guild_name: string
+                  guild_topics: string
+          application/xml:
+            schema:
+              type: object
+              properties: {}
 tags:
   - name: user
   - name: guild
