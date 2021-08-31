@@ -1,4 +1,4 @@
-import { PrismaClient, server_info } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 // post時のbodyの型
@@ -45,7 +45,7 @@ export const info = {
         tos: body.tos,
         privacy_policy: body.privacy_policy,
       }
-    }).catch((e) => {console.log(e)})
+    }).catch((e) => {console.log(e)});
   }
 
 }
