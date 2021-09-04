@@ -31,24 +31,25 @@ model invitations {
   count    Int       @default(0)
   deadline DateTime?
 
-  guild      guilds?   @relation(fields: [guildsId], references: [id])
-  guildsId   String?
-  channels   channels? @relation(fields: [channelsId], references: [id])
-  channelsId String?
+  guild     guilds?   @relation(fields: [guildId], references: [id])
+  guildId   String?
+  channel   channels? @relation(fields: [channelId], references: [id])
+  channelId String?
 }
 
 model channels {
-  id    String  @id @default(uuid())
-  name  String
-  type  String
-  topic String?
-
+  id          String        @id @default(uuid())
+  name        String
+  type        String
+  topic       String?
   position    Int
   messages    messages[]
   invitations invitations[]
   created_at  DateTime      @default(now())
   updated_at  DateTime?
   deleted_at  DateTime?
+  guilds      guilds?       @relation(fields: [guildId], references: [id])
+  guildId     String?
 }
 
 model guilds {
@@ -58,6 +59,7 @@ model guilds {
   created_at           DateTime               @default(now())
   updated_at           DateTime?
   deleted_at           DateTime?
+  channels             channels[]
   messages             messages[]
   invitations          invitations[]
   users                users[]
@@ -87,7 +89,7 @@ model users {
 }
 
 model server_info {
-  id Int @id @default(autoincrement())
+  id             Int    @id @default(autoincrement())
   instance_name  String @unique
   user_count     Int
   message_count  Int
