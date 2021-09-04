@@ -5,14 +5,14 @@ const prisma = new PrismaClient();
 export interface guild_struct_post {
   guild_name: string,
   guild_topics: string
-}
+};
 
 // patch時のbodyの型
 export interface guild_struct_patch {
   name: string,
   icon: string,
   owner_id: string
-}
+};
 
 export const guild = {
   // POST /guilds
@@ -34,7 +34,7 @@ export const guild = {
       data: {
         name: body.name
       }
-    })
+    });
   },
 
   // DELETE /guilds/:guildId
@@ -43,7 +43,7 @@ export const guild = {
       where: {
         id: guildId
       }
-    })
+    });
   },
 
   // GET /guilds/:guildId
@@ -52,6 +52,6 @@ export const guild = {
       where: {
         id: guildId
       }
-    })
+    });
   }
 }

@@ -9,12 +9,14 @@ export const guildController = {
       .then((gld) => {
         console.log(gld);
         res.json(gld);
+        return;
       })
       .catch((e) => {
         console.error(e);
         res.status(404).end();
+        return;
       })
-
+      return;
   },
 
   async createGuild(req: express.Request, res: express.Response) {
@@ -26,11 +28,14 @@ export const guildController = {
       .then((gld) => {
         console.log(gld);
         res.status(201).json(gld);
+        return;
       })
       .catch((e) => {
         console.error(e);
         res.status(400).send("Invaild reqest");
+        return;
       });
+      return;
   },
 
   async updateGuild(req: express.Request, res: express.Response) {
@@ -42,11 +47,14 @@ export const guildController = {
     await guild.update(guild_id, body)
       .then(() => {
         res.status(204).end();
+        return;
       })
       .catch((e) => {
         console.error(e);
         res.status(400).send("Invalid reqest");
+        return;
       });
+      return;
   },
 
   async deleteGuild(req: express.Request, res: express.Response) {
@@ -54,10 +62,13 @@ export const guildController = {
     await guild.delete(req.params.guildId)
       .then(() => {
         res.status(204).end();
+        return;
       })
       .catch((e) => {
         console.error(e);
         res.status(400).send("Invalid reqest");
+        return;
       });
+      return;
   }
 }
