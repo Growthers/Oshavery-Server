@@ -14,22 +14,26 @@ export interface channel {
 export const channels = {
   // GET
   // /guilds/:guildId/channels
-  async get() {
-    return await prisma.channels.findMany();
+  async get(guild_id: string) {
+    return await prisma.channels.findMany({
+      where: {
+        guildId: guild_id
+      }
+    });
   },
 
   // POST
   // /guilds/:guildId/channel
-  async create(body: channel) {
-    await prisma.channels.create({
+  async create(body: channel, guildId: string) {
+    return await prisma.channels.create({
       data: {
+        guildId: guildId,
         name: body.channel_name,
         topic: body.channel_topics,
         type: body.channel_type,
         position: body.channel_position
       }
-    })
-    return;
+    });
   }
 
 }
