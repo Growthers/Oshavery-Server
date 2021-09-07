@@ -5,7 +5,7 @@ info:
   description: Oshavery v0.5 API
   contact:
     name: Undecided
-    url: 'https://github.com/Undecided-discord/GodChat'
+    url: 'https://github.com/Undecided-Discord/Oshavery'
 servers:
   - url: 'http://localhost:3000'
 paths:
