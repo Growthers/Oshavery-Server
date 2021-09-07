@@ -13,7 +13,7 @@ model messages {
   ip      String
 
   created_at DateTime  @default(now())
-  updated_at DateTime?
+  updated_at DateTime? @updatedAt
   deleted_at DateTime?
 
   guild      guilds   @relation(fields: [guild_id], references: [id])
@@ -43,10 +43,11 @@ model channels {
   type        String
   topic       String?
   position    Int
+  medias      media[]
   messages    messages[]
   invitations invitations[]
   created_at  DateTime      @default(now())
-  updated_at  DateTime?
+  updated_at  DateTime?     @updatedAt
   deleted_at  DateTime?
   guilds      guilds?       @relation(fields: [guildId], references: [id])
   guildId     String?
@@ -57,7 +58,7 @@ model guilds {
   name                 String
   topic                String?
   created_at           DateTime               @default(now())
-  updated_at           DateTime?
+  updated_at           DateTime?              @updatedAt
   deleted_at           DateTime?
   channels             channels[]
   messages             messages[]
@@ -82,6 +83,7 @@ model users {
   name                 String
   bot                  Boolean
   origin               String
+  medias               media[]
   messages             messages[]
   guild_users_mappings guild_users_mappings[]
   guilds               guilds?                @relation(fields: [guildsId], references: [id])
@@ -106,4 +108,18 @@ model role {
 
   guild    guilds? @relation(fields: [guild_id], references: [id])
   guild_id String?
+}
+
+model media {
+  id   String @id @default(uuid())
+  name String
+  mime String
+  size BigInt @db.BigInt
+  path String
+
+
+  channel    channels? @relation(fields: [channelId], references: [id])
+  channelId  String?
+  users      users?    @relation(fields: [uploaderId], references: [id])
+  uploaderId String?
 }

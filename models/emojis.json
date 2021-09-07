@@ -1,0 +1,32 @@
+{
+  "description": "",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "creator_id": {
+      "type": "string"
+    },
+    "mediaId": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "name",
+    "creator_id",
+    "mediaId"
+  ],
+  "x-examples": {
+    "example-1": {
+      "id": "",
+      "name": "",
+      "creator_id": "",
+      "mediaId": ""
+    }
+  }
+}
