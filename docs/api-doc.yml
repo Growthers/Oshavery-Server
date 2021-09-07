@@ -1732,6 +1732,23 @@ paths:
             schema:
               type: object
               properties: {}
+  '/emojis/{guildId}':
+    parameters:
+      - schema:
+          type: string
+        name: guildId
+        in: path
+        required: true
+    get:
+      summary: サーバー内のカスタム絵文字一覧を表示
+      tags: []
+      responses: {}
+      operationId: get-emojis-guildId
+    put:
+      summary: サーバーカスタム絵文字を作成
+      tags: []
+      responses: {}
+      operationId: put-emojis-guildId
 tags:
   - name: user
   - name: guild
