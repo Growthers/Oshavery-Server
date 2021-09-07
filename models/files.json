@@ -1,0 +1,58 @@
+{
+  "description": "",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "mime": {
+      "type": "string",
+      "minLength": 1
+    },
+    "size": {
+      "type": "number"
+    },
+    "created_at": {
+      "type": "string",
+      "minLength": 1
+    },
+    "channel_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "uploader_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "media_url": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "name",
+    "mime",
+    "size",
+    "created_at",
+    "channel_id",
+    "uploader_id",
+    "media_url"
+  ],
+  "x-examples": {
+    "example-1": {
+      "id": "string",
+      "name": "string",
+      "mime": "string",
+      "size": 0,
+      "created_at": "string",
+      "channel_id": "string",
+      "uploader_id": "string",
+      "media_url": ""
+    }
+  }
+}

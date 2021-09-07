@@ -1749,6 +1749,64 @@ paths:
       tags: []
       responses: {}
       operationId: put-emojis-guildId
+  /files:
+    post:
+      summary: ファイルをアップロード
+      tags:
+        - file
+      responses:
+        '200':
+          description: |-
+            OK
+            `file`: ファイル本体
+            `channelId`: アップロード先チャンネルUUID
+          content:
+            multipart/form-data:
+              schema:
+                type: object
+                properties: {}
+              examples: {}
+      operationId: post-files
+    parameters: []
+  '/files/{fileId}':
+    parameters:
+      - schema:
+          type: string
+        name: fileId
+        in: path
+        required: true
+        description: ファイルUUID
+    get:
+      summary: ファイル情報の取得
+      tags:
+        - file
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/files.json
+              examples:
+                example:
+                  value:
+                    id: string
+                    name: string
+                    mime: string
+                    size: 0
+                    created_at: string
+                    channel_id: string
+                    uploader_id: string
+                    media_url: string
+      operationId: get-files-fileId
+    delete:
+      summary: ファイルの削除
+      tags:
+        - file
+      responses:
+        '204':
+          description: No Content
+      operationId: delete-files-fileId
 tags:
   - name: user
   - name: guild
