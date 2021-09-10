@@ -16,12 +16,13 @@ model messages {
   updated_at DateTime? @updatedAt
   deleted_at DateTime?
 
-  guild      guilds   @relation(fields: [guild_id], references: [id])
-  guild_id   String
   channels   channels @relation(fields: [channel_id], references: [id])
   channel_id String
   user       users?   @relation(fields: [userId], references: [id])
   userId     String?
+  media      media[]
+  guilds     guilds?  @relation(fields: [guildsId], references: [id])
+  guildsId   String?
 }
 
 model invitations {
@@ -63,7 +64,6 @@ model guilds {
   channels             channels[]
   messages             messages[]
   invitations          invitations[]
-  users                users[]
   guild_users_mappings guild_users_mappings[]
   role                 role[]
 }
@@ -86,8 +86,6 @@ model users {
   medias               media[]
   messages             messages[]
   guild_users_mappings guild_users_mappings[]
-  guilds               guilds?                @relation(fields: [guildsId], references: [id])
-  guildsId             String?
 }
 
 model server_info {
@@ -117,6 +115,8 @@ model media {
   size BigInt @db.BigInt
   path String
 
+  message    messages @relation(fields: [message_id], references: [id])
+  message_id String
 
   channel    channels? @relation(fields: [channelId], references: [id])
   channelId  String?
