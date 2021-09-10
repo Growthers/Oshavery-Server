@@ -24,6 +24,16 @@ model messages {
   userId     String?
 }
 
+model emojis {
+  id          String    @id @default(uuid())
+  short_name  String
+  media_id    String
+  uploader_id String
+  created_at  DateTime      @default(now())
+  updated_at  DateTime?     @updatedAt
+  deleted_at  DateTime?
+}
+
 model invitations {
   id       String    @id @default(uuid())
   enable   Boolean   @default(false)
