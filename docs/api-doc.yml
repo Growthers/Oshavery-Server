@@ -1732,6 +1732,147 @@ paths:
             schema:
               type: object
               properties: {}
+  '/emojis/{guildId}':
+    parameters:
+      - schema:
+          type: string
+        name: guildId
+        in: path
+        required: true
+    get:
+      summary: サーバー内のカスタム絵文字一覧を表示
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: ../models/emojis.json
+              examples:
+                example-1:
+                  value:
+                    - id: string
+                      name: string
+                      creator_id: string
+                      mediaId: string
+      operationId: get-emojis-guildId
+    put:
+      summary: サーバーカスタム絵文字を変更
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: ../models/emojis.json
+              examples:
+                example-1:
+                  value:
+                    - id: string
+                      name: string
+                      creator_id: string
+                      mediaId: string
+      operationId: put-emojis-guildId
+  /files:
+    post:
+      summary: ファイルをアップロード
+      tags:
+        - file
+      responses:
+        '200':
+          description: |-
+            OK
+            `file`: ファイル本体
+            `channelId`: アップロード先チャンネルUUID
+          content:
+            multipart/form-data:
+              schema:
+                type: object
+                properties: {}
+              examples: {}
+      operationId: post-files
+    parameters: []
+  '/files/{fileId}':
+    parameters:
+      - schema:
+          type: string
+        name: fileId
+        in: path
+        required: true
+        description: ファイルUUID
+    get:
+      summary: ファイル情報の取得
+      tags:
+        - file
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/files.json
+              examples:
+                example:
+                  value:
+                    id: string
+                    name: string
+                    mime: string
+                    size: 0
+                    created_at: string
+                    channel_id: string
+                    uploader_id: string
+                    media_url: string
+      operationId: get-files-fileId
+    delete:
+      summary: ファイルの削除
+      tags:
+        - file
+      responses:
+        '204':
+          description: No Content
+      operationId: delete-files-fileId
+  '/emojis/{emojiId}':
+    parameters:
+      - schema:
+          type: string
+        name: emojiId
+        in: path
+        required: true
+    post:
+      summary: 絵文字の登録
+      tags:
+        - emojis
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: ../models/emojis.json
+      operationId: post-emojis-emojiId
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties: {}
+        description: |-
+          `file`: 絵文字のファイル
+          `guildId`: 登録先ギルドUUID
+          `short_names`: 絵文字エイリアス `:<something>:`
+    delete:
+      summary: 絵文字の削除
+      tags:
+        - emojis
+      responses: {}
+      operationId: delete-emojis-emojiId
 tags:
   - name: user
   - name: guild
