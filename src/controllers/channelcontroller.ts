@@ -1,6 +1,6 @@
 import express from "express";
 import { channels,channel } from "../models/channel";
-import { channelCreated } from "./notificationController";
+import { channelCreated } from "./notificationcontroller";
 export const channelController = {
 
   async getChannels(req: express.Request, res: express.Response) {
