@@ -5,7 +5,7 @@ info:
   description: Oshavery v0.5 API
   contact:
     name: Undecided
-    url: 'https://github.com/Undecided-discord/GodChat'
+    url: 'https://github.com/Undecided-Discord/Oshavery'
 servers:
   - url: 'http://localhost:3000'
 paths:
@@ -1742,12 +1742,42 @@ paths:
     get:
       summary: サーバー内のカスタム絵文字一覧を表示
       tags: []
-      responses: {}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: ../models/emojis.json
+              examples:
+                example-1:
+                  value:
+                    - id: string
+                      name: string
+                      creator_id: string
+                      mediaId: string
       operationId: get-emojis-guildId
     put:
-      summary: サーバーカスタム絵文字を作成
+      summary: サーバーカスタム絵文字を変更
       tags: []
-      responses: {}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: ../models/emojis.json
+              examples:
+                example-1:
+                  value:
+                    - id: string
+                      name: string
+                      creator_id: string
+                      mediaId: string
       operationId: put-emojis-guildId
   /files:
     post:
@@ -1807,6 +1837,42 @@ paths:
         '204':
           description: No Content
       operationId: delete-files-fileId
+  '/emojis/{emojiId}':
+    parameters:
+      - schema:
+          type: string
+        name: emojiId
+        in: path
+        required: true
+    post:
+      summary: 絵文字の登録
+      tags:
+        - emojis
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: ../models/emojis.json
+      operationId: post-emojis-emojiId
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties: {}
+        description: |-
+          `file`: 絵文字のファイル
+          `guildId`: 登録先ギルドUUID
+          `short_names`: 絵文字エイリアス `:<something>:`
+    delete:
+      summary: 絵文字の削除
+      tags:
+        - emojis
+      responses: {}
+      operationId: delete-emojis-emojiId
 tags:
   - name: user
   - name: guild
