@@ -10,6 +10,7 @@ export interface media {
   channelId: string;
   ip: string;
   path: string;
+  fullpath: string;
 };
 
 //命名がややこしいので要検討
@@ -29,7 +30,7 @@ export const medias = {
     let id:string = "";
     await prisma.messages.create({
       data: {
-        ip: "",
+        ip: media.ip,
         content: "",
         user: {connect: {id: media.uploaderId}},
         channels: {connect: {id: media.channelId}},
@@ -39,17 +40,18 @@ export const medias = {
       id = f.id
     })
     .catch((e) => {
-      console.error(e);
+      console.error("error!: "+e);
       return;
     });
 
 
-    await prisma.media.create({
+    return await prisma.media.create({
       data: {
         name: media.name,
         mime: media.mime,
-        size: media.size,
+        size: 0,
         path: media.path,
+        fullpath: media.fullpath,
         channel: {
           connect: {id: media.channelId},
         },
@@ -57,7 +59,7 @@ export const medias = {
           connect: {id: id},
         }
       },
-    });
+    }).then((r) => {return r;})
 
   },
 
