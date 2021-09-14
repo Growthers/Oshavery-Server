@@ -35,11 +35,31 @@ export async function channelCreated(id: string) {
 };
 
 //Demoが終わったら
-export async function channelUpdated() {
-  console.log("おｋ");
+export async function channelUpdated(id: string) {
+  const channel:opeChannel = {
+    type: "CHANNEL_UPDATED",
+    body: {
+      id: id
+    }
+  };
+  console.log(JSON.stringify(channel));
+  wss.clients.forEach(function (client) {
+    client.send(JSON.stringify(channel));
+  });
 };
-export async function channelDeleted() {
-  console.log("おｋ");
+
+
+export async function channelDeleted(id: string) {
+  const channel:opeChannel = {
+    type: "CHANNEL_DELETED",
+    body: {
+      id: id
+    }
+  };
+  console.log(JSON.stringify(channel));
+  wss.clients.forEach(function (client) {
+    client.send(JSON.stringify(channel));
+  });
 };
 
 // messageが完成したら
