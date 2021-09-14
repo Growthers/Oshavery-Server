@@ -20,10 +20,10 @@ interface opeChannel {
   };
 };
 
-//要検証
-export async function channelCreated(id: string) {
+
+async function channel(id: string, type: string) {
   const channel:opeChannel = {
-    type: "CHANNEL_CREATED",
+    type: type,
     body: {
       id: id
     }
@@ -32,34 +32,20 @@ export async function channelCreated(id: string) {
   wss.clients.forEach(function (client) {
     client.send(JSON.stringify(channel));
   });
+}
+
+//要検証
+export async function channelCreated(id: string) {
+  channel(id,"CHANNEL_CREATED");
 };
 
 //Demoが終わったら
 export async function channelUpdated(id: string) {
-  const channel:opeChannel = {
-    type: "CHANNEL_UPDATED",
-    body: {
-      id: id
-    }
-  };
-  console.log(JSON.stringify(channel));
-  wss.clients.forEach(function (client) {
-    client.send(JSON.stringify(channel));
-  });
+  channel(id,"CHANNEL_UPDATED");
 };
 
-
 export async function channelDeleted(id: string) {
-  const channel:opeChannel = {
-    type: "CHANNEL_DELETED",
-    body: {
-      id: id
-    }
-  };
-  console.log(JSON.stringify(channel));
-  wss.clients.forEach(function (client) {
-    client.send(JSON.stringify(channel));
-  });
+  channel(id,"CHANNEL_DELETED")
 };
 
 // messageが完成したら
