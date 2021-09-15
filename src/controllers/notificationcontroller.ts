@@ -56,6 +56,28 @@ async function message(type: string, channelId: string, messageId: string) {
   });
 };
 
+interface opeUser {
+  type: string;
+  body: {
+    userId: string;
+  }
+};
+
+async function user(type: string, userId: string) {
+  const user:opeUser = {
+    type: type,
+    body: {
+      userId
+    }
+  };
+  console.log(JSON.stringify(user));
+  wss.clients.forEach(function (client) {
+    client.send(JSON.stringify(user))
+  });
+};
+
+
+
 //要検証
 export async function channelCreated(id: string) {
   channel(id,"CHANNEL_CREATED");
@@ -70,6 +92,7 @@ export async function channelDeleted(id: string) {
   channel(id,"CHANNEL_DELETED")
 };
 
+//message
 // messageが完成したら
 export async function messageCreated(channelId: string, messageId: string) {
   message("MESSAGE_CREATED",channelId,messageId);
@@ -81,3 +104,17 @@ export async function messageDeleted(channelId: string, messageId: string) {
   message("MESSAGE_DELETED",channelId,messageId);
 };
 
+
+//user
+//user部分が完成したら
+export async function userJoined(userId: string) {
+  user("USER_JOINED",userId)
+}
+
+export async function userUpdated(userId: string) {
+  user("USER_UPDATED",userId)
+}
+
+export async function userStatusUpdate(userId: string) {
+  user("USER_STATUS_UPDATED",userId)
+}
