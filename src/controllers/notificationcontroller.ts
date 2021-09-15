@@ -13,19 +13,20 @@ const wss = new WebSocket.Server({port: 8080})
 //}
 
 
+
+
 interface opeChannel {
   type: string;
   body: {
-    id: string;
+    channelId: string;
   };
 };
 
-
-async function channel(id: string, type: string) {
+async function channel(type: string, channelId: string) {
   const channel:opeChannel = {
     type: type,
     body: {
-      id: id
+      channelId: channelId
     }
   };
   console.log(JSON.stringify(channel));
@@ -33,6 +34,8 @@ async function channel(id: string, type: string) {
     client.send(JSON.stringify(channel));
   });
 };
+
+
 
 interface opeMessage {
   type: string;
@@ -55,6 +58,8 @@ async function message(type: string, channelId: string, messageId: string) {
     client.send(JSON.stringify(message))
   });
 };
+
+
 
 interface opeUser {
   type: string;
