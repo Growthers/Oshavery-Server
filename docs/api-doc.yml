@@ -457,15 +457,23 @@ paths:
                   name:
                     type: string
                     minLength: 1
+                  avater:
+                    type: string
+                  sub:
+                    type: string
                 required:
                   - id
                   - bot
                   - name
+                  - avater
+                  - sub
                 x-examples:
                   example-1:
-                    id: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+                    id: string
                     bot: true
-                    name: testtest
+                    name: string
+                    avater: ''
+                    sub: ''
               examples:
                 example:
                   value:
@@ -478,40 +486,10 @@ paths:
           description: Forbidden
         '409':
           description: Conflict
-      requestBody:
-        content:
-          application/json:
-            schema:
-              description: ''
-              type: object
-              x-examples:
-                example-1:
-                  name: string
-                  password: string
-                  bot: ''
-              properties:
-                name:
-                  type: string
-                  minLength: 1
-                password:
-                  type: string
-                  minLength: 1
-                bot:
-                  type: boolean
-              required:
-                - name
-                - password
-                - bot
-            examples:
-              example:
-                value:
-                  name: string
-                  password: string
-                  bot: true
-        description: ''
-      description: ユーザー作成
+      description: ユーザーを作成します
       tags:
         - user
+      parameters: []
     get:
       summary: ユーザー一覧の取得
       operationId: get-user

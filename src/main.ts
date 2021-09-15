@@ -1,13 +1,16 @@
 import express from "express";
 const app: express.Express = express();
+import cors from "cors";
+app.use(cors());
 app.use(express.json());
+
 const infoRouter = require("./routes/info");
 const userRouter = require("./routes/user");
 const guildRouter = require("./routes/guild");
 const channelRouter = require("./routes/channel");
 const messageRouter = require("./routes/message");
 const mediaRouter = require("./routes/media");
-
+const jwttest = require("./routes/jwt_test");
 
 app.use("/", infoRouter);
 app.use("/users", userRouter);
@@ -15,8 +18,9 @@ app.use("/guilds", guildRouter);
 app.use("/", channelRouter);
 app.use("/channels", messageRouter);
 app.use("/files", mediaRouter);
+app.use("/jwt", jwttest);
 
-app.listen(3000,() => {
+app.listen(3080,() => {
   const black   = '\u001b[30m';
   const red     = '\u001b[31m';
   const green   = '\u001b[32m';
@@ -37,6 +41,6 @@ app.listen(3000,() => {
   Oshavery(alpha)
   |c| 2021 Oshavery Developers
 
-  [info] listening at http://localhost:3000
+  [info] listening at http://localhost:3080
   `)
 });
