@@ -12,6 +12,7 @@ router_media.route("/")
 
 router_media.route("/:fileId")
   .get(mediaController.getMedia)
-  .delete(mediaController.deleteMedia);
+  // .delete(mediaController.deleteMedia);
+  // ファイルはGCSから削除しないことになった
 
 module.exports = router_media;
