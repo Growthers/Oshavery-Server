@@ -122,7 +122,8 @@ model media {
   id   String @id @default(uuid())
   name String
   mime String
-  size BigInt @db.BigInt
+  size Int
+  fullpath String
   path String
 
   message    messages @relation(fields: [message_id], references: [id])
