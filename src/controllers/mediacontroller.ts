@@ -1,14 +1,17 @@
 import express from "express";
 import { media, medias } from "../models/media";
 import {Storage} from "@google-cloud/storage"
+import dotenv from "dotenv";
+
+const conf = dotenv.config();
 
 // アップロードされるファイルの操作系統
 
-const keyFile = ""; // GCS接続用クレデンシャルファイルパス
-const bucketName = ""; // GCSのバケット名
+const keyFile = process.env.KEYFILE; // GCS接続用クレデンシャルファイルパス
+const bucketName = process.env.BUCKETNAME; // GCSのバケット名
 const storage = new Storage({keyFilename: keyFile});
-const bucket = storage.bucket(bucketName);
-const mediaServerURL = ""
+const bucket = storage.bucket(bucketName || "");
+const mediaServerURL = process.env.MEDIA_SERVER_URL
 
 export const mediaController = {
 
