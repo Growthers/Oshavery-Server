@@ -32,7 +32,7 @@ async function channel(id: string, type: string) {
   wss.clients.forEach(function (client) {
     client.send(JSON.stringify(channel));
   });
-}
+};
 
 interface opeMessage {
   type: string;
@@ -40,7 +40,7 @@ interface opeMessage {
     channelId: string;
     messageId: string;
   }
-}
+};
 
 async function message(type: string, channelId: string, messageId: string) {
   const message:opeMessage = {
