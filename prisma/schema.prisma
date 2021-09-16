@@ -93,6 +93,8 @@ model users {
   name                 String
   bot                  Boolean
   origin               String
+  sub                  String                 @unique
+  avatarurl            String
   medias               media[]
   messages             messages[]
   guild_users_mappings guild_users_mappings[]
