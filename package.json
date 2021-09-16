@@ -7,7 +7,7 @@
   "author": "Undecided Oshavery Development Team",
   "license": "MIT",
   "scripts": {
-    "start": "npx tsc -p . && node ./build/main.js",
+    "start": "npx tsc -p . && echo *build done* &&node ./build/main.js",
     "build": "npx tsc -p ."
   },
   "devDependencies": {
