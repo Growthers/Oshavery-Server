@@ -13,15 +13,26 @@ model messages {
   ip      String
 
   created_at DateTime  @default(now())
-  updated_at DateTime?
+  updated_at DateTime? @updatedAt
   deleted_at DateTime?
 
-  guild      guilds   @relation(fields: [guild_id], references: [id])
-  guild_id   String
   channels   channels @relation(fields: [channel_id], references: [id])
   channel_id String
   user       users?   @relation(fields: [userId], references: [id])
   userId     String?
+  media      media[]
+  guilds     guilds?  @relation(fields: [guildsId], references: [id])
+  guildsId   String?
+}
+
+model emojis {
+  id          String    @id @default(uuid())
+  short_name  String
+  media_id    String
+  uploader_id String
+  created_at  DateTime      @default(now())
+  updated_at  DateTime?     @updatedAt
+  deleted_at  DateTime?
 }
 
 model invitations {
@@ -43,10 +54,11 @@ model channels {
   type        String
   topic       String?
   position    Int
+  medias      media[]
   messages    messages[]
   invitations invitations[]
   created_at  DateTime      @default(now())
-  updated_at  DateTime?
+  updated_at  DateTime?     @updatedAt
   deleted_at  DateTime?
   guilds      guilds?       @relation(fields: [guildId], references: [id])
   guildId     String?
@@ -57,12 +69,11 @@ model guilds {
   name                 String
   topic                String?
   created_at           DateTime               @default(now())
-  updated_at           DateTime?
+  updated_at           DateTime?              @updatedAt
   deleted_at           DateTime?
   channels             channels[]
   messages             messages[]
   invitations          invitations[]
-  users                users[]
   guild_users_mappings guild_users_mappings[]
   role                 role[]
 }
@@ -82,10 +93,11 @@ model users {
   name                 String
   bot                  Boolean
   origin               String
+  sub                  String                 @unique
+  avatarurl            String
+  medias               media[]
   messages             messages[]
   guild_users_mappings guild_users_mappings[]
-  guilds               guilds?                @relation(fields: [guildsId], references: [id])
-  guildsId             String?
 }
 
 model server_info {
@@ -106,4 +118,21 @@ model role {
 
   guild    guilds? @relation(fields: [guild_id], references: [id])
   guild_id String?
+}
+
+model media {
+  id   String @id @default(uuid())
+  name String
+  mime String
+  size Int
+  fullpath String
+  path String
+
+  message    messages @relation(fields: [message_id], references: [id])
+  message_id String
+
+  channel    channels? @relation(fields: [channelId], references: [id])
+  channelId  String?
+  users      users?    @relation(fields: [uploaderId], references: [id])
+  uploaderId String?
 }

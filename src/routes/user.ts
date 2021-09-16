@@ -1,11 +1,13 @@
-const router_user = require("express").Router();
+import express from "express";
+import { userController } from "../controllers/usercontroller";
+const router_user = express.Router();
 
 router_user.route("/")
-  .get(() => {console.log("げっとうえー")})
-  .post(() => {console.log("ぽすとうえー")})
+  .get(userController.getAllUsers)
+  .post(userController.register);
 
 router_user.route("/:userId")
-  .get(() => {console.log("げっとうえー")})
+  .get(userController.getUsers)
   .patch(() => {console.log("ぱっちうえー")})
 
 router_user.route("/me")
