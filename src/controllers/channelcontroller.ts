@@ -1,6 +1,6 @@
 import express from "express";
 import { channels,channel } from "../models/channel";
-
+import { channelCreated } from "./notificationcontroller";
 export const channelController = {
 
   async getChannels(req: express.Request, res: express.Response) {
@@ -35,6 +35,7 @@ export const channelController = {
 
     await channels.create(channel,guild_id)
       .then((ch) => {
+        channelCreated(ch.id);
         res.status(201).json(ch);
         return;
       })
