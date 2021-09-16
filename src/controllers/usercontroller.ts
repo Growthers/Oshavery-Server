@@ -1,5 +1,9 @@
+import axios from "axios";
 import express from "express";
-import { users } from "../models/user";
+import { users, register } from "../models/user";
+import {conf} from "../main";
+
+conf;
 
 export const userController = {
   async getAllUsers(req: express.Request, res: express.Response){
@@ -22,6 +26,37 @@ export const userController = {
       res.status(404).send("User Not Found");
       return;
     });
+    return;
+  },
+
+  async register(req: express.Request, res: express.Response){
+    const accessToken = req.headers.authorization;
+    console.log(process.env.AUTH0_DOMAIN + "/userinfo")
+    const response = await axios("https://" + process.env.AUTH0_DOMAIN + "/userinfo" || "", {
+    method: "GET",
+    headers: {
+      Authorization: accessToken,
+    }
+    })
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+
+    console.table(response);
+
+    const data:register = {
+      name: response.name,
+      sub: response.sub,
+      avatar: response.picture
+    }
+
+    await users.createUserAccount(data)
+    .then((r) => {return res.status(201).json(r);})
+    .catch((e) => {console.error(e); return res.status(400).send("Invalid request");});
+
     return;
   }
 }

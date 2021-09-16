@@ -15,7 +15,7 @@ import jwt from "express-jwt";
 import jwksRsa from "jwks-rsa";
 import dotenv from "dotenv";
 
-const conf = dotenv.config();
+export const conf = dotenv.config();
 
 if (!process.env.AUTH0_DOMAIN || !process.env.AUTH0_AUDIENCE) {
   throw 'Make sure you have AUTH0_DOMAIN, and AUTH0_AUDIENCE in your .env file';
