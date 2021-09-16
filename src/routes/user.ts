@@ -4,7 +4,7 @@ const router_user = express.Router();
 
 router_user.route("/")
   .get(userController.getAllUsers)
-  .post(() => {console.log("ぽすとうえー")});
+  .post(userController.register);
 
 router_user.route("/:userId")
   .get(userController.getUsers)
