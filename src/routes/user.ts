@@ -3,8 +3,8 @@ import { userController } from "../controllers/usercontroller";
 const router_user = express.Router();
 
 router_user.route("/")
-  .get(() => {console.log("げっとうえー")})
-  .post(() => {console.log("ぽすとうえー")})
+  .get(userController.getAllUsers)
+  .post(userController.register);
 
 router_user.route("/:userId")
   .get(userController.getUsers)
