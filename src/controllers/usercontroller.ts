@@ -2,6 +2,11 @@ import express from "express";
 import { users } from "../models/user";
 
 export const userController = {
+  async getAllUsers(req: express.Request, res: express.Response){
+    console.log(req.path);
+    return await users.getAllUsers().then((r) => {return res.status(200).json(r)}).catch((e) => {return console.log(e);})
+  },
+
   async getUsers(req: express.Request, res: express.Response) {
     console.log(req.path);
     const user_id = req.params.userId;

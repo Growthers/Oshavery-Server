@@ -10,5 +10,9 @@ export const users = {
         id: user_id
       }
     });
+  },
+
+  async getAllUsers(){
+    return await prisma.users.findMany();
   }
 }
