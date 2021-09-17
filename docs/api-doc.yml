@@ -1058,6 +1058,9 @@ paths:
               example:
                 value:
                   content: string
+              example-2:
+                value:
+                  content: string
     get:
       operationId: get-channels-channelId-messages
       description: チャンネルメッセージ取得
