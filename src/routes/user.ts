@@ -8,10 +8,6 @@ router_user.route("/")
 
 router_user.route("/:userId")
   .get(userController.getUsers)
-  .patch(() => {console.log("ぱっちうえー")})
-
-// router_user.route("/@me")
-//   .get(userController.getMe)
-//   .patch()
+  .patch(userController.updateUser)
 
 module.exports = router_user;

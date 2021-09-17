@@ -134,5 +134,34 @@ export const userController = {
     }
 
     return res.json(response_data);
+  },
+
+  async updateUser(req: express.Request, res: express.Response){
+    if (req.path === "/me") { userController.updateMe(req, res); return; }
+      else{
+        return res.status(403).send("Forbidden")
+      }
+    //  強制アップデート用
+  },
+
+  async updateMe(req: express.Request, res: express.Response){
+    const accessToken = req.headers.authorization;
+    const response = await axios("https://" + process.env.AUTH0_DOMAIN + "/userinfo" || "", {
+      method: "GET",
+      headers: {
+        Authorization: accessToken,
+      }
+    })
+      .then((res) => {
+        return res.data;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    const usr = await users.getFromSub(response.sub)
+    if (!usr){return res.status(400).send("Invalid request")}
+    await users.updateUser(usr.id, req.body.name).then((r) => {console.log(r); return}).catch((e) => {console.table(e); res.status(400)})
+    return res.status(204).send("");
   }
 }
