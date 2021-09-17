@@ -41,5 +41,14 @@ export const users = {
       }
     });
 
+  },
+
+  async updateUser(id: string, name:string) {
+    return await prisma.users.update({
+      where: {id: id},
+      data:{
+        name: name
+      }
+    })
   }
 }
