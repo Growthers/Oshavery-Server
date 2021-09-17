@@ -8,8 +8,8 @@ generator client {
 }
 
 model messages {
-  id      String @id @default(uuid())
-  content String
+  id      String  @id @default(uuid())
+  content String  @db.MediumText
   ip      String
   deleted Boolean @default(false)
 
@@ -31,8 +31,8 @@ model emojis {
   short_name  String
   media_id    String
   uploader_id String
-  created_at  DateTime      @default(now())
-  updated_at  DateTime?     @updatedAt
+  created_at  DateTime  @default(now())
+  updated_at  DateTime? @updatedAt
   deleted_at  DateTime?
 }
 
@@ -50,20 +50,20 @@ model invitations {
 }
 
 model channels {
-  id          String        @id @default(uuid())
-  name        String
-  type        String
-  topic       String?
-  position    Int
-  latest_message_id  String
-  medias      media[]
-  messages    messages[]
-  invitations invitations[]
-  created_at  DateTime      @default(now())
-  updated_at  DateTime?     @updatedAt
-  deleted_at  DateTime?
-  guilds      guilds?       @relation(fields: [guildId], references: [id])
-  guildId     String?
+  id                String        @id @default(uuid())
+  name              String
+  type              String
+  topic             String?
+  position          Int
+  latest_message_id String
+  medias            media[]
+  messages          messages[]
+  invitations       invitations[]
+  created_at        DateTime      @default(now())
+  updated_at        DateTime?     @updatedAt
+  deleted_at        DateTime?
+  guilds            guilds?       @relation(fields: [guildId], references: [id])
+  guildId           String?
 }
 
 model guilds {
@@ -123,12 +123,12 @@ model role {
 }
 
 model media {
-  id   String @id @default(uuid())
-  name String
-  mime String
-  size Int
+  id       String @id @default(uuid())
+  name     String
+  mime     String
+  size     Int
   fullpath String
-  path String
+  path     String
 
   message    messages @relation(fields: [message_id], references: [id])
   message_id String

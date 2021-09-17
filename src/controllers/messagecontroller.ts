@@ -2,6 +2,7 @@ import express from "express";
 import { message_struct, message } from "../models/message"
 import { users } from "../models/user";
 import jwt_decode from "jwt-decode";
+import { media, medias } from "../models/media";
 
 interface res {
   id: string;
@@ -17,6 +18,7 @@ interface res {
   guild_id: string,
   channel_id: string,
   edited_timestamp?: Date | null,
+  media?: media
 }
 
 export const messageController = {
@@ -50,6 +52,10 @@ export const messageController = {
       channel_id: req.params.channelId
     }
 
+    // ここでメッセージの最大文字数を決めることができる
+    // nodejsはバイトごとではなく文字数ごとにlengthが出せる仕様
+    if (mes.content === "" || !mes.content || mes.content.length > 10000 ){return res.status(400).send("Invalid request")}
+
     await message.createMessage(mes)
       .then((r) => {
         res.status(201).json(r);
@@ -63,10 +69,16 @@ export const messageController = {
 
   async getMessages(req: express.Request, res: express.Response) {
     const channelId = req.params.channelId;
-    let before, limit, respo = [];;
+    let before, limit, respo = [];
 
-    before = !req.query.before ? await message.getFirstMessage(channelId).then((r) => { return r?.id }) : req.query.before;
+    if (req.query.before === undefined){
+      before = await message.getFirstMessage(channelId).then((r) => { return r?.id })
+    }else{
+      before = req.query.before
+    }
 
+    // before = req.query.before === undefined ? await message.getFirstMessage(channelId).then((r) => { return r?.id }) : "";
+    console.log(await message.getFirstMessage(channelId).then((r) => { return r?.id }))
     limit = Number(req.query.limit) === NaN || Number(req.query.limit) >= 100 || !req.query.limit ? 100 : Number(req.query.limit)
 
     const rr = await message.getMessages(channelId, before, limit)
@@ -77,29 +89,64 @@ export const messageController = {
     if (!rr) { return console.error("error"); }
 
     for (let i = 0; i < rr.length; i++) {
+
       const usr = await users.get(rr[i].userId || "")
       if (!usr) {
         return res.status(500).send("server error")
       }
 
-      const return_mes: res = {
-        id: rr[i].id,
-        timestamp: rr[i].created_at,
-        content: rr[i].content,
-        guild_id: rr[i].guildsId || "",
-        channel_id: rr[i].channel_id,
-        edited_timestamp: rr[i].updated_at || null,
-        author: {
-          id: rr[i].userId || "",
-          name: usr.name,
-          avatarurl: usr.avatarurl,
-          bot: usr.bot,
-          state: 0
+      // contentが空なのはメディアを含むメッセージのみ
+      if (rr[i].content === ""){
+        const media = await medias.getMediaFromMessageId(rr[i].id)
+        if (!media){return;}
+        const return_mes: res = {
+          id: rr[i].id,
+          timestamp: rr[i].created_at,
+          content: rr[i].content,
+          guild_id: rr[i].guildsId || "",
+          channel_id: rr[i].channel_id,
+          edited_timestamp: rr[i].updated_at || null,
+          author: {
+            id: rr[i].userId || "",
+            name: usr.name,
+            avatarurl: usr.avatarurl,
+            bot: usr.bot,
+            state: 0
+          },
+          media: {
+            name: media.name,
+            mime: media.mime,
+            size: 0,
+            uploaderId: media.uploaderId || "",
+            channelId: media.channelId || "",
+            ip: "",
+            path: media.path,
+            fullpath: media.fullpath
+          }
         }
+        respo[i] = return_mes;
       }
+      else {
+        const return_mes: res = {
+          id: rr[i].id,
+          timestamp: rr[i].created_at,
+          content: rr[i].content,
+          guild_id: rr[i].guildsId || "",
+          channel_id: rr[i].channel_id,
+          edited_timestamp: rr[i].updated_at || null,
+          author: {
+            id: rr[i].userId || "",
+            name: usr.name,
+            avatarurl: usr.avatarurl,
+            bot: usr.bot,
+            state: 0
+          }
+        }
 
-      respo[i] = return_mes;
+        respo[i] = return_mes;
+      }
     }
+
     return res.json(respo);
   },
 
