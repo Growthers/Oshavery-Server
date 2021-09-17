@@ -1,4 +1,4 @@
-import {PrismaClient} from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 import { messageCreated } from "../controllers/notificationcontroller";
 const prisma = new PrismaClient();
 

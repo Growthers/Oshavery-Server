@@ -11,6 +11,7 @@ model messages {
   id      String @id @default(uuid())
   content String
   ip      String
+  deleted Boolean @default(false)
 
   created_at DateTime  @default(now())
   updated_at DateTime? @updatedAt
@@ -54,6 +55,7 @@ model channels {
   type        String
   topic       String?
   position    Int
+  latest_message_id  String
   medias      media[]
   messages    messages[]
   invitations invitations[]

@@ -45,6 +45,7 @@ app.use("/", checkJwt, channelRouter);
 app.use("/channels", checkJwt, messageRouter);
 app.use("/files", checkJwt, mediaRouter);
 
+
 app.listen(3080,() => {
   const black   = '\u001b[30m';
   const red     = '\u001b[31m';
