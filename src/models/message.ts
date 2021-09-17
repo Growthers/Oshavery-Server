@@ -13,7 +13,7 @@ export interface message_struct {
   },
   ip: string;
   content: string;
-  guild_id: string;
+  guild_id?: string;
   channel_id: string;
   edited_timestamp?: Date;
 }
@@ -21,53 +21,90 @@ export interface message_struct {
 
 export const message = {
 
-  async createMessage(body: message_struct){
-    // ToDo: チャンネルとギルドの実装が終わったらここをアンコメントして実装する
+  async createMessage(body: message_struct) {
     console.log(body);
-    // await prisma.channels.update({
-    //   where: {
-    //     id: body.channel_id,
-    //   },
-    //   data: {
-    //     messages: {
-    //       create: {
-    //         created_at: body.timestamp,
-    //         content: body.content,
-    //         ip: body.ip
-    //       }
-    //     }
-    //   }
-    // })
+    const res = await prisma.messages.create({
+      data: {
+        content: body.content,
+        ip: body.ip,
+        user: { connect: { id: body.author.id } },
+        channels: { connect: { id: body.channel_id } }
+      }
+    });
+    // 最新メッセージを更新
+    await prisma.channels.update({
+      where: {
+        id: body.channel_id
+      },
+      data: {
+        latest_message_id: res.id
+      }
+    })
 
-    return;
   },
 
-  async getMessages(id:string,before:any,limit:number){
+  async getMessages(id: string, before: any | null, limit: number) {
     /*
       id: チャンネルのUUID
       before: 取得したい範囲の最初のID
       limit: 取得したい件数
     */
-    await prisma.messages.findMany({
+
+    console.log(limit);
+    return await prisma.messages.findMany({
       where: {
-        channel_id: id
+        channel_id: id,
+        deleted: false
       },
       orderBy: [{
         created_at: "asc"
       }],
-      cursor: {id: before},
+      cursor: { id: before },
       take: limit
-    });
-    return;
+    }).catch((e) => console.log(e)) || [];
+
   },
 
-  async getOneMessage(messageId:string){
-    await prisma.messages.findUnique({
+  async getFirstMessage(id: string) {
+    // 何を血迷ったのか
+
+    return await prisma.messages.findFirst({
+      where: {
+        channel_id: id
+      },
+      orderBy: [{ created_at: "asc" }]
+    });
+  },
+
+  async getOneMessage(messageId: string) {
+    return await prisma.messages.findUnique({
       where: {
         id: messageId
       }
     })
-    return;
+  },
+
+  async updateMessage(id: string, content: string) {
+    return await prisma.messages.update({
+      where: {
+        id: id
+      },
+      data: {
+        content: content
+      }
+    })
+  },
+
+  async deleteMessage(messageId: string, time: Date) {
+    return await prisma.messages.update({
+      where: {
+        id: messageId
+      },
+      data: {
+        deleted: true,
+        deleted_at: time
+      }
+    });
   }
 
 }

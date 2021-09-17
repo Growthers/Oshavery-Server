@@ -1,6 +1,23 @@
 import express from "express";
 import { message_struct, message } from "../models/message"
+import { users } from "../models/user";
+import jwt_decode from "jwt-decode";
 
+interface res {
+  id: string;
+  timestamp: Date;
+  author?: {
+    id: string;
+    name: string;
+    avatarurl: string;
+    bot: boolean;
+    state: 0
+  },
+  content: string;
+  guild_id: string,
+  channel_id: string,
+  edited_timestamp?: Date | null,
+}
 
 export const messageController = {
 
@@ -8,19 +25,28 @@ export const messageController = {
     const now = new Date();
     const ip_address = req.headers["x-forwaded-for"] || "";
 
-    // author は user の実装が終わってから guild_id は guild の実装が終わってから
+    // トークンを取る
+    const token = req.headers.authorization || "";
+    // デコード
+    const decoded: any = await jwt_decode(token)
+    const sub = decoded.sub
+
+    // ユーザー検索
+    const author = await users.getFromSub(sub);
+
+    if (!author) { return res.status(404).send("Not found") }
+
     const mes: message_struct = {
       timestamp: now,
       author: {
-        id: "5e95853f-8311-41b8-ba37-1508e5f814ec",
-        name: "testuser",
-        avator: "dee72156-1ede-4260-b24c-f23303b1acf1",
-        bot: false,
+        id: author.id,
+        name: author.name,
+        avator: author.avatarurl,
+        bot: author.bot,
         state: 0,
       },
-      ip: ip_address[0],
+      ip: ip_address[0] || "unknown",
       content: req.body.content,
-      guild_id: "84e99ba4-feb0-4608-9478-c3cc031df372",
       channel_id: req.params.channelId
     }
 
@@ -35,40 +61,88 @@ export const messageController = {
     return;
   },
 
-  async getMessages(req: express.Request, res: express.Response){
+  async getMessages(req: express.Request, res: express.Response) {
     const channelId = req.params.channelId;
-    const before = req.query.before || "";
-    let limit;
-    if (Number(req.query.limit) === NaN && Number(req.query.limit) > 100){
-      limit = 100;
-    }else {
-      limit = Number(req.query.limit)
+    let before, limit, respo = [];;
+
+    before = !req.query.before ? await message.getFirstMessage(channelId).then((r) => { return r?.id }) : req.query.before;
+
+    limit = Number(req.query.limit) === NaN || Number(req.query.limit) >= 100 || !req.query.limit ? 100 : Number(req.query.limit)
+
+    const rr = await message.getMessages(channelId, before, limit)
+      .catch((e) => {
+        console.log(e);
+      });
+
+    if (!rr) { return console.error("error"); }
+
+    for (let i = 0; i < rr.length; i++) {
+      const usr = await users.get(rr[i].userId || "")
+      if (!usr) {
+        return res.status(500).send("server error")
+      }
+
+      const return_mes: res = {
+        id: rr[i].id,
+        timestamp: rr[i].created_at,
+        content: rr[i].content,
+        guild_id: rr[i].guildsId || "",
+        channel_id: rr[i].channel_id,
+        edited_timestamp: rr[i].updated_at || null,
+        author: {
+          id: rr[i].userId || "",
+          name: usr.name,
+          avatarurl: usr.avatarurl,
+          bot: usr.bot,
+          state: 0
+        }
+      }
+
+      respo[i] = return_mes;
     }
-
-    await message.getMessages(channelId, before, limit)
-    .then((r) => {
-      res.status(200).json(r);
-    })
-    .catch((e) => {
-      console.log(e);
-    });
-    return;
-
+    return res.json(respo);
   },
 
-  async getOneMessage(req: express.Request, res:express.Response){
+  async getOneMessage(req: express.Request, res: express.Response) {
     // const channelId:string = req.params.channelId;
-    const messageId:string = req.params.messageId;
+    const messageId: string = req.params.messageId;
 
     await message.getOneMessage(messageId)
-    .then((r)=> {
-      res.status(200).json(r);
-    })
-    .catch((e) => {
-      console.log(e);
-    });
+      .then((r) => {
+        res.status(200).json(r);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
 
     return;
+  },
+
+  async updateMessage(req: express.Request, res: express.Response) {
+    const id = req.params.messageId;
+    const content = req.body.content;
+    return await message.updateMessage(id, content)
+      .then((r) => {
+        return res.status(200).json(r);
+      })
+      .catch((e) => {
+        console.error(e);
+        return res.status(400).send("Invalid request");
+      })
+  },
+
+  async deleteMessage(req: express.Request, res: express.Response) {
+    const messageId: string = req.params.messageId;
+    const date: Date = new Date;
+    return await message.deleteMessage(messageId, date)
+      .then(() => {
+        return res.status(204);
+      })
+      .catch((e) => {
+        console.log(e);
+        return res.status(404).send("Not found");
+      })
+
   }
 }
 
