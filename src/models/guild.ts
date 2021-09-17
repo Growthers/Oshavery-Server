@@ -61,13 +61,13 @@ export const guild = {
   //要動作確認
   //要確認
   //よくわかってない
-  async addUsertoGuild(userid:string,guildid:string, name:string){
+  async addUsertoGuild(userid: string, guildid: string, name: string) {
     // guild_users_mappingsを作成するとギルドに参加したことになる
     await prisma.guild_users_mappings.create({
-      data:{
+      data: {
         name: name,
-        guild: {connect: {id: guildid}},
-        users: {connect: {id: userid}}
+        guild: { connect: { id: guildid } },
+        users: { connect: { id: userid } }
       }
     });
 
@@ -79,13 +79,31 @@ export const guild = {
       data: {
         content: name + 'が参加しました',
         ip: "",
-        channels: {connect:{id: channelId}},
-        user: {connect: {id: userid}}
+        channels: { connect: { id: channelId } },
+        user: { connect: { id: userid } }
       }
     });
     // メッセージが作成されたことをwsで通知する
-    messageCreated(channelId,mesres.id)
+    messageCreated(channelId, mesres.id)
 
     return;
+  },
+
+  // ギルドに属するメンバーを検索
+  async searchJoinedGuildMembers(id: string) {
+    return await prisma.guild_users_mappings.findMany({
+      where: {
+        guild_id: id
+      }
+    });
+  },
+
+  // 1人のメンバーが所属しているギルドリストを取得
+  async searchJoinedGuilds(id: string) {
+    return await prisma.guild_users_mappings.findMany({
+      where: {
+        usersId: id
+      }
+    });
   }
 }
