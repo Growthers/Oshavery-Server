@@ -32,7 +32,6 @@ export const mediaController = {
     }
 
     const accessToken = req.headers.authorization;
-    console.log(accessToken)
     const response = await axios("https://" + process.env.AUTH0_DOMAIN + "/userinfo" || "", {
     method: "GET",
     headers: {
@@ -40,7 +39,6 @@ export const mediaController = {
     }
     })
     .then((res) => {
-      console.table(res.data)
       return res.data;
     })
     .catch((err) => {
@@ -48,7 +46,6 @@ export const mediaController = {
     });
 
     const uid = await users.getFromSub(response.sub);
-    console.log(uid)
     if (!uid){return res.status(400).send("invalid request")}
 
     let media:media = {
@@ -77,9 +74,6 @@ export const mediaController = {
     media.name = filename;
     media.mime = req.file.mimetype;
     media.path = `media/${media.channelId}/${Date.now()}_${media.name}`
-
-    console.log(filename);
-    console.table(media);
 
     // フロント側からくるmimeは信用できないのでここで解析
     // await FileType.fromBuffer(buffer)
