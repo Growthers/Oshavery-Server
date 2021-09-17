@@ -85,41 +85,41 @@ async function user(type: string, userId: string) {
 
 //要検証
 export async function channelCreated(id: string) {
-  channel(id,"CHANNEL_CREATED");
+  await channel(id,"CHANNEL_CREATED");
 };
 
 //Demoが終わったら
 export async function channelUpdated(id: string) {
-  channel(id,"CHANNEL_UPDATED");
+  await channel(id,"CHANNEL_UPDATED");
 };
 
 export async function channelDeleted(id: string) {
-  channel(id,"CHANNEL_DELETED")
+  await channel(id,"CHANNEL_DELETED")
 };
 
 //message
 // messageが完成したら
 export async function messageCreated(channelId: string, messageId: string) {
-  message("MESSAGE_CREATED",channelId,messageId);
+  await message("MESSAGE_CREATED",channelId,messageId);
 };
 export async function messageUpdated(channelId: string, messageId: string) {
-  message("MESSAGE_UPDATED",channelId,messageId);
+  await message("MESSAGE_UPDATED",channelId,messageId);
 };
 export async function messageDeleted(channelId: string, messageId: string) {
-  message("MESSAGE_DELETED",channelId,messageId);
+  await message("MESSAGE_DELETED",channelId,messageId);
 };
 
 
 //user
 //user部分が完成したら
 export async function userJoined(userId: string) {
-  user("USER_JOINED",userId)
+  await user("USER_JOINED",userId)
 }
 
 export async function userUpdated(userId: string) {
-  user("USER_UPDATED",userId)
+  await user("USER_UPDATED",userId)
 }
 
 export async function userStatusUpdate(userId: string) {
-  user("USER_STATUS_UPDATED",userId)
+  await user("USER_STATUS_UPDATED",userId)
 }
