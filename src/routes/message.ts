@@ -1,12 +1,14 @@
 const router_message = require("express").Router();
+import { messageController } from "../controllers/messagecontroller"
+
 
 router_message.route("/:channelId/messages")
-  .get(() => {console.log("げっとうえー");})
-  .post(() => {console.log("ぽすとうえー")});
+  .get(messageController.getMessages)
+  .post(messageController.createMessage);
 
 router_message.route("/:channelId/messages/:messageId")
-  .get(() => {console.log("げっとうえー")})
-  .patch(() => {console.log("ぱっちうえー")})
-  .delete(() => {console.log("でりーとうえー")})
+  .get(messageController.getOneMessage)
+  .patch(messageController.updateMessage)
+  .delete(messageController.deleteMessage)
 
 module.exports = router_message;

@@ -15,6 +15,7 @@ export const channels = {
   // GET
   // /guilds/:guildId/channels
   async get(guild_id: string) {
+    console.log(guild_id);
     return await prisma.channels.findMany({
       where: {
         guildId: guild_id
@@ -22,18 +23,39 @@ export const channels = {
     });
   },
 
+  async getOneChannel(id: string) {
+    return await prisma.channels.findUnique({
+      where: {
+        id: id
+      }
+    })
+  },
+
   // POST
   // /guilds/:guildId/channel
   async create(body: channel, guildId: string) {
-    return await prisma.channels.create({
+    const res = await prisma.channels.create({
       data: {
-        guildId: guildId,
+        latest_message_id: "",
+        guilds: { connect: { id: guildId } },
         name: body.channel_name,
         topic: body.channel_topics,
         type: body.channel_type,
         position: body.channel_position
       }
     });
-  }
+
+    await prisma.messages.create({
+      data: {
+        content: `チャンネルが作成されました ここが${res.name}のはじまりです`,
+        ip: "SYSTEM",
+        channels: { connect: { id: res.id } },
+        user: { connect: { id: "00000000-0000-0000-0000-000000000000" } }
+      }
+    });
+    // Todo: 作成通知を出す
+
+    return res;
+  },
 
 }

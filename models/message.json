@@ -7,12 +7,16 @@
       "timestamp": "string",
       "author": {
         "id": "string",
-        "user_name": "string"
+        "name": "string",
+        "avator": "string",
+        "bot": "string",
+        "state": 0
       },
       "content": "string",
       "guild_id": "string",
       "channel_id": "string",
-      "edited_timestamp": "string"
+      "edited_timestamp": "string",
+      "media": ""
     }
   },
   "properties": {
@@ -25,7 +29,35 @@
       "minLength": 1
     },
     "author": {
-      "$ref": "./users.json"
+      "type": "object",
+      "required": [
+        "id",
+        "name",
+        "avator",
+        "bot",
+        "state"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "avator": {
+          "type": "string",
+          "minLength": 1
+        },
+        "bot": {
+          "type": "string",
+          "minLength": 1
+        },
+        "state": {
+          "type": "number"
+        }
+      }
     },
     "content": {
       "type": "string",
@@ -42,6 +74,9 @@
     "edited_timestamp": {
       "type": "string",
       "minLength": 1
+    },
+    "media": {
+      "$ref": "./files.json"
     }
   },
   "required": [
@@ -67,7 +102,17 @@
       "content": "string",
       "guild_id": "string",
       "channel_id": "string",
-      "edited_timestamp": "string"
+      "edited_timestamp": "string",
+      "media": {
+        "id": "string",
+        "name": "string",
+        "mime": "string",
+        "size": 0,
+        "created_at": "string",
+        "channel_id": "string",
+        "uploader_id": "string",
+        "media_url": "string"
+      }
     }
   ]
 }

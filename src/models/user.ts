@@ -18,11 +18,19 @@ export const users = {
     });
   },
 
-  async getAllUsers(){
+  async getFromSub(sub: string) {
+    return await prisma.users.findUnique({
+      where: {
+        sub: sub
+      }
+    })
+  },
+
+  async getAllUsers() {
     return await prisma.users.findMany();
   },
 
-  async createUserAccount(data: register){
+  async createUserAccount(data: register) {
     return await prisma.users.create({
       data: {
         name: data.name,
