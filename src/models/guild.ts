@@ -1,4 +1,5 @@
 import {PrismaClient} from "@prisma/client";
+import { messageCreated } from "../controllers/notificationcontroller";
 const prisma = new PrismaClient();
 
 // post時のbodyの型
@@ -53,5 +54,38 @@ export const guild = {
         id: guildId
       }
     });
+  },
+
+
+  //仮
+  //要動作確認
+  //要確認
+  //よくわかってない
+  async addUsertoGuild(userid:string,guildid:string, name:string){
+    // guild_users_mappingsを作成するとギルドに参加したことになる
+    await prisma.guild_users_mappings.create({
+      data:{
+        name: name,
+        guild: {connect: {id: guildid}},
+        users: {connect: {id: userid}}
+      }
+    });
+
+    // 参加通知をするチャンネルをきめておく
+    const channelId = "";
+
+    // 参加通知のメッセージを送る
+    const mesres = await prisma.messages.create({
+      data: {
+        content: name + 'が参加しました',
+        ip: "",
+        channels: {connect:{id: channelId}},
+        user: {connect: {id: userid}}
+      }
+    });
+    // メッセージが作成されたことをwsで通知する
+    messageCreated(channelId,mesres.id)
+
+    return;
   }
 }
