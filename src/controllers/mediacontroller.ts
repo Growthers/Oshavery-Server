@@ -2,6 +2,8 @@ import express from "express";
 import { media, medias } from "../models/media";
 import {Storage} from "@google-cloud/storage"
 import dotenv from "dotenv";
+import axios from "axios";
+import { users } from "../models/user";
 
 const conf = dotenv.config();
 
@@ -29,13 +31,29 @@ export const mediaController = {
       uploader_id: string | null;
     }
 
+    const accessToken = req.headers.authorization;
+    const response = await axios("https://" + process.env.AUTH0_DOMAIN + "/userinfo" || "", {
+    method: "GET",
+    headers: {
+      Authorization: accessToken,
+    }
+    })
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+
+    const uid = await users.getFromSub(response.sub);
+    if (!uid){return res.status(400).send("invalid request")}
 
     let media:media = {
       mime: "",
       name: "",
       size: 0,
-      uploaderId: "2c1b184b-4cd2-49a5-adda-2233a2299107",
-      channelId: "5b70c7fe-69d7-44b7-8dfd-b454f1903ec0",
+      uploaderId: uid.id,
+      channelId: "",
       ip: "",
       path: "",
       fullpath: ""
@@ -57,9 +75,6 @@ export const mediaController = {
     media.mime = req.file.mimetype;
     media.path = `media/${media.channelId}/${Date.now()}_${media.name}`
 
-    console.log(filename);
-    console.table(media);
-
     // フロント側からくるmimeは信用できないのでここで解析
     // await FileType.fromBuffer(buffer)
     // .then((f) => {
@@ -74,7 +89,7 @@ export const mediaController = {
     .then(() => {console.log("[info] file uploaded")})
     .catch((e) => {console.error(e)});
 
-    media.fullpath = `${mediaServerURL}/${media.path}`
+    media.fullpath = `https://${mediaServerURL}/${media.path}`
     await medias.upload(media)
       .then((r) => {
          const media_struct:reponse= {
