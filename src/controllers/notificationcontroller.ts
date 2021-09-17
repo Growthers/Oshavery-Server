@@ -72,7 +72,7 @@ async function user(type: string, userId: string) {
   const user:opeUser = {
     type: type,
     body: {
-      userId
+      userId: userId
     }
   };
   console.log(JSON.stringify(user));
