@@ -142,7 +142,6 @@ export const messageController = {
         console.log(e);
         return res.status(404).send("Not found");
       })
-
   }
 }
 
