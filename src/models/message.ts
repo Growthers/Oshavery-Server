@@ -50,7 +50,8 @@ export const message = {
       limit: 取得したい件数
     */
 
-    console.log(limit);
+    console.log(limit,id,before);
+    if (!limit || !before){return;}
     return await prisma.messages.findMany({
       where: {
         channel_id: id,
@@ -61,7 +62,7 @@ export const message = {
       }],
       cursor: { id: before },
       take: limit
-    }).catch((e) => console.log(e)) || [];
+    }).catch((e) => {console.log(e)}) || [];
 
   },
 
@@ -74,14 +75,17 @@ export const message = {
       },
       orderBy: [{ created_at: "asc" }]
     });
+
+
   },
 
   async getOneMessage(messageId: string) {
-    return await prisma.messages.findUnique({
+    const res = await prisma.messages.findUnique({
       where: {
         id: messageId
       }
     })
+    return res;
   },
 
   async updateMessage(id: string, content: string) {

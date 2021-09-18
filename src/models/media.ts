@@ -71,6 +71,13 @@ export const medias = {
     });
     return;
 
-  }
+  },
 
+  async getMediaFromMessageId(id:string){
+    return await prisma.media.findFirst({
+      where: {
+        message_id: id
+      }
+    });
+  }
 }
