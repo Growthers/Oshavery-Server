@@ -3,6 +3,7 @@ import { message_struct, message } from "../models/message"
 import { users } from "../models/user";
 import jwt_decode from "jwt-decode";
 import { media, medias } from "../models/media";
+import {messageCreated, messageDeleted, messageUpdated} from "./notificationcontroller";
 
 interface res {
   id: string;
@@ -58,6 +59,7 @@ export const messageController = {
 
     await message.createMessage(mes)
       .then((r) => {
+        messageCreated(r.channel_id,r.id)
         res.status(201).json(r);
       })
       .catch((e) => {
@@ -170,6 +172,9 @@ export const messageController = {
     const content = req.body.content;
     return await message.updateMessage(id, content)
       .then((r) => {
+
+        //ws
+        messageUpdated(r.channel_id,r.id)
         return res.status(200).json(r);
       })
       .catch((e) => {
@@ -182,7 +187,10 @@ export const messageController = {
     const messageId: string = req.params.messageId;
     const date: Date = new Date;
     return await message.deleteMessage(messageId, date)
-      .then(() => {
+      .then((r) => {
+
+        //ws
+        messageDeleted(r.channel_id,r.id)
         return res.status(204);
       })
       .catch((e) => {

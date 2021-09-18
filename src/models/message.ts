@@ -40,7 +40,7 @@ export const message = {
         latest_message_id: res.id
       }
     })
-
+    return res;
   },
 
   async getMessages(id: string, before: any | null, limit: number) {
