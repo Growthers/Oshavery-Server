@@ -4,6 +4,7 @@ import { users } from "../models/user";
 import jwt_decode from "jwt-decode";
 import { media, medias } from "../models/media";
 import {messageCreated, messageDeleted, messageUpdated} from "./notificationcontroller";
+import {logger} from "../main";
 
 interface res {
   id: string;
@@ -63,9 +64,10 @@ export const messageController = {
         res.status(201).json(r);
       })
       .catch((e) => {
-        console.error(e);
+        logger.error(e);
       });
 
+    logger.info("Message Created");
     return;
   },
 
@@ -80,12 +82,12 @@ export const messageController = {
     }
 
     // before = req.query.before === undefined ? await message.getFirstMessage(channelId).then((r) => { return r?.id }) : "";
-    console.log(await message.getFirstMessage(channelId).then((r) => { return r?.id }))
+    // console.log(await message.getFirstMessage(channelId).then((r) => { return r?.id }))
     limit = Number(req.query.limit) === NaN || Number(req.query.limit) >= 100 || !req.query.limit ? 100 : Number(req.query.limit)
 
     const rr = await message.getMessages(channelId, before, limit)
       .catch((e) => {
-        console.log(e);
+        logger.error(e);
       });
 
     if (!rr) { return console.error("error"); }
@@ -161,7 +163,7 @@ export const messageController = {
         res.status(200).json(r);
       })
       .catch((e) => {
-        console.log(e);
+        logger.error(e);
       });
 
     return;
@@ -178,7 +180,7 @@ export const messageController = {
         return res.status(200).json(r);
       })
       .catch((e) => {
-        console.error(e);
+        logger.error(e);
         return res.status(400).send("Invalid request");
       })
   },
@@ -194,7 +196,7 @@ export const messageController = {
         return res.status(204);
       })
       .catch((e) => {
-        console.log(e);
+        logger.error(e);
         return res.status(404).send("Not found");
       })
   }

@@ -1,5 +1,6 @@
 import express from "express";
 import { guild } from "../models/guild";
+import { logger } from "../main";
 
 export const guildController = {
   async getGuild(req: express.Request, res: express.Response) {
@@ -7,13 +8,12 @@ export const guildController = {
 
     await guild.get(req.params.guildId)
       .then((gld) => {
-        console.log(gld);
         res.json(gld);
         return;
       })
       .catch((e) => {
-        console.error(e);
-        res.status(404).end();
+        logger.error(e);
+        res.status(404).send("Not found")
         return;
       })
       return;
@@ -21,17 +21,16 @@ export const guildController = {
 
   async createGuild(req: express.Request, res: express.Response) {
     const body = req.body;
-
     console.log(req.path);
 
     await guild.create(body)
       .then((gld) => {
-        console.log(gld);
+        logger.info("Guild created")
         res.status(201).json(gld);
         return;
       })
       .catch((e) => {
-        console.error(e);
+        logger.error(e);
         res.status(400).send("Invaild reqest");
         return;
       });
@@ -50,7 +49,7 @@ export const guildController = {
         return;
       })
       .catch((e) => {
-        console.error(e);
+        logger.error(e);
         res.status(400).send("Invalid reqest");
         return;
       });
@@ -62,10 +61,11 @@ export const guildController = {
     await guild.delete(req.params.guildId)
       .then(() => {
         res.status(204).end();
+        logger.info("Guild Deleted")
         return;
       })
       .catch((e) => {
-        console.error(e);
+        logger.error(e);
         res.status(400).send("Invalid reqest");
         return;
       });

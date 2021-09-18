@@ -1,8 +1,11 @@
 import express from "express";
 const app: express.Express = express();
 import cors from "cors";
+import Log4js from "log4js";
 app.use(cors());
 app.use(express.json());
+Log4js.configure("log-config.json");
+export const logger = Log4js.getLogger("system");
 
 const infoRouter = require("./routes/info");
 const userRouter = require("./routes/user");
@@ -18,7 +21,7 @@ import dotenv from "dotenv";
 export const conf = dotenv.config();
 
 if (!process.env.AUTH0_DOMAIN || !process.env.AUTH0_AUDIENCE) {
-  throw 'Make sure you have AUTH0_DOMAIN, and AUTH0_AUDIENCE in your .env file';
+  throw new Error('Make sure you have AUTH0_DOMAIN, and AUTH0_AUDIENCE in your .env file');
 }
 
 export const checkJwt = jwt({
@@ -66,7 +69,6 @@ app.listen(3080,() => {
 
   Oshavery(alpha)
   |c| 2021 Oshavery Developers
-
-  [info] listening at http://localhost:3080
-  `)
+  `);
+  logger.info("Server listening at http://localhost:3080")
 });
