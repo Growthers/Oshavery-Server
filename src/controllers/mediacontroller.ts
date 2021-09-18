@@ -4,6 +4,7 @@ import {Storage} from "@google-cloud/storage"
 import dotenv from "dotenv";
 import axios from "axios";
 import { users } from "../models/user";
+import { logger } from "../main";
 
 const conf = dotenv.config();
 
@@ -86,7 +87,7 @@ export const mediaController = {
 
     const upload = bucket.file(media.path); // ファイルパスとファイル名を指定
     await upload.save(buffer, {gzip: true})
-    .then(() => {console.log("[info] file uploaded")})
+    .then(() => {logger.info("file uploaded")})
     .catch((e) => {console.error(e)});
 
     media.fullpath = `https://${mediaServerURL}/${media.path}`
@@ -114,7 +115,7 @@ export const mediaController = {
     .then((m)=> {
       return res.status(200).json(m);
     })
-    .catch((e) => {res.status(404).send("Not found"); console.error(e); return;})
+    .catch((e) => {res.status(404).send("Not found"); logger.error(e); return;})
 
     return;
   },
