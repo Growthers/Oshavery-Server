@@ -1,6 +1,7 @@
 import express from "express";
 import { channels,channel } from "../models/channel";
 import { channelCreated } from "./notificationcontroller";
+import { logger } from "../main";
 export const channelController = {
 
   async getChannels(req: express.Request, res: express.Response) {
@@ -9,12 +10,11 @@ export const channelController = {
 
     await channels.get(guild_id)
       .then((ch) => {
-        console.log(ch);
         res.status(200).json(ch);
         return;
       })
       .catch((e) => {
-        console.error(e);
+        logger.error(e);
         res.status(400).send("Bad Request");
         return;
       });
@@ -22,7 +22,6 @@ export const channelController = {
   },
 
   async createChannel(req: express.Request, res: express.Response) {
-    console.log(req.path);
     const body = req.body;
     const guild_id = req.params.guildId;
 
@@ -35,12 +34,13 @@ export const channelController = {
 
     await channels.create(channel,guild_id)
       .then((ch) => {
+        logger.info("Channel created")
         channelCreated(ch.id);
         res.status(201).json(ch);
         return;
       })
       .catch((e) => {
-        console.log(e);
+        logger.error(e);
         res.status(400).send("Bad Request");
         return;
       })

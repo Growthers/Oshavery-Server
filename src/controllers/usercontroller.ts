@@ -1,7 +1,7 @@
 import axios from "axios";
 import express from "express";
 import { users, register } from "../models/user";
-import { conf } from "../main";
+import { conf , logger} from "../main";
 import { guild } from "../models/guild";
 // import { guild_users_mappings } from ".prisma/client";
 import { channels } from "../models/channel"
@@ -27,17 +27,15 @@ export const userController = {
   async getUsers(req: express.Request, res: express.Response) {
     if (req.path === "/me") { userController.getMe(req, res); return; }
 
-    console.log(req.path);
     const user_id = req.params.userId;
 
     await users.get(user_id)
       .then((ur) => {
-        console.log(ur);
         res.status(200).json(ur);
         return;
       })
       .catch((e) => {
-        console.error(e);
+        logger.error(e);
         res.status(404).send("User Not Found");
         return;
       });
@@ -46,7 +44,6 @@ export const userController = {
 
   async register(req: express.Request, res: express.Response) {
     const accessToken = req.headers.authorization;
-    console.log(process.env.AUTH0_DOMAIN + "/userinfo")
     const response = await axios("https://" + process.env.AUTH0_DOMAIN + "/userinfo" || "", {
       method: "GET",
       headers: {
@@ -57,10 +54,10 @@ export const userController = {
         return res.data;
       })
       .catch((err) => {
-        console.log(err);
+        logger.error(err);
       });
 
-    console.table(response);
+    logger.info("User Created")
 
     const data: register = {
       name: response.name,
@@ -76,7 +73,7 @@ export const userController = {
         res.status(201).json(r);
         return;
       })
-      .catch((e) => { console.error(e); return res.status(400).send("Invalid request"); });
+      .catch((e) => { logger.error(e); return res.status(400).send("Invalid request"); });
     return;
   },
 
@@ -101,7 +98,6 @@ export const userController = {
     };
 
     const accessToken = req.headers.authorization;
-    console.log(accessToken)
     const response = await axios("https://" + process.env.AUTH0_DOMAIN + "/userinfo" || "", {
       method: "GET",
       headers: {
@@ -112,7 +108,7 @@ export const userController = {
         return res.data;
       })
       .catch((err) => {
-        console.log(err);
+        logger.error(err);
       });
 
     // ユーザー情報を取得
@@ -122,19 +118,14 @@ export const userController = {
     const guilds = await guild.searchJoinedGuilds(userdata.id);
     if (!guilds) { return; }
 
-    console.table(guilds)
     // ギルドにあるチャンネルリストの取得
     let channel = []
     for (let i = 0; i < guilds.length; i++) {
       // ギルドからチャンネル一覧を取り出す
       const gld = await channels.get(guilds[i].guild_id || "");
       if (!gld) { return; }
-      console.table(gld);
       channel[i] = gld[0]
     }
-
-    console.table(channel);
-    // return res.send("n");
 
     response_data = {
       id: userdata.id,
@@ -174,7 +165,7 @@ export const userController = {
 
     const usr = await users.getFromSub(response.sub)
     if (!usr){return res.status(400).send("Invalid request")}
-    await users.updateUser(usr.id, req.body.name).then((r) => {console.log(r); return}).catch((e) => {console.table(e); res.status(400)})
+    await users.updateUser(usr.id, req.body.name).then(() => {return}).catch((e) => {logger.error(e); res.status(400)})
     return res.status(204).send("");
   }
 }
