@@ -1,5 +1,6 @@
 import { PrismaClient } from "@prisma/client";
-import { messageCreated } from "../controllers/notificationcontroller";
+import { SSL_OP_ALLOW_UNSAFE_LEGACY_RENEGOTIATION } from "constants";
+import { messageCreated, userJoined } from "../controllers/notificationcontroller";
 const prisma = new PrismaClient();
 
 // post時のbodyの型
@@ -56,6 +57,9 @@ export const guild = {
     });
   },
 
+  async allget() {
+    return await prisma.guilds.findMany();
+  },
 
   //仮
   //要動作確認
@@ -70,7 +74,8 @@ export const guild = {
         users: { connect: { id: userid } }
       }
     });
-
+    //ws
+    userJoined(userid,guildid)
     // 参加通知をするチャンネルをきめておく
     const channelId = "";
 
