@@ -68,11 +68,24 @@ export const userController = {
       avatar: response.picture
     }
 
+    //締め切り直前で動けばいい，動けばいいという処理をしています．
+    //ここは再実装必須です．汚いコードには目をつぶってください
     await users.createUserAccount(data)
-      .then((r) => { return res.status(201).json(r); })
+      .then((r) => {
+        this.autg(r.id,r.name);
+        res.status(201).json(r);
+        return;
+      })
       .catch((e) => { console.error(e); return res.status(400).send("Invalid request"); });
-
     return;
+  },
+
+
+  async autg(userId: string, name: string) {
+    const guildarr = await guild.allget()
+    for (let i = 0; i < guildarr.length; i++) {
+      guild.addUsertoGuild(userId,guildarr[i].id,name)
+    }
   },
 
   async getMe(req: express.Request, res: express.Response) {

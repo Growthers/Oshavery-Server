@@ -1,4 +1,5 @@
 import WebSocket from "ws";
+import { guild } from "../models/guild";
 
 const wss = new WebSocket.Server({port: 8080})
 
@@ -65,14 +66,16 @@ interface opeUser {
   type: string;
   body: {
     userId: string;
+    guildId: string;
   }
 };
 
-async function user(type: string, userId: string) {
+async function user(type: string, userId: string, guildId: string) {
   const user:opeUser = {
     type: type,
     body: {
-      userId: userId
+      userId: userId,
+      guildId: guildId
     }
   };
   console.log(JSON.stringify(user));
@@ -88,14 +91,14 @@ export async function channelCreated(id: string) {
   await channel(id,"CHANNEL_CREATED");
 };
 
-//Demoが終わったら
-export async function channelUpdated(id: string) {
-  await channel(id,"CHANNEL_UPDATED");
-};
-
-export async function channelDeleted(id: string) {
-  await channel(id,"CHANNEL_DELETED")
-};
+////Demoが終わったら
+//export async function channelUpdated(id: string) {
+//  await channel(id,"CHANNEL_UPDATED");
+//};
+//
+//export async function channelDeleted(id: string) {
+//  await channel(id,"CHANNEL_DELETED")
+//};
 
 //message
 // messageが完成したら
@@ -112,14 +115,14 @@ export async function messageDeleted(channelId: string, messageId: string) {
 
 //user
 //user部分が完成したら
-export async function userJoined(userId: string) {
-  await user("USER_JOINED",userId)
+export async function userJoined(userId: string, guildId: string) {
+  await user("USER_JOINED",userId,guildId)
 }
 
-export async function userUpdated(userId: string) {
-  await user("USER_UPDATED",userId)
+export async function userUpdated(userId: string, guildId: string) {
+  await user("USER_UPDATED",userId,guildId)
 }
 
-export async function userStatusUpdate(userId: string) {
-  await user("USER_STATUS_UPDATED",userId)
+export async function userStatusUpdate(userId: string, guildId: string) {
+  await user("USER_STATUS_UPDATED",userId,guildId)
 }
