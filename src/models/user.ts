@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+import { logger } from "../main";
 const prisma = new PrismaClient();
 
 export interface register {
@@ -7,15 +8,43 @@ export interface register {
   sub: string;
 }
 
+export interface user {
+  id: string,
+  name: string,
+  bot: boolean,
+  avatarurl: string
+}
+
 export const users = {
   //GET
   // /users/:userId
   async get(user_id: string) {
-    return await prisma.users.findUnique({
+
+    let resp:user ={
+      id: "",
+      name: "",
+      bot: true,
+      avatarurl: ""
+    }
+
+    const res = await prisma.users.findUnique({
       where: {
         id: user_id
       }
-    });
+    }).catch((e) => {return logger.error(e);});
+
+    if (!res){
+      return resp;
+    }
+    else {
+      return resp = {
+        id: res.id,
+        name: res.name,
+        bot: res.bot,
+        avatarurl: res.avatarurl
+      };
+    }
+
   },
 
   async getFromSub(sub: string) {
