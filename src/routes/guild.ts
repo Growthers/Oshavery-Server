@@ -18,7 +18,7 @@ router_guild.route("/:guildId/roles")
   .delete(() => {console.log("でりーとうえー")})
 
 router_guild.route("/:guildId/members")
-  .get(() => {console.log("げっとうえー")})
+  .get(guildController.memberList)
 
 router_guild.route("/:guildId/members/:userId")
   .get(() => {console.log("げっとうえー")})
