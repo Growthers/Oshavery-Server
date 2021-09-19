@@ -8,14 +8,31 @@ import { channels } from "../models/channel"
 
 conf;
 
+interface guild {
+  id: string,
+  name: string,
+  topic: string,
+  icon: string
+  created_at: Date | null,
+  updated_at?: Date ,
+  deleted_at?: Date,
+  channels: Array<channel>
+}
+
+interface channel {
+  channel_name: string;
+  channel_topics: string;
+  channel_type: string;
+  channel_position: number;
+};
+
 interface me {
   id: string;
   name: string;
   avatarurl: string;
   bot: boolean;
   state: number;
-  guilds: any,
-  channels: any
+  guilds: any;
 }
 
 export const userController = {
@@ -69,20 +86,13 @@ export const userController = {
     //ここは再実装必須です．汚いコードには目をつぶってください
     await users.createUserAccount(data)
       .then((r) => {
-        this.autg(r.id,r.name);
+        async function f(userId: string, name: string) {const guildarr = await guild.allget();for (let i = 0; i < guildarr.length; i++) {guild.addUsertoGuild(userId,guildarr[i].id,name);}}
+        f(r.id,r.name);
         res.status(201).json(r);
         return;
       })
       .catch((e) => { logger.error(e); return res.status(400).send("Invalid request"); });
     return;
-  },
-
-
-  async autg(userId: string, name: string) {
-    const guildarr = await guild.allget()
-    for (let i = 0; i < guildarr.length; i++) {
-      guild.addUsertoGuild(userId,guildarr[i].id,name)
-    }
   },
 
   async getMe(req: express.Request, res: express.Response) {
@@ -93,8 +103,7 @@ export const userController = {
       avatarurl: "",
       bot: false,
       state: 0,
-      guilds: [],
-      channels: []
+      guilds: []
     };
 
     const accessToken = req.headers.authorization;
@@ -119,7 +128,7 @@ export const userController = {
     if (!guilds) { return; }
 
     // ギルドにあるチャンネルリストの取得
-    let channel = [], guild_datas = [];
+    let channel = [], guild_datas = Array<any>();
     for (let i = 0; i < guilds.length; i++) {
       // ギルド情報を取り出す
       guild_datas[i] = await guild.get(guilds[i].guild_id||"");
@@ -127,7 +136,7 @@ export const userController = {
       // ギルドからチャンネル一覧を取り出す
       const gld = await channels.get(guilds[i].guild_id || "");
       if (!gld) { return; }
-      channel[i] = gld[0]
+      guild_datas[i].channels = gld;
     }
 
     response_data = {
@@ -137,7 +146,6 @@ export const userController = {
       bot: userdata.bot,
       state: 0,
       guilds: guild_datas,
-      channels: channel,
     }
 
     return res.json(response_data);

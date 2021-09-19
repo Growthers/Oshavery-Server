@@ -3,7 +3,7 @@ import { guild } from "../models/guild";
 import { logger } from "../main";
 import { medias } from "../models/media";
 
-interface guild {
+export interface guild {
   id: string,
   name: string,
   topic: string,

@@ -51,11 +51,15 @@ export const guild = {
 
   // GET /guilds/:guildId
   async get(guildId: string) {
-    return await prisma.guilds.findUnique({
+    const res = await prisma.guilds.findUnique({
       where: {
         id: guildId
       }
     });
+    if (!res){return null}
+    else{
+      return res;
+    }
   },
 
   async allget() {
