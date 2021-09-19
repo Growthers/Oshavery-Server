@@ -11,6 +11,8 @@ export interface media {
   ip: string;
   path: string;
   fullpath: string;
+  type: string;
+  guildId?: string;
 };
 
 //命名がややこしいので要検討
@@ -22,6 +24,14 @@ export const medias = {
         id: id
       }
     });
+  },
+
+  async searchGuildIcon(id: string){
+    return await prisma.media.findUnique({
+      where: {
+        guild_id: id
+      }
+    })
   },
 
   // POST
@@ -52,8 +62,12 @@ export const medias = {
         size: 0,
         path: media.path,
         fullpath: media.fullpath,
+        type: media.type,
         channel: {
           connect: {id: media.channelId},
+        },
+        guild: {
+          connect: {id: media.guildId}
         },
         message: {
           connect: {id: id},
