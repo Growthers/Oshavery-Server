@@ -123,6 +123,7 @@ export const messageController = {
             size: 0,
             uploaderId: media.uploaderId || "",
             channelId: media.channelId || "",
+            type: "",
             ip: "",
             path: media.path,
             fullpath: media.fullpath

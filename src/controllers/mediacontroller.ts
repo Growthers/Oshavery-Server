@@ -30,6 +30,8 @@ export const mediaController = {
       message_id: string;
       channel_id: string | null;
       uploader_id: string | null;
+      type: string;
+      guildId?: string;
     }
 
     const accessToken = req.headers.authorization;
@@ -57,13 +59,16 @@ export const mediaController = {
       channelId: "",
       ip: "",
       path: "",
-      fullpath: ""
+      fullpath: "",
+      type: "",
+      guildId: ""
     };
 
     // ファイルをバッファに入れておく
     const buffer = req.file?.buffer;
     const channelId = req.body.channelId;
     const filename = req.file?.originalname;
+    const type: "icon" | "attachment" = req.body.type;
 
     console.log(channelId,filename)
     if (!buffer || !channelId || !filename || !req.file){return res.status(400).send("Invalid request");}
@@ -74,16 +79,14 @@ export const mediaController = {
     media.ip = req.ip;
     media.name = filename;
     media.mime = req.file.mimetype;
-    media.path = `media/${media.channelId}/${Date.now()}_${media.name}`
+    media.guildId = req.body.guildId;
 
-    // フロント側からくるmimeは信用できないのでここで解析
-    // await FileType.fromBuffer(buffer)
-    // .then((f) => {
-    //   if (!f){return;}
-    //   media.mime = f?.mime;
-    //   return;
-    // })
-    // .catch((e) => {console.error(e); res.status(400).send("Invaild reqest"); return;});
+    if (type === "icon"){
+      media.path = `media/${media.guildId}/${media.guildId}`
+    }else {
+      media.path = `media/${media.channelId}/${Date.now()}_${media.name}`
+    }
+
 
     const upload = bucket.file(media.path); // ファイルパスとファイル名を指定
     await upload.save(buffer, {gzip: true})
@@ -102,10 +105,11 @@ export const mediaController = {
           fullpath: r.fullpath,
           message_id: r.message_id,
           channel_id: r.channelId,
-          uploader_id: r.uploaderId
+          uploader_id: r.uploaderId,
+          type: r.type
         }
         return res.json(media_struct);
-      }).catch((e) => {console.log(e);})
+      }).catch((e) => {logger.error(e);})
 
     return;
   },
@@ -118,31 +122,6 @@ export const mediaController = {
     .catch((e) => {res.status(404).send("Not found"); logger.error(e); return;})
 
     return;
-  },
-
-  // async deleteMedia(req:express.Request, res:express.Response){
-  //   // ToDo: ここにオブジェクトストレージ上のファイルを消す処理を書く
-  //   const mediaId = req.params.fileId; // :fileId
-
-  //   // console.log(req.params.fileId);
-  //   const r = await medias.get(mediaId);
-  //   // console.log(r?.id);
-  //   // await medias.get(mediaId).then((f) => {console.log(f)}).catch((e) => {res.status(404).send("Not found"); console.error(e); return;})
-
-  //   if (!r?.path){throw new Error("NameNotFoundError");}else{console.log("ok")}
-  //   console.table(r.path);
-  //   await bucket.file(r?.path).delete().then(() => {console.log("del ok")}).catch((e) => {throw e}); // ファイルをGCSから削除
-
-  //   return res.send("no");
-
-  //   // await medias.delete(mediaId).then(() => {
-  //   //   return res.status(204);
-  //   // }).catch((e) => {
-  //   //   console.error(e);
-  //   //   return res.status(400).send("Invalid request");
-  //   // });
-
-  //   return;
-  // }
+  }
 }
 
