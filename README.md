@@ -29,4 +29,4 @@ The Backend is written by TypeScript.
 
 
 ## Licence
-[TBD]
+MIT
