@@ -21,6 +21,7 @@ export const guild = {
   async create(guild_struct: guild_struct_post) {
     return await prisma.guilds.create({
       data: {
+        icon: "https://media.oshavery-app.net/logos/well.png",
         name: guild_struct.guild_name,
         topic: guild_struct.guild_topics
       }

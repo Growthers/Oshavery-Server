@@ -70,6 +70,7 @@ model guilds {
   id                   String                 @id @default(uuid())
   name                 String
   topic                String?
+  icon                 String
   created_at           DateTime               @default(now())
   updated_at           DateTime?              @updatedAt
   deleted_at           DateTime?
@@ -78,6 +79,7 @@ model guilds {
   invitations          invitations[]
   guild_users_mappings guild_users_mappings[]
   role                 role[]
+  media                media[]
 }
 
 model guild_users_mappings {
@@ -129,6 +131,9 @@ model media {
   size     Int
   fullpath String
   path     String
+  type     String
+  guild    guilds @relation(fields: [guild_id], references: [id])
+  guild_id String @unique
 
   message    messages @relation(fields: [message_id], references: [id])
   message_id String
