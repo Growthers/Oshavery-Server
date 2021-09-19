@@ -2,6 +2,7 @@ import express from "express";
 import { guild } from "../models/guild";
 import { logger } from "../main";
 import { medias } from "../models/media";
+import { users } from "../models/user";
 
 export interface guild {
   id: string,
@@ -107,5 +108,18 @@ export const guildController = {
         return;
       });
     return;
+  },
+
+  async memberList(req: express.Request, res:express.Response){
+    const re = await guild.searchJoinedGuildMembers(req.params.guildId).then((r) => {return r;}).catch((e)=>{logger.error(e); return;});
+    const resp = [];
+
+    if (!re){return;}
+
+    for (let i=0; i<re.length; i++){
+      resp[i] = users.get(re[i].usersId || "");
+    }
+
+    return res.status(200).json(resp);
   }
 }
