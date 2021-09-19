@@ -119,8 +119,11 @@ export const userController = {
     if (!guilds) { return; }
 
     // ギルドにあるチャンネルリストの取得
-    let channel = []
+    let channel = [], guild_datas = [];
     for (let i = 0; i < guilds.length; i++) {
+      // ギルド情報を取り出す
+      guild_datas[i] = await guild.get(guilds[i].guild_id||"");
+
       // ギルドからチャンネル一覧を取り出す
       const gld = await channels.get(guilds[i].guild_id || "");
       if (!gld) { return; }
@@ -133,7 +136,7 @@ export const userController = {
       avatarurl: userdata.avatarurl,
       bot: userdata.bot,
       state: 0,
-      guilds: guilds,
+      guilds: guild_datas,
       channels: channel,
     }
 
