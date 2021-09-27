@@ -7,6 +7,7 @@
 | しぐま (Oshavery HQ) | [@sigumaa](https://github.com/sigumaa) |  | | Coding / Manager |
 | Sobonn(Oshavery HQ) | [@sobonn](https://github.com/sobonn) | | | Coding |
 | Yuki Yuigishi (Oshavery HQ) | [@Yuki_Yuigishi](https://github.com/Yukiyuigishi) | | | (Frontend) Coding / Manager |
+| Yusuke4869 (Oshavery HQ) | [@Yusuke4869](https://github.com/yusuke4869) | | | Coding / (Frontend) Styling |
 | Kota Kato (Oshavery HQ) | [@kato-k](https://github.com/kato-k) | | | (Frontend) Coding |
 | sayoi341 (Oshavery HQ) | [@sayoi341](https://github.com/sayoi341) | | | (Frontend) Coding |
 | nekoP | [@cv-neko](https://github.com/cv-neko) | | | (Frontend) Design |
