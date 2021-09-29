@@ -1,11 +1,10 @@
 import express from "express";
-const app: express.Express = express();
 import cors from "cors";
 import Log4js from "log4js";
-app.use(cors());
-app.use(express.json());
-Log4js.configure("log-config.json");
-export const logger = Log4js.getLogger("system");
+import jwt from "express-jwt";
+import jwksRsa from "jwks-rsa";
+import dotenv from "dotenv";
+import chalk from "chalk";
 
 const infoRouter = require("./routes/info");
 const userRouter = require("./routes/user");
@@ -14,10 +13,12 @@ const channelRouter = require("./routes/channel");
 const messageRouter = require("./routes/message");
 const mediaRouter = require("./routes/media");
 
-import jwt from "express-jwt";
-import jwksRsa from "jwks-rsa";
-import dotenv from "dotenv";
-
+const app: express.Express = express();
+const GIT_COMMIT_HASH = process.env.GIT_COMMIT_HASH;
+app.use(cors());
+app.use(express.json());
+Log4js.configure("log-config.json");
+export const logger = Log4js.getLogger("system");
 export const conf = dotenv.config();
 
 if (!process.env.AUTH0_DOMAIN || !process.env.AUTH0_AUDIENCE) {
@@ -39,8 +40,6 @@ export const checkJwt = jwt({
   algorithms: ['RS256']
 });
 
-
-
 app.use("/", infoRouter);
 app.use("/users", checkJwt, userRouter);
 app.use("/guilds", checkJwt, guildRouter);
@@ -50,25 +49,13 @@ app.use("/files", checkJwt, mediaRouter);
 
 
 app.listen(3080,() => {
-  const black   = '\u001b[30m';
-  const red     = '\u001b[31m';
-  const green   = '\u001b[32m';
-  const yellow  = '\u001b[33m';
-  const blue    = '\u001b[34m';
-  const magenta = '\u001b[35m';
-  const cyan    = '\u001b[36m';
-  const white   = '\u001b[37m';
-  const reset   = '\u001b[0m';
-  console.log(`
-  ${red}░█████╗${reset}${green}░░██████╗${reset}${yellow}██╗░░██╗${reset}${blue}░█████╗${reset}${magenta}░██╗░░░██╗${reset}${cyan}███████╗${reset}${black}██████${reset}${white}╗░██╗░░░██╗
-  ${red}██╔══██╗${reset}${green}██╔════╝${reset}${yellow}██║░░██║${reset}${blue}██╔══██╗${reset}${magenta}██║░░░██║${reset}${cyan}██╔════╝${reset}${black}██${white}╔══${black}██${white}╗╚██╗░██╔╝${reset}
-  ${red}██║░░██║${reset}${green}╚█████╗${reset}${yellow}░███████║${reset}${blue}███████║${reset}${magenta}╚██╗░██╔╝${reset}${cyan}█████╗${reset}${black}░░██████${reset}${white}╔╝░╚████╔╝░${reset}
-  ${red}██║░░██║${reset}${green}░╚═══██╗${reset}${yellow}██╔══██║${reset}${blue}██╔══██║${reset}${magenta}░╚████╔╝${reset}${cyan}░██╔══╝░░${reset}${black}██${white}╔══${black}██${white}╗░░╚██╔╝░░${reset}
-  ${red}╚█████╔╝${reset}${green}██████╔╝${reset}${yellow}██║░░██║${reset}${blue}██║░░██║${reset}${magenta}░░╚██╔╝░░${reset}${cyan}███████╗${reset}${black}██${white}║${black}░░██${white}║░░░██║░░░${reset}
-  ${red}░╚════╝░${reset}${green}╚═════╝░${reset}${yellow}╚═╝░░╚═╝${reset}${blue}╚═╝░░╚═╝${reset}${magenta}░░░╚═╝░░░${reset}${cyan}╚══════╝${reset}${white}╚═╝${black}░░${white}╚═╝░░░╚═╝░░░${reset}
+  console.log(chalk.red("░█████╗") + chalk.green("░░██████╗") + chalk.yellow("██╗░░██╗") + chalk.blue("░█████╗") + chalk.magenta("░██╗░░░██╗") + chalk.cyan("███████╗") + chalk.black("██████") + chalk.white("╗░██╗░░░██╗"))
+  console.log(chalk.red("██╔══██╗")+ chalk.green("██╔════╝")  + chalk.yellow("██║░░██║") + chalk.blue("██╔══██╗") + chalk.magenta("██║░░░██║") + chalk.cyan("██╔════╝") + chalk.black("██")+ chalk.white("╔══") + chalk.black("██") + chalk.white("╗╚██╗░██╔╝"));
+  console.log(chalk.red("██║░░██║")+ chalk.green("╚█████╗")  + chalk.yellow("░███████║") + chalk.blue("███████║") + chalk.magenta("╚██╗░██╔╝") + chalk.cyan("█████╗") + chalk.black("░░██████")+ chalk.white("╔╝░╚████╔╝░"));
+  console.log(chalk.red("██║░░██║")+ chalk.green("░╚═══██╗")  + chalk.yellow("██╔══██║") + chalk.blue("██╔══██║") + chalk.magenta("░╚████╔╝") + chalk.cyan("░██╔══╝░░") + chalk.black("██")+ chalk.white("╔══") + chalk.black("██") + chalk.white("╗░░╚██╔╝░░"));
+  console.log(chalk.red("╚█████╔╝")+ chalk.green("██████╔╝")  + chalk.yellow("██║░░██║") + chalk.blue("██║░░██║") + chalk.magenta("░░╚██╔╝░░") + chalk.cyan("███████╗") + chalk.black("██")+ chalk.white("║") + chalk.black("░░██") + chalk.white("║░░░██║░░░"));
+  console.log(chalk.red("░╚════╝░")+ chalk.green("╚═════╝░")  + chalk.yellow("╚═╝░░╚═╝") + chalk.blue("╚═╝░░╚═╝") + chalk.magenta("░░░╚═╝░░░") + chalk.cyan("╚══════╝") + chalk.white("╚═╝") + chalk.black("░░") + chalk.white("╚═╝░░░╚═╝░░░"));
 
-  Oshavery(alpha)
-  |c| 2021 Oshavery Developers
-  `);
+  console.log("\nOshavery(alpha) Revision " +  GIT_COMMIT_HASH + "\n|c| 2021 Oshavery Developers");
   logger.info("Server listening at http://localhost:3080")
 });
