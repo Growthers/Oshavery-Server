@@ -14,12 +14,11 @@ export const infoController = {
     });
   },
 
-  async getServerInfo(req: express.Request, res: express.Response) {
+  async getServerInfo(_req: express.Request, res: express.Response) {
     // サーバー情報を返す
-    console.log(req.path);
     const inf = await info.get();
-    // console.log(inf[0]);
-    res.json(inf[0]);
+    res.json(inf);
+    return inf;
   },
 
   async createServerInfo(req: express.Request, res: express.Response) {
