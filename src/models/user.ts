@@ -15,6 +15,8 @@ export interface user {
   avatarurl: string
 }
 
+export class UserNotFoundError extends Error{}
+
 export const users = {
   //GET
   // /users/:userId
@@ -48,11 +50,17 @@ export const users = {
   },
 
   async getFromSub(sub: string) {
-    return await prisma.users.findUnique({
+    const user =  await prisma.users.findUnique({
       where: {
         sub: sub
       }
     })
+
+    if (!user){
+      throw new UserNotFoundError()
+    }else {
+      return user;
+    }
   },
 
   async getAllUsers() {
