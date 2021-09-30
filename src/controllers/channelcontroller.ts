@@ -1,25 +1,21 @@
 import express from "express";
-import { channels,channel } from "../models/channel";
+import { channels,channel,GuildNotFoundError } from "../models/channel";
 import { channelCreated } from "./notificationcontroller";
 import { logger } from "../main";
 
 export const channelController = {
 
   async getChannels(req: express.Request, res: express.Response) {
-    console.log(req.path);
     const guild_id = req.params.guildId;
 
-    await channels.get(guild_id)
-      .then((ch) => {
-        res.status(200).json(ch);
-        return;
-      })
-      .catch((e) => {
-        logger.error(e);
-        res.status(400).send("Bad Request");
-        return;
-      });
-    return;
+    let guilds = await channels.get(guild_id);
+
+    if (guilds instanceof GuildNotFoundError){
+      return  res.status(404).send("Not found");
+    }else {
+      return res.status(200).json(guilds);
+    }
+
   },
 
   async createChannel(req: express.Request, res: express.Response) {
