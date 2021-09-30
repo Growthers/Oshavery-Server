@@ -2,6 +2,9 @@ import { PrismaClient } from "@prisma/client";
 // import { channelController } from "../controllers/channelcontroller";
 const prisma = new PrismaClient();
 
+export class MessageNotFoundError extends Error{}
+
+
 export interface message_struct {
   timestamp: Date;
   author: {
@@ -50,9 +53,9 @@ export const message = {
       limit: 取得したい件数
     */
 
-    console.log(limit,id,before);
     if (!limit || !before){return;}
-    return await prisma.messages.findMany({
+
+    const messages =  await prisma.messages.findMany({
       where: {
         channel_id: id,
         deleted: false
@@ -62,20 +65,32 @@ export const message = {
       }],
       cursor: { id: before },
       take: limit
-    }).catch((e) => {console.log(e)}) || [];
+    });
+
+
+    if (!messages){
+      throw new MessageNotFoundError();
+    }else {
+      return messages;
+    }
 
   },
 
   async getFirstMessage(id: string) {
     // 何を血迷ったのか
 
-    return await prisma.messages.findFirst({
+    const message = await prisma.messages.findFirst({
       where: {
         channel_id: id
       },
       orderBy: [{ created_at: "asc" }]
-    });
+    })
 
+    if (!message){
+      throw new MessageNotFoundError();
+    }else {
+      return message;
+    }
 
   },
 
@@ -85,7 +100,13 @@ export const message = {
         id: messageId
       }
     })
-    return res;
+
+    if (!res){
+      throw new MessageNotFoundError();
+    }else{
+      return res;
+    }
+
   },
 
   async updateMessage(id: string, content: string) {
