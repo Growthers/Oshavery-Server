@@ -1,5 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
+import {logger} from "../main";
 
 // post時のbodyの型
 // /guilds/:guildId/channels
@@ -10,17 +11,31 @@ export interface channel {
   channel_position: number;
 };
 
+export class GuildNotFoundError extends Error{};
+
 //命名がややこしいので要検討
 export const channels = {
   // GET
   // /guilds/:guildId/channels
   async get(guild_id: string) {
-    console.log(guild_id);
-    return await prisma.channels.findMany({
-      where: {
-        guildId: guild_id
-      }
-    });
+    let res;
+    try {
+      res = await prisma.channels.findMany({
+        where: {
+          guildId: guild_id
+        }
+      });
+
+    } catch (e) {
+      logger.error(e);
+    }
+
+    if (!res){
+      throw new GuildNotFoundError();
+    }else {
+      return res;
+    }
+
   },
 
   async getOneChannel(id: string) {
