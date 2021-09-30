@@ -9,9 +9,11 @@ export interface channel {
   channel_topics: string;
   channel_type: string;
   channel_position: number;
-};
+}
 
-export class GuildNotFoundError extends Error{};
+
+// ギルドが存在しないときに返すエラーを定義
+export class GuildNotFoundError extends Error{}
 
 //命名がややこしいので要検討
 export const channels = {

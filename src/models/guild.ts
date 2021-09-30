@@ -1,20 +1,22 @@
 import { PrismaClient } from "@prisma/client";
-import { SSL_OP_ALLOW_UNSAFE_LEGACY_RENEGOTIATION } from "constants";
 import { messageCreated, userJoined } from "../controllers/notificationcontroller";
+import {logger} from "../main";
 const prisma = new PrismaClient();
 
 // post時のbodyの型
 export interface guild_struct_post {
   guild_name: string,
   guild_topics: string
-};
+}
 
 // patch時のbodyの型
 export interface guild_struct_patch {
   name: string,
   icon: string,
   owner_id: string
-};
+}
+
+export class GuildNotFoundError extends Error{}
 
 export const guild = {
   // POST /guilds
@@ -56,10 +58,13 @@ export const guild = {
         id: guildId
       }
     });
-    if (!res){return null}
-    else{
-      return res;
+
+    if (!res){
+      throw new GuildNotFoundError();
+    }else {
+      return res
     }
+
   },
 
   async allget() {
