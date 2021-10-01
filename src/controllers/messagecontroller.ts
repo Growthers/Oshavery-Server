@@ -1,8 +1,8 @@
 import express from "express";
-import { message_struct, message } from "../models/message"
-import { users } from "../models/user";
+import {message, message_struct} from "../models/message"
+import {users} from "../models/user";
 import jwt_decode from "jwt-decode";
-import { media, medias } from "../models/media";
+import {media, medias} from "../models/media";
 import {messageCreated, messageDeleted, messageUpdated} from "./notificationcontroller";
 import {logger} from "../main";
 
@@ -83,35 +83,33 @@ export const messageController = {
 
     // before = req.query.before === undefined ? await message.getFirstMessage(channelId).then((r) => { return r?.id }) : "";
     // console.log(await message.getFirstMessage(channelId).then((r) => { return r?.id }))
-    limit = Number(req.query.limit) === NaN || Number(req.query.limit) >= 100 || !req.query.limit ? 100 : Number(req.query.limit)
+    limit = isNaN(Number(req.query.limit)) || Number(req.query.limit) >= 100 || !req.query.limit ? 100 : Number(req.query.limit)
 
-    const rr = await message.getMessages(channelId, before, limit)
-      .catch((e) => {
-        logger.error(e);
-      });
+    const messages = await message.getMessages(channelId, before, limit)
 
-    if (!rr) { return console.error("error"); }
 
-    for (let i = 0; i < rr.length; i++) {
+    if (!messages) { return console.error("error"); }
 
-      const usr = await users.get(rr[i].userId || "")
+    for (let i = 0; i < messages.length; i++) {
+
+      const usr = await users.get(messages[i].userId || "")
       if (!usr) {
         return res.status(500).send("server error")
       }
 
       // contentが空なのはメディアを含むメッセージのみ
-      if (rr[i].content === ""){
-        const media = await medias.getMediaFromMessageId(rr[i].id)
+      if (messages[i].content === ""){
+        const media = await medias.getMediaFromMessageId(messages[i].id)
         if (!media){return;}
-        const return_mes: res = {
-          id: rr[i].id,
-          timestamp: rr[i].created_at,
-          content: rr[i].content,
-          guild_id: rr[i].guildsId || "",
-          channel_id: rr[i].channel_id,
-          edited_timestamp: rr[i].updated_at || null,
+        respo[i] = {
+          id: messages[i].id,
+          timestamp: messages[i].created_at,
+          content:  messages[i].content,
+          guild_id: messages[i].guildsId || "",
+          channel_id: messages[i].channel_id,
+          edited_timestamp: messages[i].updated_at || null,
           author: {
-            id: rr[i].userId || "",
+            id: messages[i].userId || "",
             name: usr.name,
             avatarurl: usr.avatarurl,
             bot: usr.bot,
@@ -128,27 +126,24 @@ export const messageController = {
             path: media.path,
             fullpath: media.fullpath
           }
-        }
-        respo[i] = return_mes;
+        };
       }
       else {
-        const return_mes: res = {
-          id: rr[i].id,
-          timestamp: rr[i].created_at,
-          content: rr[i].content,
-          guild_id: rr[i].guildsId || "",
-          channel_id: rr[i].channel_id,
-          edited_timestamp: rr[i].updated_at || null,
+        respo[i] = {
+          id: messages[i].id,
+          timestamp: messages[i].created_at,
+          content: messages[i].content,
+          guild_id: messages[i].guildsId || "",
+          channel_id: messages[i].channel_id,
+          edited_timestamp: messages[i].updated_at || null,
           author: {
-            id: rr[i].userId || "",
+            id: messages[i].userId || "",
             name: usr.name,
             avatarurl: usr.avatarurl,
             bot: usr.bot,
             state: 0
           }
-        }
-
-        respo[i] = return_mes;
+        };
       }
     }
 

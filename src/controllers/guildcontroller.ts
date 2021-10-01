@@ -1,5 +1,5 @@
 import express from "express";
-import { guild } from "../models/guild";
+import { guild, GuildNotFoundError } from "../models/guild";
 import { logger } from "../main";
 import { medias } from "../models/media";
 import { users,user } from "../models/user";
@@ -25,18 +25,8 @@ export const guildController = {
     };
 
     const g = await guild.get(req.params.guildId)
-      .then((gld) => {
-        return gld;
-      })
-      .catch((e) => {
-        logger.error(e);
-        res.status(404).send("Not found")
-        return;
-      });
 
-    if (!g){return res.status(500)}
-
-    const icon = await medias.searchGuildIcon(g?.id || "")
+    const icon = await medias.searchGuildIcon(g.id)
     if (icon) {
       resp = {
         id: g.id,
@@ -57,6 +47,7 @@ export const guildController = {
 
     return res.json(resp);
   },
+
 
   async createGuild(req: express.Request, res: express.Response) {
     const body = req.body;

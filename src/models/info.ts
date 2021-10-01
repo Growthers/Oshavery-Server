@@ -1,4 +1,6 @@
-import { PrismaClient } from "@prisma/client";
+import {PrismaClient} from "@prisma/client";
+import {logger} from "../main";
+
 const prisma = new PrismaClient();
 
 // post時のbodyの型
@@ -15,7 +17,23 @@ export interface serverInfo {
 export const info = {
   // GET /server-info
   async get() {
-    return await prisma.server_info.findMany();
+
+    const info = await prisma.server_info.findMany();
+    const user_count = await prisma.users.count();
+    const message_count = await prisma.messages.count();
+
+    return {
+      instance_name: info[0].instance_name,
+      admin: {
+        account: info[0].admin_id,
+      },
+      tos: info[0].tos,
+      privacy_policy: info[0].privacy_policy,
+      user_count: user_count,
+      message_count: message_count
+    };
+
+
   },
 
   // POST  /server-info
@@ -35,17 +53,21 @@ export const info = {
   },
 
   async update(body: serverInfo){
+
+    const user_count = await prisma.users.count();
+    const message_count = await prisma.messages.count();
+
     await prisma.server_info.update({
       where: { id: 1 },
       data: {
         instance_name: body.instance_name,
-        user_count: 0,
-        message_count: 0,
+        user_count: user_count,
+        message_count: message_count,
         admin_id: body.admin.account,
         tos: body.tos,
         privacy_policy: body.privacy_policy,
       }
-    }).catch((e) => {console.log(e)});
-  }
+    }).catch((e) => {logger.error(e)});
+  },
 
 }
