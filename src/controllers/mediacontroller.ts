@@ -1,5 +1,5 @@
 import express from "express";
-import { media, medias } from "../models/media";
+import { media, medias, MediaNotFoundError } from "../models/media";
 import {Storage} from "@google-cloud/storage"
 import dotenv from "dotenv";
 import axios from "axios";
@@ -115,13 +115,14 @@ export const mediaController = {
   },
 
   async getMedia(req:express.Request, res:express.Response){
-    await medias.get(req.params.fileId)
-    .then((m)=> {
-      return res.status(200).json(m);
-    })
-    .catch((e) => {res.status(404).send("Not found"); logger.error(e); return;})
+    const media = await medias.get(req.params.fileId)
 
-    return;
+    if (!media){
+      return res.status(404).send("Not found");
+    }else {
+      return res.status(200).json(media);
+    }
+
   }
 }
 

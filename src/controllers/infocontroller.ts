@@ -3,8 +3,9 @@ import { info, serverInfo } from "../models/info";
 
 export const infoController = {
   getVersion(req: express.Request, res: express.Response) {
-    const version: string = "Oshavery v.0.0.1";
-    const revision: string = "";
+    const GIT_COMMIT_HASH = process.env.GIT_COMMIT_HASH;
+    const version: string = "Oshavery v.0.1";
+    const revision: string = GIT_COMMIT_HASH || "";
     // バージョンを返す
     console.log(req.path);
 
@@ -14,12 +15,11 @@ export const infoController = {
     });
   },
 
-  async getServerInfo(req: express.Request, res: express.Response) {
+  async getServerInfo(_req: express.Request, res: express.Response) {
     // サーバー情報を返す
-    console.log(req.path);
     const inf = await info.get();
-    // console.log(inf[0]);
-    res.json(inf[0]);
+    res.json(inf);
+    return inf;
   },
 
   async createServerInfo(req: express.Request, res: express.Response) {

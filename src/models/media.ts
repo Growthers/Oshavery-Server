@@ -13,17 +13,27 @@ export interface media {
   fullpath: string;
   type: string;
   guildId?: string;
-};
+}
+
+export class MediaNotFoundError extends Error{}
+
 
 //命名がややこしいので要検討
 export const medias = {
 
   async get(id: string) {
-    return await prisma.media.findUnique({
+    const media =  await prisma.media.findUnique({
       where: {
         id: id
       }
     });
+
+    if (!media) {
+      throw new MediaNotFoundError();
+    }else {
+      return media
+    }
+
   },
 
   async searchGuildIcon(id: string){
@@ -36,7 +46,6 @@ export const medias = {
 
   // POST
   async upload(media:media) {
-    // Todo: 後でテストする
     let id:string = "";
     await prisma.messages.create({
       data: {
@@ -88,10 +97,17 @@ export const medias = {
   },
 
   async getMediaFromMessageId(id:string){
-    return await prisma.media.findFirst({
+    const media =  await prisma.media.findFirst({
       where: {
         message_id: id
       }
     });
+
+    if (!id){
+      throw new MediaNotFoundError();
+    }else {
+      return media;
+    }
+
   }
 }
