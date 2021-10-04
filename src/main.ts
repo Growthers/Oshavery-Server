@@ -40,12 +40,25 @@ export const checkJwt = jwt({
   algorithms: ['RS256']
 });
 
-app.use("/", infoRouter);
-app.use("/users", checkJwt, userRouter);
-app.use("/guilds", checkJwt, guildRouter);
-app.use("/", checkJwt, channelRouter);
-app.use("/channels", checkJwt, messageRouter);
-app.use("/files", checkJwt, mediaRouter);
+if (process.env.NODE_ENV === "production"){
+  app.use("/", infoRouter);
+  app.use("/users", checkJwt, userRouter);
+  app.use("/guilds", checkJwt, guildRouter);
+  app.use("/", checkJwt, channelRouter);
+  app.use("/channels", checkJwt, messageRouter);
+  app.use("/files", checkJwt, mediaRouter);
+}else {
+  app.use("/", infoRouter);
+  app.use("/users", userRouter);
+  app.use("/guilds", guildRouter);
+  app.use("/", channelRouter);
+  app.use("/channels", messageRouter);
+  app.use("/files", mediaRouter);
+
+  console.log(chalk.red("Now Working On ") + chalk.red.bold("*DEVELOP MODE*") + chalk.red(". Server ") + chalk.red.bold("*WILL NOT* ask for an authentication token."));
+
+}
+
 
 
 app.listen(3080,() => {
@@ -56,6 +69,6 @@ app.listen(3080,() => {
   console.log(chalk.red("╚█████╔╝")+ chalk.green("██████╔╝")  + chalk.yellow("██║░░██║") + chalk.blue("██║░░██║") + chalk.magenta("░░╚██╔╝░░") + chalk.cyan("███████╗") + chalk.black("██")+ chalk.white("║") + chalk.black("░░██") + chalk.white("║░░░██║░░░"));
   console.log(chalk.red("░╚════╝░")+ chalk.green("╚═════╝░")  + chalk.yellow("╚═╝░░╚═╝") + chalk.blue("╚═╝░░╚═╝") + chalk.magenta("░░░╚═╝░░░") + chalk.cyan("╚══════╝") + chalk.white("╚═╝") + chalk.black("░░") + chalk.white("╚═╝░░░╚═╝░░░"));
 
-  console.log("\nOshavery(alpha) Revision " +  GIT_COMMIT_HASH + "\n|c| 2021 Oshavery Developers");
+  console.log("\nOshavery(alpha) Revision " +  GIT_COMMIT_HASH + "\n(c) 2021 Oshavery Developers");
   logger.info("Server listening at http://localhost:3080")
 });
