@@ -24,7 +24,7 @@ interface channel {
   channel_topics: string;
   channel_type: string;
   channel_position: number;
-};
+}
 
 interface me {
   id: string;
@@ -106,26 +106,33 @@ export const userController = {
       guilds: []
     };
 
-    const accessToken = req.headers.authorization;
-    const response = await axios("https://" + process.env.AUTH0_DOMAIN + "/userinfo" || "", {
-      method: "GET",
-      headers: {
-        Authorization: accessToken,
-      }
-    })
-      .then((res) => {
-        return res.data;
+    let guilds, userdata;
+    if (process.env.NODE_ENV !== "production"){
+      const accessToken = req.headers.authorization;
+      const response = await axios("https://" + process.env.AUTH0_DOMAIN + "/userinfo" || "", {
+        method: "GET",
+        headers: {
+          Authorization: accessToken,
+        }
       })
-      .catch((err) => {
-        logger.error(err);
-      });
+        .then((res) => {
+          return res.data;
+        })
+        .catch((err) => {
+          logger.error(err);
+        });
 
-    // ユーザー情報を取得
-    const userdata = await users.getFromSub(response.sub);
-    if (!userdata) { return res.status(400).send("Invalid request") }
-    // 参加しているギルドを取得
-    const guilds = await guild.searchJoinedGuilds(userdata.id);
-    if (!guilds) { return; }
+      // ユーザー情報を取得
+      userdata = await users.getFromSub(response.sub);
+      if (!userdata) { return res.status(400).send("Invalid request") }
+      // 参加しているギルドを取得
+      guilds = await guild.searchJoinedGuilds(userdata.id);
+      if (!guilds) { return; }
+    }else {
+      userdata = await users.getFromSub("oshavery|1");
+      guilds = await guild.searchJoinedGuilds(userdata.id);
+    }
+
 
     // ギルドにあるチャンネルリストの取得
     let channel = [], guild_datas = Array<any>();
@@ -156,25 +163,31 @@ export const userController = {
       else{
         return res.status(403).send("Forbidden")
       }
-    //  強制アップデート用
+    //  ToDo: プロフィールの強制アップデートは権限実装後
   },
 
   async updateMe(req: express.Request, res: express.Response){
-    const accessToken = req.headers.authorization;
-    const response = await axios("https://" + process.env.AUTH0_DOMAIN + "/userinfo" || "", {
-      method: "GET",
-      headers: {
-        Authorization: accessToken,
-      }
-    })
-      .then((res) => {
-        return res.data;
+    let usr;
+    if (process.env.NODE_ENV === "production"){
+      const accessToken = req.headers.authorization;
+      const response = await axios("https://" + process.env.AUTH0_DOMAIN + "/userinfo" || "", {
+        method: "GET",
+        headers: {
+          Authorization: accessToken,
+        }
       })
-      .catch((err) => {
-        console.log(err);
-      });
+        .then((res) => {
+          return res.data;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
 
-    const usr = await users.getFromSub(response.sub)
+      usr = await users.getFromSub(response.sub);
+    }else {
+      usr = await users.getFromSub("oshavery|1");
+    }
+
     if (!usr){return res.status(400).send("Invalid request")}
     await users.updateUser(usr.id, req.body.name).then(() => {return}).catch((e) => {logger.error(e); res.status(400)})
     return res.status(204).send("");
