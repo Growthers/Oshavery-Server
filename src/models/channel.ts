@@ -73,6 +73,7 @@ export const channels = {
         ip: "SYSTEM",
         channels: { connect: { id: res.id } },
         user: { connect: { id: "00000000-0000-0000-0000-000000000000" } }
+        // システムアカウントのIDは 00000000-0000-0000-0000-000000000000 で完全固定 (初期設定で自動生成されている
       }
     });
 
