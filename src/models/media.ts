@@ -3,16 +3,16 @@ const prisma = new PrismaClient();
 
 // メディアの型
 export interface media {
-  name: string;
-  mime: string;
-  size: number;
-  uploaderId: string;
-  channelId: string;
-  ip: string;
-  path: string;
-  fullpath: string;
-  type: string;
-  guildId?: string;
+  name: string; // ファイル名
+  mime: string; // mimeタイプ
+  size: number; // サイズ(現在未使用)
+  uploaderId: string; // アップロードしたユーザーのID
+  channelId: string; // アップロード先
+  ip: string; // アップロードしたユーザーのIP (ハリボテ化した)
+  path: string; // アップロード先のパス(GCPのパス)
+  fullpath: string; // アップロード先URI
+  type: string; // ファイルタイプ
+  guildId?: string; // ギルドのID
 }
 
 export class MediaNotFoundError extends Error{}

@@ -1,14 +1,17 @@
 import express from "express";
 const router_info = express.Router();
 
-import {infoController} from "../controllers/infocontroller";
+import {updateServerInfo} from "../controllers/info/updateserverinfo";
+import {getVersion} from "../controllers/info/getversion";
+import {getServerInfo} from "../controllers/info/getserverinfo";
+import {createServerInfo} from "../controllers/info/createserverinfo";
 
 router_info.route("/version")
-  .get(infoController.getVersion);
+  .get(getVersion);
 
 router_info.route("/server-info")
-  .get(infoController.getServerInfo)
-  .post(infoController.createServerInfo)
-  .patch(infoController.updateServerInfo);
+  .get(getServerInfo)
+  .post(createServerInfo)
+  .patch(updateServerInfo);
 
 module.exports = router_info;

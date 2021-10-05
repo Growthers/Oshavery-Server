@@ -1,27 +1,17 @@
 import WebSocket from "ws";
-import { guild } from "../models/guild";
+// import { guild } from "../models/guild";
 
 const wss = new WebSocket.Server({port: 8080})
 
 //資料が少ないため実装は間違ってると思われる
 //というか絶対間違っているので再実装必須
 
-//const allowedOrigins = [
-//  'http://localhost:5500'
-//];
-//async function checkorigin() {
-//
-//}
-
-
-
-
 interface opeChannel {
   type: string;
   body: {
     channelId: string;
   };
-};
+}
 
 async function channel(type: string, channelId: string) {
   const channel:opeChannel = {
@@ -34,7 +24,7 @@ async function channel(type: string, channelId: string) {
   wss.clients.forEach(function (client) {
     client.send(JSON.stringify(channel));
   });
-};
+}
 
 
 
@@ -44,7 +34,7 @@ interface opeMessage {
     channelId: string;
     messageId: string;
   }
-};
+}
 
 async function message(type: string, channelId: string, messageId: string) {
   const message:opeMessage = {
@@ -58,9 +48,7 @@ async function message(type: string, channelId: string, messageId: string) {
   wss.clients.forEach(function (client) {
     client.send(JSON.stringify(message))
   });
-};
-
-
+}
 
 interface opeUser {
   type: string;
@@ -68,7 +56,7 @@ interface opeUser {
     userId: string;
     guildId: string;
   }
-};
+}
 
 async function user(type: string, userId: string, guildId: string) {
   const user:opeUser = {
@@ -82,14 +70,14 @@ async function user(type: string, userId: string, guildId: string) {
   wss.clients.forEach(function (client) {
     client.send(JSON.stringify(user))
   });
-};
+}
 
 
 
 //要検証
 export async function channelCreated(id: string) {
   await channel(id,"CHANNEL_CREATED");
-};
+}
 
 ////Demoが終わったら
 //export async function channelUpdated(id: string) {
@@ -104,13 +92,13 @@ export async function channelCreated(id: string) {
 // messageが完成したら
 export async function messageCreated(channelId: string, messageId: string) {
   await message("MESSAGE_CREATED",channelId,messageId);
-};
+}
 export async function messageUpdated(channelId: string, messageId: string) {
   await message("MESSAGE_UPDATED",channelId,messageId);
-};
+}
 export async function messageDeleted(channelId: string, messageId: string) {
   await message("MESSAGE_DELETED",channelId,messageId);
-};
+}
 
 
 //user
