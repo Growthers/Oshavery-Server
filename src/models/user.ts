@@ -49,6 +49,7 @@ export const users = {
 
   },
 
+  // Auth0からのユーザーIDで検索する関数(廃止予定)
   async getFromSub(sub: string) {
     const user =  await prisma.users.findUnique({
       where: {
@@ -72,7 +73,7 @@ export const users = {
       data: {
         name: data.name,
         bot: false,
-        origin: "oshavery-app.net",
+        origin: "oshavery-app.net", // ToDo: オリジンの設定を変更できるようにする
         sub: data.sub,
         avatarurl: data.avatar
       }
@@ -86,6 +87,6 @@ export const users = {
       data:{
         name: name
       }
-    })
+    });
   }
 }
