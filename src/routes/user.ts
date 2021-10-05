@@ -1,13 +1,16 @@
 import express from "express";
-import { userController } from "../controllers/usercontroller";
+import {getAllUsers} from "../controllers/users/getusers";
+import {register} from "../controllers/users/register";
+import {getUsers} from "../controllers/users/getusers";
+import {updateUser} from "../controllers/users/updateuser";
 const router_user = express.Router();
 
 router_user.route("/")
-  .get(userController.getAllUsers)
-  .post(userController.register);
+  .get(getAllUsers)
+  .post(register);
 
 router_user.route("/:userId")
-  .get(userController.getUsers)
-  .patch(userController.updateUser)
+  .get(getUsers)
+  .patch(updateUser)
 
 module.exports = router_user;

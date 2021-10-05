@@ -1,18 +1,19 @@
 import express from "express";
 const router_media = express.Router();
 
-import {mediaController} from "../controllers/mediacontroller";
+import {getMedia} from "../controllers/medias/getmedia";
+import {uploadMedia} from "../controllers/medias/uploadmedia";
 
 import multer from "multer";
 const uploader = multer();
 
 router_media.route("/")
-  .post(uploader.single("file"),mediaController.uploadMedia);
-  // .post(() => {console.log("ぽすとうえー")})
+  .post(uploader.single("file"),uploadMedia);
 
 router_media.route("/:fileId")
-  .get(mediaController.getMedia)
+  .get(getMedia)
   // .delete(mediaController.deleteMedia);
-  // ファイルはGCSから削除しないことになった
+  // ファイルはGCSからは削除しないことになった
+  // ToDo: ファイルの論理削除の実装
 
 module.exports = router_media;
