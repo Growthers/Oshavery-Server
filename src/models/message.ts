@@ -58,7 +58,7 @@ export const message = {
     const messages =  await prisma.messages.findMany({
       where: {
         channel_id: id,
-        deleted: false
+        deleted: false　// 論理削除されていないメッセージのみ取得するようにしてある
       },
       orderBy: [{
         created_at: "asc"
@@ -67,7 +67,7 @@ export const message = {
       take: limit
     });
 
-
+    // 取得に失敗したらエラーを投げる
     if (!messages){
       throw new MessageNotFoundError();
     }else {
@@ -77,15 +77,15 @@ export const message = {
   },
 
   async getFirstMessage(id: string) {
-    // 何を血迷ったのか
 
     const message = await prisma.messages.findFirst({
       where: {
-        channel_id: id
+        channel_id: id,
+        deleted: false // 削除されていないものだけ取得できるようにする
       },
       orderBy: [{ created_at: "asc" }]
     })
-
+    // 同様に取得失敗時はエラーを投げる
     if (!message){
       throw new MessageNotFoundError();
     }else {
@@ -100,7 +100,7 @@ export const message = {
         id: messageId
       }
     })
-
+    //エラーを投げる
     if (!res){
       throw new MessageNotFoundError();
     }else{
@@ -126,7 +126,7 @@ export const message = {
         id: messageId
       },
       data: {
-        deleted: true,
+        deleted: true, // deletedをtrueにすると削除した扱いになる
         deleted_at: time
       }
     });

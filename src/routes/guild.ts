@@ -15,7 +15,7 @@ router_guild.route("/:guildId")
   .patch(updateGuild)
   .delete(deleteGuild);
 
-// router_guild.route("/:guildId/roles")
+// router_guild.route("/:guildId/roles") ToDo: ロールの実装
 //   .get(() => {console.log("げっとうえー")})
 //   .post(() => {console.log("ぽすとうえー")})
 //   .patch(() => {console.log("ぱっちうえー")})
@@ -24,11 +24,11 @@ router_guild.route("/:guildId")
 router_guild.route("/:guildId/members")
   .get(memberList)
 
-// router_guild.route("/:guildId/members/:userId")
+// router_guild.route("/:guildId/members/:userId") ToDo: ギルドの特定ユーザー情報取得関連の実装
 //   .get(() => {console.log("げっとうえー")})
 //   .put(() => {console.log("ぷっとうえー")})
 //   .delete(() => {console.log("でりーとうえー")})
-//
+// ToDo: 招待の実装
 // router_guild.route("/:guildId/invites")
 //   .get(() => {console.log("げっとうえー")})
 //   .post(() => {console.log("ぽすとうえー")})
