@@ -5,12 +5,12 @@ import { conf , logger} from "../../main";
 import {getMe} from "./me";
 conf;
 
-export async function getAllUsers(req: express.Request, res: express.Response) {
-  console.log(req.path);
+export async function getAllUsers(_req: express.Request, res: express.Response) {
   return await users.getAllUsers().then((r) => { return res.status(200).json(r) }).catch((e) => { return console.log(e); })
 }
 
 export async function getUsers(req: express.Request, res: express.Response) {
+  // /users/me へのアクセスはmeのハンドラに処理を投げる
   if (req.path === "/me") { await getMe(req, res); return; }
 
   const user_id = req.params.userId;

@@ -16,7 +16,7 @@ const mediaServerURL = process.env.MEDIA_SERVER_URL; // メディアのアップ
 
 export async function uploadMedia(req:express.Request, res:express.Response){
 
-  interface reponse {
+  type reponse =  {
     id: string;
     name: string;
     mime: string;
@@ -30,7 +30,11 @@ export async function uploadMedia(req:express.Request, res:express.Response){
     guildId?: string;
   }
 
+  // アクセストークンを取得
   const accessToken = req.headers.authorization;
+
+  // Auth0のAPIを叩いてユーザー情報を取得
+  // ToDo: 認証を独自実装する
   const response = await axios("https://" + process.env.AUTH0_DOMAIN + "/userinfo" || "", {
     method: "GET",
     headers: {

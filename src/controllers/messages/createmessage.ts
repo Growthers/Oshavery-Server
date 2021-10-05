@@ -7,7 +7,9 @@ import {logger} from "../../main";
 
 
 export async function createMessage(req: express.Request, res: express.Response) {
+  // 現在時刻を取得
   const now = new Date();
+  // ToDo: ユーザーIP取得の廃止
   const ip_address = req.headers["x-forwaded-for"] || "";
 
   // トークンを取る
@@ -16,7 +18,7 @@ export async function createMessage(req: express.Request, res: express.Response)
   const decoded: any = await jwt_decode(token)
   const sub = decoded.sub
 
-  // ユーザー検索
+  // トークンから得られるSubを使ってユーザー検索
   const author = await users.getFromSub(sub);
 
   if (!author) { return res.status(404).send("Not found") }
