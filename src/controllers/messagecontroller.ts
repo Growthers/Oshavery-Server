@@ -28,15 +28,20 @@ export const messageController = {
   async createMessage(req: express.Request, res: express.Response) {
     const now = new Date();
     const ip_address = req.headers["x-forwaded-for"] || "";
+    let sub, author;
 
-    // トークンを取る
-    const token = req.headers.authorization || "";
-    // デコード
-    const decoded: any = await jwt_decode(token)
-    const sub = decoded.sub
+    if (process.env.NODE_ENV === "production"){
+      // トークンを取る
+      const token = req.headers.authorization || "";
+      // デコード
+      const decoded: any = await jwt_decode(token);
+      sub = decoded.sub;
+      // ユーザー検索
+      author = await users.getFromSub(sub);
+    }else {
+      author = await users.getFromSub("oshavery|1")
+    }
 
-    // ユーザー検索
-    const author = await users.getFromSub(sub);
 
     if (!author) { return res.status(404).send("Not found") }
 
@@ -55,8 +60,11 @@ export const messageController = {
     }
 
     // ここでメッセージの最大文字数を決めることができる
-    // nodejsはバイトごとではなく文字数ごとにlengthが出せる仕様
-    if (mes.content === "" || !mes.content || mes.content.length > 10000 ){return res.status(400).send("Invalid request")}
+    /* nodejsで"<文字列>.length"を使うと漢字の異体字や絵文字の文字数がおかしくなるので、
+        スプレッド構文 "[...<文字列>].length"を使ってバイト数ではなく文字数で判定している
+        https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/String/length#unicode
+    */
+    if (mes.content === "" || !mes.content || [...mes.content].length > 10000 ){return res.status(400).send("Invalid request")}
 
     await message.createMessage(mes)
       .then((r) => {
