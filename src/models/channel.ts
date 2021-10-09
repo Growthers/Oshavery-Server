@@ -4,13 +4,12 @@ import {logger} from "../main";
 
 // post時のbodyの型
 // /guilds/:guildId/channels
-export interface channel {
+export type channel = {
   channel_name: string;
   channel_topics: string;
   channel_type: string;
   channel_position: number;
 }
-
 
 // ギルドが存在しないときに返すエラーを定義
 export class GuildNotFoundError extends Error{}

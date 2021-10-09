@@ -4,13 +4,13 @@ import {logger} from "../main";
 const prisma = new PrismaClient();
 
 // post時のbodyの型
-export interface guild_struct_post {
+export type guild_struct_post = {
   guild_name: string,
   guild_topics: string
 }
 
 // patch時のbodyの型
-export interface guild_struct_patch {
+export type guild_struct_patch = {
   name: string,
   icon: string,
   owner_id: string

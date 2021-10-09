@@ -4,7 +4,7 @@ import {logger} from "../main";
 const prisma = new PrismaClient();
 
 // post時のbodyの型
-export interface serverInfo {
+export type serverInfo = {
   instance_name: string;
   admin: {
     account: string;
@@ -12,7 +12,7 @@ export interface serverInfo {
   }
   tos: string;
   privacy_policy: string;
-};
+}
 
 export const info = {
   // GET /server-info
