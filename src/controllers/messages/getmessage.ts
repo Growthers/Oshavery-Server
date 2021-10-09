@@ -8,12 +8,17 @@ export async function getMessages(req: express.Request, res: express.Response) {
   const channelId = req.params.channelId;
   let before, limit, respo = [];
 
+  // before: 指定したidのメッセージより前のメッセージを取得できる  指定しないと最新のメッセージ以降100件を返す
   if (req.query.before === undefined){
     before = await message.getFirstMessage(channelId).then((r) => { return r?.id })
   }else{
     before = req.query.before
   }
 
+  /*
+  limit: 一回で取得するメッセージの数を指定
+  最大は100件で何も指定しないと100件取得とみなす
+  */
   limit = isNaN(Number(req.query.limit)) || Number(req.query.limit) >= 100 || !req.query.limit ? 100 : Number(req.query.limit)
 
   const messages = await message.getMessages(channelId, before, limit)
@@ -28,7 +33,7 @@ export async function getMessages(req: express.Request, res: express.Response) {
       return res.status(500).send("server error")
     }
 
-    // contentが空なのはメディアを含むメッセージのみ
+    // contentが空のメッセージはメディアファイルを含んでいるのでメディアをメッセージIDで検索
     if (messages[i].content === ""){
       const media = await medias.getMediaFromMessageId(messages[i].id)
       if (!media){return;}

@@ -1,6 +1,5 @@
 import { PrismaClient } from "@prisma/client";
 import { messageCreated, userJoined } from "../controllers/notificationcontroller";
-import {logger} from "../main";
 const prisma = new PrismaClient();
 
 // post時のbodyの型

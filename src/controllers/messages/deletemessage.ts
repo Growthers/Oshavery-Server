@@ -6,6 +6,8 @@ import {logger} from "../../main";
 export async function deleteMessage(req: express.Request, res: express.Response) {
   const messageId: string = req.params.messageId;
   const date: Date = new Date;
+
+  // ここでの削除は論理削除で実際には削除されない(ユーザーに表示されなくなるだけ)
   return await message.deleteMessage(messageId, date)
     .then((r) => {
       //ws

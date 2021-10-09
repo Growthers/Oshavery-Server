@@ -1,6 +1,6 @@
 import axios from "axios";
 import express from "express";
-import { users, register } from "../../models/user";
+import { users } from "../../models/user";
 import { conf , logger} from "../../main";
 import { guild } from "../../models/guild";
 import { channels } from "../../models/channel"
@@ -17,7 +17,6 @@ type me = {
 }
 
 export async function getMe(req: express.Request, res: express.Response) {
-  console.log("a")
   let response_data: me = {
     id: "",
     name: "",
@@ -27,6 +26,8 @@ export async function getMe(req: express.Request, res: express.Response) {
     guilds: []
   };
 
+  // Auth0にユーザー情報を問い合わせる(廃止予定
+  // ToDo: Auth0での認証をやめる
   const accessToken = req.headers.authorization;
   const response = await axios("https://" + process.env.AUTH0_DOMAIN + "/userinfo" || "", {
     method: "GET",
@@ -41,7 +42,8 @@ export async function getMe(req: express.Request, res: express.Response) {
       logger.error(err);
     });
 
-  // ユーザー情報を取得
+
+  // 返ってきたAuth0ユーザー情報からOshaveryのユーザー情報を取得
   const userdata = await users.getFromSub(response.sub);
   if (!userdata) { return res.status(400).send("Invalid request") }
   // 参加しているギルドを取得
@@ -49,7 +51,7 @@ export async function getMe(req: express.Request, res: express.Response) {
   if (!guilds) { return; }
 
   // ギルドにあるチャンネルリストの取得
-  let channel = [], guild_datas = Array<any>();
+  let channel = [], guild_datas = Array<any>(); // ToDo: Anyやめる
   for (let i = 0; i < guilds.length; i++) {
     // ギルド情報を取り出す
     guild_datas[i] = await guild.get(guilds[i].guild_id||"");
