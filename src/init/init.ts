@@ -9,12 +9,14 @@ async function init(){
   const Sleep = (ms:number) => new Promise((resolve) => setTimeout(resolve, ms));
   let guild;
   let channels;
-  console.log(chalk.yellow("Oshavery (" + GIT_COMMIT_HASH) + ")");
+  console.log(chalk.yellow("Oshavery (" + GIT_COMMIT_HASH + ")"));
   console.log("Oshaveryの初期設定をします")
-  console.log("DBを設定しています...")
+  console.log(chalk.red.bold.italic("ギルド,ユーザー,メッセージのデータが*すべて*削除されます。5秒後に作業を開始します..."))
+  await Sleep(5000);
+  console.log("DBを設定しています...");
 
   try {
-    console.log(chalk.cyan("テーブルを初期化しています..."));
+    process.stdout.write(chalk.cyan("テーブルを初期化しています..."));
     await exec("npx prisma db push", (e,o,re) => {
       if (o) {
         console.log(o);
@@ -29,19 +31,18 @@ async function init(){
     throw e;
   }
   await Sleep(4000);
-  console.log(chalk.cyan("完了"));
-  // return;
-
-  // try {
-  //   console.log(chalk.cyan("初期データを準備しています..."));
-  //   await exec("npx prisma db seed");
-  // } catch (e) {
-  //   throw e;
-  // }
-  // console.log(chalk.cyan("完了"));
+  console.log(chalk.cyan("完了\n"));
 
   try {
-    console.log(chalk.cyan("システムアカウントを作成しています..."));
+    process.stdout.write(chalk.cyan("システムアカウントを作成しています..."));
+
+    try {
+      const r = await prisma.users.delete({
+        where: {id: "00000000-0000-0000-0000-000000000000"}
+      })
+    }
+    catch (e){}
+
     await prisma.users.create({
       data: {
         id: "00000000-0000-0000-0000-000000000000",
@@ -49,7 +50,7 @@ async function init(){
         bot: true,
         origin: "",
         avatarurl: "",
-        sub: ""
+        sub: "oshavery|0"
       }
     });
   } catch (e){
@@ -57,9 +58,37 @@ async function init(){
   }
   console.log(chalk.cyan("完了"));
 
+  try {
+    process.stdout.write(chalk.cyan("テスト用アカウントを作成しています..."));
+    try {
+      const r = await prisma.users.delete({
+        where: {id: "11111111-1111-1111-1111-111111111111"}
+      })
+    }catch {}
+
+
+
+    await prisma.users.create({
+      data: {
+        id: "11111111-1111-1111-1111-111111111111",
+        name: "TEST ACCOUNT",
+        bot: true,
+        origin: "",
+        avatarurl: "",
+        sub: "oshavery|1"
+      }
+    });
+  } catch (e){
+    throw e;
+  }
+  console.log(chalk.cyan("完了\n"));
+
 
   try {
-    console.log(chalk.cyan("ギルドを作成しています..."));
+    process.stdout.write(chalk.red("ギルドテーブルを初期化しています..."));
+    await prisma.guilds.deleteMany({})
+    console.log("完了\n")
+    process.stdout.write(chalk.cyan("ギルドを作成しています..."));
     guild = await prisma.guilds.create({
       data:{
         name: "Default",
@@ -74,7 +103,10 @@ async function init(){
 
 
   try {
-    console.log(chalk.cyan("ギルドにシステムアカウントを追加しています..."));
+    process.stdout.write(chalk.red("ギルドとユーザーの関連付けを解除しています..."));
+    await prisma.guild_users_mappings.deleteMany({});
+    console.log("完了\n");
+    process.stdout.write(chalk.cyan("ギルドにシステムアカウントを追加しています..."));
     await prisma.guild_users_mappings.create({
       data:{
         name: "SYSTEM ACCOUNT",
@@ -85,10 +117,16 @@ async function init(){
   } catch (e) {
     throw e;
   }
-  console.log(chalk.cyan("完了"));
+  console.log(chalk.cyan("完了\n"));
 
   try {
-    console.log(chalk.cyan("チャンネルを作成しています..."));
+    process.stdout.write(chalk.red("メッセージテーブルを初期化しています..."));
+    await prisma.messages.deleteMany();
+    console.log("完了\n")
+    process.stdout.write(chalk.red("チャンネルテーブルを初期化しています..."));
+    await prisma.channels.deleteMany({});
+    console.log("完了\n")
+    process.stdout.write(chalk.cyan("チャンネルを作成しています..."));
     channels = await prisma.channels.create({
       data: {
         name: "general",
@@ -102,10 +140,10 @@ async function init(){
   } catch (e) {
     throw e;
   }
-  console.log(chalk.cyan("完了"));
+  console.log(chalk.cyan("完了\n"));
 
   try {
-    console.log(chalk.cyan("初期メッセージを生成しています..."));
+    process.stdout.write(chalk.cyan("初期メッセージを生成しています..."));
     await prisma.messages.create({
       data: {
         ip: "::1",
@@ -118,10 +156,11 @@ async function init(){
   } catch (e) {
     throw e;
   }
-  console.log(chalk.cyan("完了"));
+  console.log(chalk.cyan("完了\n"));
 
 
   console.log(chalk.bgBlue.black("すべて完了しました!"));
+  process.exit();
   return;
 }
 
