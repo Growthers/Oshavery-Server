@@ -15,6 +15,7 @@ export interface media {
   guildId?: string; // ギルドのID
 }
 
+// メディアが存在しないことを返すためのエラーを定義
 export class MediaNotFoundError extends Error{}
 
 
@@ -27,7 +28,7 @@ export const medias = {
         id: id
       }
     });
-
+    // メディアが存在しないときはエラーを投げる
     if (!media) {
       throw new MediaNotFoundError();
     }else {
@@ -47,6 +48,8 @@ export const medias = {
   // POST
   async upload(media:media) {
     let id:string = "";
+
+    // 先にメディアを含んだメッセージを作成
     await prisma.messages.create({
       data: {
         ip: media.ip,
@@ -63,7 +66,7 @@ export const medias = {
       return;
     });
 
-
+    // メディアをDBに登録
     return await prisma.media.create({
       data: {
         name: media.name,
@@ -102,7 +105,7 @@ export const medias = {
         message_id: id
       }
     });
-
+    //同様に存在しないときにはエラーを投げる
     if (!id){
       throw new MediaNotFoundError();
     }else {
