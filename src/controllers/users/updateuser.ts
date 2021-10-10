@@ -16,23 +16,29 @@ export async function updateUser(req: any, res: FastifyReply){
 }
 
 export async function updateMe(req: any, res: FastifyReply){
-  // Auth0からユーザー情報を取得(廃止予定
-  const accessToken = req.headers.authorization;
-  const response = await axios("https://" + process.env.AUTH0_DOMAIN + "/userinfo" || "", {
-    method: "GET",
-    headers: {
-      Authorization: accessToken,
-    }
-  })
-    .then((res) => {
-      return res.data;
+  let usr;
+  if (process.env.NODE_ENV === "production"){
+    // Auth0からユーザー情報を取得(廃止予定
+    const accessToken = req.headers.authorization;
+    const response = await axios("https://" + process.env.AUTH0_DOMAIN + "/userinfo" || "", {
+      method: "GET",
+      headers: {
+        Authorization: accessToken,
+      }
     })
-    .catch((err) => {
-      console.log(err);
-    });
+      .then((res) => {
+        return res.data;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
 
 
-  const usr = await users.getFromSub(response.sub)
+    usr = await users.getFromSub(response.sub)
+  }else {
+    usr = await users.getFromSub("oshavery|1")
+  }
+
   if (!usr){res.status(400).send("Invalid request"); return}
   // このupdateはインスタンスのユーザー情報の変更(ギルドごとの設定は未実装
   await users.updateUser(usr.id, req.body.name).then(() => {return}).catch((e) => {logger.error(e); res.status(400)})
