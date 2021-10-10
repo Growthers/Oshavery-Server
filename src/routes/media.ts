@@ -1,19 +1,21 @@
-import express from "express";
-const router_media = express.Router();
+import {FastifyInstance} from "fastify";
+
 
 import {getMedia} from "../controllers/medias/getmedia";
-import {uploadMedia} from "../controllers/medias/uploadmedia";
+// import {uploadMedia} from "../controllers/medias/uploadmedia";
 
-import multer from "multer";
-const uploader = multer();
+// import multer from "multer";
+// const uploader = multer();
 
-router_media.route("/")
-  .post(uploader.single("file"),uploadMedia);
+export async function MediaRouter(server: FastifyInstance){
 
-router_media.route("/:fileId")
-  .get(getMedia)
+  /*server.post("/files", uploader.single("file"),uploadMedia);*/
+  // ToDo: ファイルアップロードのやり方を調べて実装する
+
+  server.get("/files/:fileId", getMedia)
   // .delete(mediaController.deleteMedia);
   // ファイルはGCSからは削除しないことになった
   // ToDo: ファイルの論理削除の実装
 
-module.exports = router_media;
+}
+

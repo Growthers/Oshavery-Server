@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
-import {logger} from "../main";
+import {logger} from "../refactor-main";
 
 // post時のbodyの型
 // /guilds/:guildId/channels

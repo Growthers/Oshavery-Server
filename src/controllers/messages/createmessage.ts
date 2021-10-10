@@ -1,12 +1,12 @@
-import express from "express";
+import { FastifyReply } from "fastify";
 import {message, message_struct} from "../../models/message"
 import {users} from "../../models/user";
 import jwt_decode from "jwt-decode";
 import {messageCreated} from "../notificationcontroller";
-import {logger} from "../../main";
+import {logger} from "../../refactor-main";
 
 
-export async function createMessage(req: express.Request, res: express.Response) {
+export async function createMessage(req: any, res: FastifyReply) {
   // 現在時刻を取得
   const now = new Date();
   // ToDo: ユーザーIP取得の廃止
@@ -48,7 +48,7 @@ export async function createMessage(req: express.Request, res: express.Response)
     return;
   }
   await messageCreated(createMessage.channel_id,createMessage.id)
-  res.status(201).json(createMessage);
+  res.status(201).send(createMessage);
 
   logger.info("Message Created");
   return;

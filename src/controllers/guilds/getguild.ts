@@ -1,8 +1,6 @@
-import express from "express";
-import { guild, GuildNotFoundError } from "../../models/guild";
-import { logger } from "../../main";
+import {FastifyReply } from "fastify";
+import { guild } from "../../models/guild";
 import { medias } from "../../models/media";
-import { users,user } from "../../models/user";
 
 export type guild = {
   id: string, // id
@@ -14,7 +12,7 @@ export type guild = {
   deleted_at?: Date // 削除日時(使えるのかは未検証
 }
 
-export async function getGuild(req: express.Request, res: express.Response) {
+export async function getGuild(req: any, res: FastifyReply) {
   let resp:guild;
 
   const g = await guild.get(req.params.guildId)
@@ -38,5 +36,5 @@ export async function getGuild(req: express.Request, res: express.Response) {
     }
   }
 
-  return res.json(resp);
+  return res.send(resp);
 }
