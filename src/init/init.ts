@@ -17,16 +17,31 @@ async function init(){
 
   try {
     process.stdout.write(chalk.cyan("テーブルを初期化しています..."));
-    await exec("npx prisma db push", (e,o,re) => {
-      if (o) {
-        console.log(o);
-      } if (e){
-        console.log(e);
-      } if (re != null){
-        console.log(re)
-      }
+    if (process.env.NODE_ENV === "production"){
+      await exec("npx prisma db push", (e,o,re) => {
+        if (o) {
+          console.log(o);
+        } if (e){
+          console.log(e);
+        } if (re != null){
+          console.log(re)
+        }
 
-    });
+      });
+    }else {
+      await exec("npx prisma db push --schema ./prisma/test.schema.prisma", (e, o, re) => {
+        if (o) {
+          console.log(o);
+        }
+        if (e) {
+          console.log(e);
+        }
+        if (re != null) {
+          console.log(re)
+        }
+
+      });
+    }
   } catch (e) {
     throw e;
   }
