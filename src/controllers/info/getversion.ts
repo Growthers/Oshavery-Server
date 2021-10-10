@@ -1,15 +1,14 @@
-import express from "express";
-import { info, serverInfo } from "../../models/info";
-
-export function getVersion(req: express.Request, res: express.Response) {
+export function getVersion(_req:any, res: any) {
   const GIT_COMMIT_HASH = process.env.GIT_COMMIT_HASH;
   const version: string = "Oshavery v.0.1";
   const revision: string = GIT_COMMIT_HASH || "";
   // バージョンを返す
-  console.log(req.path);
+  res.type('application/json').code(200);
 
-  res.json({
+  res.send({
     version: version,
     revision: revision
   });
+
+  return;
 }

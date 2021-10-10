@@ -1,9 +1,9 @@
-import express from "express";
+import { FastifyReply } from "fastify";
 import {message} from "../../models/message"
 import {messageUpdated} from "../notificationcontroller";
 import {logger} from "../../main";
 
-export async function updateMessage(req: express.Request, res: express.Response) {
+export async function updateMessage(req: any, res: FastifyReply) {
   const id = req.params.messageId;
   const content = req.body.content;
   return await message.updateMessage(id, content)
@@ -11,7 +11,7 @@ export async function updateMessage(req: express.Request, res: express.Response)
 
       //ws
       messageUpdated(r.channel_id,r.id)
-      return res.status(200).json(r);
+      return res.status(200).send(r);
     })
     .catch((e) => {
       logger.error(e);

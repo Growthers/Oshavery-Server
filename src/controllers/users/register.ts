@@ -1,11 +1,10 @@
 import axios from "axios";
-import express from "express";
+import {FastifyReply} from "fastify";
 import { users, register } from "../../models/user";
-import { conf , logger} from "../../main";
+import { logger } from "../../main";
 import { guild } from "../../models/guild";
-conf;
 
-export async function register(req: express.Request, res: express.Response) {
+export async function register(req: any, res: FastifyReply) {
   // Auth0にユーザー情報を問い合わせる(廃止予定)
   const accessToken = req.headers.authorization;
   const response = await axios("https://" + process.env.AUTH0_DOMAIN + "/userinfo" || "", {
@@ -39,7 +38,7 @@ export async function register(req: express.Request, res: express.Response) {
         }
       })(r.id,r.name);
 
-      res.status(201).json(r);
+      res.status(201).send(r);
       return;
     })
     .catch((e) => { logger.error(e); return res.status(400).send("Invalid request"); });

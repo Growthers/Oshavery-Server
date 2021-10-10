@@ -1,16 +1,17 @@
-const router_message = require("express").Router();
+import {FastifyInstance} from "fastify";
 import {getMessages, getOneMessage} from "../controllers/messages/getmessage";
 import {createMessage} from "../controllers/messages/createmessage";
 import {deleteMessage} from "../controllers/messages/deletemessage";
 import {updateMessage} from "../controllers/messages/updatemessage";
 
-router_message.route("/:channelId/messages")
-  .get(getMessages)
-  .post(createMessage);
+export async function MessageRouter(server: FastifyInstance){
+  server.get("/channels/:channelId/messages", getMessages)
+  server.post("/channels/:channelId/messages", createMessage);
 
-router_message.route("/:channelId/messages/:messageId")
-  .get(getOneMessage)
-  .patch(updateMessage)
-  .delete(deleteMessage)
+  server.get("/channels/:channelId/messages", getOneMessage)
+  server.patch("/channels/:channelId/messages", updateMessage)
+  server.delete("/channels/:channelId/messages", deleteMessage)
 
-module.exports = router_message;
+}
+
+

@@ -1,10 +1,10 @@
-import express from "express";
+import {FastifyReply, FastifyRequest} from "fastify";
 import {message} from "../../models/message";
 import {users} from "../../models/user";
 import {medias} from "../../models/media";
 import {logger} from "../../main";
 
-export async function getMessages(req: express.Request, res: express.Response) {
+export async function getMessages(req: any, res: FastifyReply) {
   const channelId = req.params.channelId;
   let before, limit, respo = [];
 
@@ -83,15 +83,15 @@ export async function getMessages(req: express.Request, res: express.Response) {
     }
   }
 
-  return res.json(respo);
+  return res.send(respo);
 }
 
-export async function getOneMessage(req: express.Request, res: express.Response) {
+export async function getOneMessage(req: any, res: FastifyReply) {
   const messageId: string = req.params.messageId;
 
   await message.getOneMessage(messageId)
     .then((r) => {
-      res.status(200).json(r);
+      res.status(200).send(r);
     })
     .catch((e) => {
       logger.error(e);

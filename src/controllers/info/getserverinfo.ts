@@ -1,9 +1,9 @@
-import express from "express";
-import { info, serverInfo } from "../../models/info";
+import {FastifyRequest, FastifyReply} from "fastify";
+import { info} from "../../models/info";
 
-export async function getServerInfo(_req: express.Request, res: express.Response) {
+export async function getServerInfo(_req: FastifyRequest, res: FastifyReply) {
   // サーバー情報を返す
   const inf = await info.get();
-  res.json(inf);
+  res.send(inf);
   return inf;
 }
