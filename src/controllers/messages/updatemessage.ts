@@ -1,7 +1,7 @@
 import { FastifyReply } from "fastify";
 import {message} from "../../models/message"
 import {messageUpdated} from "../notificationcontroller";
-import {logger} from "../../refactor-main";
+import {logger} from "../../main";
 
 export async function updateMessage(req: any, res: FastifyReply) {
   const id = req.params.messageId;

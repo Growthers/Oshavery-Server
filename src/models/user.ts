@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { logger } from "../refactor-main";
+import { logger } from "../main";
 const prisma = new PrismaClient();
 
 export interface register {

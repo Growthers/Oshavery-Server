@@ -1,6 +1,6 @@
 import {FastifyRequest,FastifyReply} from 'fastify';
 import { users } from "../../models/user";
-import {logger} from "../../refactor-main";
+import {logger} from "../../main";
 import {getMe} from "./me";
 
 

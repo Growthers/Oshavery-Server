@@ -1,6 +1,6 @@
 import {FastifyReply} from "fastify";
 import { guild} from "../../models/guild";
-import { logger } from "../../refactor-main";
+import { logger } from "../../main";
 
 export type guild = {
   id: string, // id

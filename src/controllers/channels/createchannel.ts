@@ -1,7 +1,7 @@
 import {FastifyReply} from "fastify";
 import { channels,channel} from "../../models/channel";
 import { channelCreated } from "../notificationcontroller";
-import { logger } from "../../refactor-main";
+import { logger } from "../../main";
 
 export async function createChannel(req: any, res: FastifyReply) {
   const RequestBody = req.body;
