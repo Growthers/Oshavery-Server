@@ -1,24 +1,24 @@
-import express from "express";
+import {FastifyReply} from "fastify";
 import { channels,channel} from "../../models/channel";
 import { channelCreated } from "../notificationcontroller";
 import { logger } from "../../main";
 
-export async function createChannel(req: express.Request, res: express.Response) {
-  const body = req.body;
+export async function createChannel(req: any, res: FastifyReply) {
+  const RequestBody = req.body;
   const guild_id = req.params.guildId;
 
   const channel: channel = {
-    channel_name: body.channel_name,
-    channel_topics: body.channel_topics,
-    channel_type: body.channel_type,
-    channel_position: body.channel_position
+    channel_name: RequestBody.channel_name,
+    channel_topics: RequestBody.channel_topics,
+    channel_type: RequestBody.channel_type,
+    channel_position: RequestBody.channel_position
   };
 
   await channels.create(channel,guild_id)
     .then((ch) => {
       logger.info("Channel created")
       channelCreated(ch.id);
-      res.status(201).json(ch);
+      res.status(201).send(ch);
       return;
     })
     .catch((e) => {

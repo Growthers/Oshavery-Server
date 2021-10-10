@@ -1,24 +1,22 @@
-import express from "express";
+import {FastifyReply} from "fastify";
 import { info, serverInfo } from "../../models/info";
 
-export async function createServerInfo(req: express.Request, res: express.Response) {
-  const body = req.body;
-
-  console.log(req.body.instance_name);
+export async function createServerInfo(req:any, res: FastifyReply) {
+  const Requestbody = req.body;
 
   const serverInfo: serverInfo = {
-    instance_name: body.instance_name,
+    instance_name: req.body.instance_name,
     admin: {
-      account: body.admin.account,
-      mail: body.admin.mail,
+      account: Requestbody.admin.account,
+      mail: Requestbody.admin.mail,
     },
-    tos: body.tos,
-    privacy_policy: body.privacy_policy,
+    tos: Requestbody.tos,
+    privacy_policy: Requestbody.privacy_policy,
   };
 
   await info.create(serverInfo)
     .then(()=> {
-      res.status(201).json(serverInfo);
+      res.status(201).send(serverInfo);
       return;
     })
     .catch((e) => {

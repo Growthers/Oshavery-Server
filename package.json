@@ -41,6 +41,8 @@
     "express": "^4.17.1",
     "express-jwt": "^6.1.0",
     "express-jwt-authz": "^2.4.1",
+    "fastify": "^3.22.0",
+    "fastify-cors": "^6.0.2",
     "file-type": "^16.5.3",
     "jwks-rsa": "^2.0.4",
     "jwt-decode": "^3.1.2",

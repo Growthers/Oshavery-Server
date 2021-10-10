@@ -1,9 +1,9 @@
-import express from "express";
+import { FastifyReply } from "fastify";
 import {message} from "../../models/message";
 import {messageDeleted} from "../notificationcontroller";
 import {logger} from "../../main";
 
-export async function deleteMessage(req: express.Request, res: express.Response) {
+export async function deleteMessage(req: any, res: FastifyReply) {
   const messageId: string = req.params.messageId;
   const date: Date = new Date;
 

@@ -1,17 +1,14 @@
-import express from "express";
-const router_info = express.Router();
+import {FastifyInstance} from "fastify";
 
 import {updateServerInfo} from "../controllers/info/updateserverinfo";
 import {getVersion} from "../controllers/info/getversion";
 import {getServerInfo} from "../controllers/info/getserverinfo";
 import {createServerInfo} from "../controllers/info/createserverinfo";
 
-router_info.route("/version")
-  .get(getVersion);
+export async function InstanceInfoRouter(server: FastifyInstance){
+  await server.get("/version", getVersion);
 
-router_info.route("/server-info")
-  .get(getServerInfo)
-  .post(createServerInfo)
-  .patch(updateServerInfo);
-
-module.exports = router_info;
+  await server.get("/server-info", getServerInfo);
+  await server.post("/server-info", createServerInfo);
+  await server.patch("/server-info", updateServerInfo);
+}
