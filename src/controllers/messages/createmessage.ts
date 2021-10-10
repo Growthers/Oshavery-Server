@@ -3,7 +3,7 @@ import {message, message_struct} from "../../models/message"
 import {users} from "../../models/user";
 import jwt_decode from "jwt-decode";
 import {messageCreated} from "../notificationcontroller";
-import {logger} from "../../refactor-main";
+import {logger} from "../../main";
 
 
 export async function createMessage(req: any, res: FastifyReply) {

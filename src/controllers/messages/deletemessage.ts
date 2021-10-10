@@ -1,7 +1,7 @@
 import { FastifyReply } from "fastify";
 import {message} from "../../models/message";
 import {messageDeleted} from "../notificationcontroller";
-import {logger} from "../../refactor-main";
+import {logger} from "../../main";
 
 export async function deleteMessage(req: any, res: FastifyReply) {
   const messageId: string = req.params.messageId;

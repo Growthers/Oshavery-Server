@@ -1,7 +1,7 @@
 import axios from "axios";
 import {FastifyReply} from "fastify";
 import { users } from "../../models/user";
-import { logger } from "../../refactor-main";
+import { logger } from "../../main";
 
 export async function updateUser(req: any, res: FastifyReply){
   if (req.params.userId === "me") {

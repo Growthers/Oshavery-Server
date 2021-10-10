@@ -2,7 +2,7 @@ import {FastifyReply, FastifyRequest} from "fastify";
 import {message} from "../../models/message";
 import {users} from "../../models/user";
 import {medias} from "../../models/media";
-import {logger} from "../../refactor-main";
+import {logger} from "../../main";
 
 export async function getMessages(req: any, res: FastifyReply) {
   const channelId = req.params.channelId;

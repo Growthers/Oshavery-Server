@@ -1,5 +1,5 @@
 import { guild} from "../../models/guild";
-import { logger } from "../../refactor-main";
+import { logger } from "../../main";
 import {FastifyReply} from "fastify";
 
 export type guild = {

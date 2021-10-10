@@ -1,5 +1,5 @@
 import { guild} from "../../models/guild";
-import { logger } from "../../refactor-main";
+import { logger } from "../../main";
 import { users } from "../../models/user";
 import {FastifyReply} from "fastify";
 
