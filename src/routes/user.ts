@@ -1,16 +1,15 @@
-import express from "express";
+import { FastifyInstance } from "fastify";
 import {getAllUsers} from "../controllers/users/getusers";
 import {register} from "../controllers/users/register";
 import {getUsers} from "../controllers/users/getusers";
 import {updateUser} from "../controllers/users/updateuser";
-const router_user = express.Router();
 
-router_user.route("/")
-  .get(getAllUsers)
-  .post(register);
+export async function UserRouter(server: FastifyInstance){
+  server.get("/users",getAllUsers)
+        .post("/users", register);
 
-router_user.route("/:userId")
-  .get(getUsers)
-  .patch(updateUser)
+  server.get("/users/:userId",getUsers);
 
-module.exports = router_user;
+  server.patch("/users/:userId",updateUser);
+
+}

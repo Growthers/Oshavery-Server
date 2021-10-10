@@ -1,8 +1,6 @@
-import express from "express";
-import { guild, GuildNotFoundError } from "../../models/guild";
-import { logger } from "../../main";
-import { medias } from "../../models/media";
-import { users,user } from "../../models/user";
+import { guild } from "../../models/guild";
+import { logger } from "../../refactor-main";
+import {FastifyReply} from "fastify";
 
 export type guild = {
   id: string, // id
@@ -14,11 +12,11 @@ export type guild = {
   deleted_at?: Date // 削除日時(使えるのかは未検証
 }
 
-export async function deleteGuild(req: express.Request, res: express.Response) {
+export async function deleteGuild(req: any, res: FastifyReply) {
   console.log(req.path);
   await guild.delete(req.params.guildId)
     .then(() => {
-      res.status(204).end();
+      res.status(204).send();
       logger.info("Guild Deleted")
       return;
     })

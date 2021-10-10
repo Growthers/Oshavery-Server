@@ -4,7 +4,7 @@ import {Storage} from "@google-cloud/storage"
 import dotenv from "dotenv";
 import axios from "axios";
 import { users } from "../../models/user";
-import { logger } from "../../main";
+import { logger } from "../../refactor-main";
 dotenv.config();
 // アップロードされるファイルの操作系統
 

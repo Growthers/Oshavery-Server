@@ -1,8 +1,7 @@
-import express from "express";
-import { guild, GuildNotFoundError } from "../../models/guild";
-import { logger } from "../../main";
-import { medias } from "../../models/media";
-import { users,user } from "../../models/user";
+import { guild} from "../../models/guild";
+import { logger } from "../../refactor-main";
+import { users } from "../../models/user";
+import {FastifyReply} from "fastify";
 
 export type guild = {
   id: string, // id
@@ -14,7 +13,7 @@ export type guild = {
   deleted_at?: Date // 削除日時(使えるのかは未検証
 }
 
-export async function memberList(req: express.Request, res:express.Response){
+export async function memberList(req: any, res:FastifyReply){
   const re:Array<any> = await guild.searchJoinedGuildMembers(req.params.guildId).then((r) => {return r;}).catch((e)=>{logger.error(e);return [];});
   const resp = Array<any>();
 
@@ -24,5 +23,5 @@ export async function memberList(req: express.Request, res:express.Response){
       .catch((e) => {logger.error(e); return;});
   }
 
-  return res.status(200).json(resp);
+  return res.status(200).send(resp);
 }

@@ -1,11 +1,10 @@
 import axios from "axios";
-import express from "express";
+import {FastifyReply} from "fastify";
 import { users } from "../../models/user";
-import { conf , logger} from "../../main";
+import { logger} from "../../refactor-main";
 import { guild } from "../../models/guild";
 import { channels } from "../../models/channel"
 
-conf;
 
 type me = {
   id: string;
@@ -16,7 +15,7 @@ type me = {
   guilds: any;
 }
 
-export async function getMe(req: express.Request, res: express.Response) {
+export async function getMe(req: any, res: FastifyReply) {
   let response_data: me = {
     id: "",
     name: "",
@@ -71,5 +70,5 @@ export async function getMe(req: express.Request, res: express.Response) {
     guilds: guild_datas,
   }
 
-  return res.json(response_data);
+  return res.send(response_data);
 }

@@ -1,8 +1,8 @@
-import express from "express";
+import {FastifyReply} from "fastify";
 import { info, serverInfo } from "../../models/info";
 
 
-export async function updateServerInfo(req:express.Request, res:express.Response) {
+export async function updateServerInfo(req:any, res:FastifyReply) {
   const body = req.body;
   const serverInfo: serverInfo = {
     instance_name: body["instance-name"],
@@ -16,7 +16,7 @@ export async function updateServerInfo(req:express.Request, res:express.Response
 
   await info.update(serverInfo)
     .then(()=> {
-      res.status(200).json(serverInfo);
+      res.status(200).send(serverInfo);
     })
     .catch((e) => {
       console.log(e);
