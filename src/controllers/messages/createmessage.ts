@@ -11,15 +11,21 @@ export async function createMessage(req: any, res: FastifyReply) {
   const now = new Date();
   // ToDo: ユーザーIP取得の廃止
   const ip_address = req.headers["x-forwaded-for"] || "";
+  let author;
 
-  // トークンを取る
-  const token = req.headers.authorization || "";
-  // デコード
-  const decoded: any = await jwt_decode(token)
-  const sub = decoded.sub
+  if (process.env.NODE_ENV === "production"){
+    // トークンを取る
+    const token = req.headers.authorization || "";
+    // デコード
+    const decoded: any = await jwt_decode(token)
+    const sub = decoded.sub
 
-  // トークンから得られるSubを使ってユーザー検索
-  const author = await users.getFromSub(sub);
+    // トークンから得られるSubを使ってユーザー検索
+    author = await users.getFromSub(sub);
+
+  }else {
+    author = await users.getFromSub("oshavery|1");
+  }
 
   if (!author) { return res.status(404).send("Not found") }
 

@@ -25,26 +25,33 @@ export async function getMe(req: any, res: FastifyReply) {
     guilds: []
   };
 
-  // Auth0にユーザー情報を問い合わせる(廃止予定
-  // ToDo: Auth0での認証をやめる
-  const accessToken = req.headers.authorization;
-  const response = await axios("https://" + process.env.AUTH0_DOMAIN + "/userinfo" || "", {
-    method: "GET",
-    headers: {
-      Authorization: accessToken,
-    }
-  })
-    .then((res) => {
-      return res.data;
+  let userdata;
+  if (process.env.NODE_ENV === "production"){
+    // Auth0にユーザー情報を問い合わせる(廃止予定
+    // ToDo: Auth0での認証をやめる
+    const accessToken = req.headers.authorization;
+    const response = await axios("https://" + process.env.AUTH0_DOMAIN + "/userinfo" || "", {
+      method: "GET",
+      headers: {
+        Authorization: accessToken,
+      }
     })
-    .catch((err) => {
-      logger.error(err);
-    });
+      .then((res) => {
+        return res.data;
+      })
+      .catch((err) => {
+        logger.error(err);
+      });
 
 
-  // 返ってきたAuth0ユーザー情報からOshaveryのユーザー情報を取得
-  const userdata = await users.getFromSub(response.sub);
-  if (!userdata) { return res.status(400).send("Invalid request") }
+    // 返ってきたAuth0ユーザー情報からOshaveryのユーザー情報を取得
+    userdata = await users.getFromSub(response.sub);
+    if (!userdata) { return res.status(400).send("Invalid request") }
+  }else {
+    userdata = await users.getFromSub("oshavery|1");
+  }
+
+
   // 参加しているギルドを取得
   const guilds = await guild.searchJoinedGuilds(userdata.id);
   if (!guilds) { return; }
