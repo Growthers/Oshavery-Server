@@ -1,5 +1,5 @@
-import {FastifyRequest, FastifyReply} from "fastify";
-import { info} from "../../models/info";
+import { FastifyRequest, FastifyReply } from "fastify";
+import { info } from "../../models/info";
 
 export async function getServerInfo(_req: FastifyRequest, res: FastifyReply) {
   // サーバー情報を返す

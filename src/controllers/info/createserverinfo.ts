@@ -1,7 +1,8 @@
-import {FastifyReply} from "fastify";
+import { FastifyReply } from "fastify";
 import { info, serverInfo } from "../../models/info";
 
-export async function createServerInfo(req:any, res: FastifyReply) {
+// eslint-disable-next-line
+export async function createServerInfo(req: any, res: FastifyReply) {
   const Requestbody = req.body;
 
   const serverInfo: serverInfo = {
@@ -14,16 +15,13 @@ export async function createServerInfo(req:any, res: FastifyReply) {
     privacy_policy: Requestbody.privacy_policy,
   };
 
-  await info.create(serverInfo)
-    .then(()=> {
+  await info
+    .create(serverInfo)
+    .then(() => {
       res.status(201).send(serverInfo);
-      return;
     })
     .catch((e) => {
       console.log(e);
       res.status(400).send("Invalid request");
-      return;
     });
-  return;
-
 }

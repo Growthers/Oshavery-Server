@@ -1,20 +1,20 @@
 {
   "name": "oshavery-server",
-  "version": "0.0.1",
+  "version": "0.1.1",
   "description": "Oshavery ServerSide Project",
   "main": "main.js",
   "repository": "https://github.com/undecided-discord/oshavery-server",
   "author": "Undecided Oshavery Development Team",
   "license": "MIT",
   "scripts": {
-    "start": "npx tsc -p . && echo *build done* &&node ./build/main.js",
-    "build": "npx tsc -p .",
+    "start": "npx tsc -p . --noImplicitAny && echo *build done* &&node ./build/main.js",
+    "build": "npx tsc -p . --noImplicitAny",
     "init": "npx tsc -p . && GIT_COMMIT_HASH=$(git rev-parse --short HEAD) node ./build/init/init.js",
     "lint": "eslint --ignore-path .gitignore 'src/**/*.{js,jsx,ts,tsx}'",
-    "lint:fix": "eslint --ignore-path .gitignore  --fix"
+    "lint:fix": "eslint --ignore-path .gitignore 'src/**/*.{js,jsx,ts,tsx}' --fix",
+    "format": "prettier --write src/"
   },
   "devDependencies": {
-    "@types/express": "^4.17.13",
     "@types/node": "^16.7.1",
     "@types/ws": "^7.4.7",
     "@typescript-eslint/eslint-plugin": "^4.33.0",
@@ -22,7 +22,10 @@
     "eslint": "^7.32.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-config-airbnb-typescript": "^14.0.1",
+    "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-import": "^2.24.2",
+    "eslint-plugin-prettier": "^4.0.0",
+    "prettier": "^2.4.1",
     "prisma": "^2.30.0",
     "ts-node": "^10.2.1",
     "typescript": "^4.3.5"
@@ -38,7 +41,6 @@
     "chalk": "^4.1.2",
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
-    "express": "^4.17.1",
     "express-jwt": "^6.1.0",
     "express-jwt-authz": "^2.4.1",
     "fastify": "^3.22.0",
