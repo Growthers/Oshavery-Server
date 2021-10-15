@@ -23,12 +23,13 @@
   "plugins": ["@typescript-eslint"],
   "rules": {
     "semi": ["error", "always"],
-    "quotes": ["error", "double"],
+    "quotes": "off",
     "@typescript-eslint/dot-notation": [
       "error",
       {
         "allowIndexSignaturePropertyAccess": true
       }
-    ]
+    ],
+    "@typescript-eslint/quotes": ["error", "double"]
   }
 }
