@@ -1,9 +1,9 @@
-import {FastifyInstance} from "fastify";
-import {InstanceInfoRouter} from "./info";
-import {ChannelRouter} from "./channel";
-import {MediaRouter} from "./media";
-import {UserRouter} from "./user";
-import {GuildRouter} from "./guild";
+import { FastifyInstance } from "fastify";
+import { InstanceInfoRouter } from "./info";
+import { ChannelRouter } from "./channel";
+import { MediaRouter } from "./media";
+import { UserRouter } from "./user";
+import { GuildRouter } from "./guild";
 // import jwt from "express-jwt";
 // import jwksRsa from "jwks-rsa";
 //
@@ -32,5 +32,5 @@ export async function MainRouting(server: FastifyInstance) {
   await ChannelRouter(server);
   await MediaRouter(server);
   await UserRouter(server);
-  await GuildRouter(server)
+  await GuildRouter(server);
 }
