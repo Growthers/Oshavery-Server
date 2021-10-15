@@ -1,11 +1,11 @@
 import { FastifyReply } from "fastify";
-import {message, message_struct} from "../../models/message"
-import {users} from "../../models/user";
 import jwt_decode from "jwt-decode";
-import {messageCreated} from "../notificationcontroller";
-import {logger} from "../../main";
+import { message, message_struct } from "../../models/message";
+import { users } from "../../models/user";
+import { messageCreated } from "../notificationcontroller";
+import { logger } from "../../main";
 
-
+// eslint-disable-next-line
 export async function createMessage(req: any, res: FastifyReply) {
   // 現在時刻を取得
   const now = new Date();
@@ -13,21 +13,23 @@ export async function createMessage(req: any, res: FastifyReply) {
   const ip_address = req.headers["x-forwaded-for"] || "";
   let author;
 
-  if (process.env.NODE_ENV === "production"){
+  if (process.env.NODE_ENV === "production") {
     // トークンを取る
     const token = req.headers.authorization || "";
     // デコード
-    const decoded: any = await jwt_decode(token)
-    const sub = decoded.sub
+    // eslint-disable-next-line
+    const decoded: any = await jwt_decode(token);
+    const { sub } = decoded;
 
     // トークンから得られるSubを使ってユーザー検索
     author = await users.getFromSub(sub);
-
-  }else {
+  } else {
     author = await users.getFromSub("oshavery|1");
   }
 
-  if (!author) { return res.status(404).send("Not found") }
+  if (!author) {
+    return res.status(404).send("Not found");
+  }
 
   const mes: message_struct = {
     timestamp: now,
@@ -40,20 +42,22 @@ export async function createMessage(req: any, res: FastifyReply) {
     },
     ip: ip_address[0] || "unknown",
     content: req.body.content,
-    channel_id: req.params.channelId
-  }
+    channel_id: req.params.channelId,
+  };
 
   // ここでメッセージの最大文字数を決めることができる
   // nodejsはバイトごとではなく文字数ごとにlengthが出せる仕様
-  if (mes.content === "" || !mes.content || mes.content.length > 10000 ){return res.status(400).send("Invalid request")}
+  if (mes.content === "" || !mes.content || mes.content.length > 10000) {
+    return res.status(400).send("Invalid request");
+  }
   let createMessage;
   try {
-    createMessage = await message.createMessage(mes)
-  }catch (e) {
+    createMessage = await message.createMessage(mes);
+  } catch (e) {
     logger.error(e);
     return;
   }
-  await messageCreated(createMessage.channel_id,createMessage.id)
+  await messageCreated(createMessage.channel_id, createMessage.id);
   res.status(201).send(createMessage);
 
   logger.info("Message Created");

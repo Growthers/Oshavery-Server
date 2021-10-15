@@ -1,5 +1,5 @@
-import {PrismaClient} from "@prisma/client";
-import {logger} from "../main";
+import { PrismaClient } from "@prisma/client";
+import { logger } from "../main";
 
 const prisma = new PrismaClient();
 
@@ -9,15 +9,14 @@ export type serverInfo = {
   admin: {
     account: string;
     mail: string;
-  }
+  };
   tos: string;
   privacy_policy: string;
-}
+};
 
 export const info = {
   // GET /server-info
   async get() {
-
     const info = await prisma.server_info.findMany();
     const user_count = await prisma.users.count();
     const message_count = await prisma.messages.count();
@@ -29,11 +28,9 @@ export const info = {
       },
       tos: info[0].tos,
       privacy_policy: info[0].privacy_policy,
-      user_count: user_count,
-      message_count: message_count
+      user_count,
+      message_count,
     };
-
-
   },
 
   // POST  /server-info
@@ -47,27 +44,28 @@ export const info = {
         admin_id: body.admin.account,
         tos: body.tos,
         privacy_policy: body.privacy_policy,
-      }
+      },
     });
-    return;
   },
 
-  async update(body: serverInfo){
-
+  async update(body: serverInfo) {
     const user_count = await prisma.users.count();
     const message_count = await prisma.messages.count();
 
-    await prisma.server_info.update({
-      where: { id: 1 },
-      data: {
-        instance_name: body.instance_name,
-        user_count: user_count,
-        message_count: message_count,
-        admin_id: body.admin.account,
-        tos: body.tos,
-        privacy_policy: body.privacy_policy,
-      }
-    }).catch((e) => {logger.error(e)});
+    await prisma.server_info
+      .update({
+        where: { id: 1 },
+        data: {
+          instance_name: body.instance_name,
+          user_count,
+          message_count,
+          admin_id: body.admin.account,
+          tos: body.tos,
+          privacy_policy: body.privacy_policy,
+        },
+      })
+      .catch((e) => {
+        logger.error(e);
+      });
   },
-
-}
+};
