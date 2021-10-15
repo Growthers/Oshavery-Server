@@ -18,30 +18,28 @@ describe("Check: Info Router", () => {
     const fastify = build();
     await fastify.ready();
 
-    const res = await supertest(fastify.server).post("/server-info").type("application/json")
-      .send(
-        {
-        "instance_name": "string",
-        "admin": {
-          "account": "string",
-          "mail": "string"
+    const res = await supertest(fastify.server)
+      .post("/server-info")
+      .type("application/json")
+      .send({
+        instance_name: "string",
+        admin: {
+          account: "string",
+          mail: "string",
         },
-        "tos": "string",
-        "privacy_policy": "string"
-      }
-    );
+        tos: "string",
+        privacy_policy: "string",
+      });
 
     await expect(res.statusCode).toBe(201);
-    await expect(res.body).toStrictEqual(
-      {
-      "instance_name": "string",
-      "admin": {
-        "account": "string",
-        "mail": "string"
+    await expect(res.body).toStrictEqual({
+      instance_name: "string",
+      admin: {
+        account: "string",
+        mail: "string",
       },
-      "tos": "string",
-      "privacy_policy": "string"
-    }
-    );
+      tos: "string",
+      privacy_policy: "string",
+    });
   });
 });
