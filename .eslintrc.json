@@ -20,10 +20,10 @@
     "sourceType": "module",
     "project": "./tsconfig.json"
   },
-  "plugins": [
-    "@typescript-eslint"
-  ],
+  "plugins": ["@typescript-eslint"],
   "rules": {
+    "semi": ["error", "always"],
+    "quotes": ["error", "double"],
     "@typescript-eslint/dot-notation": [
       "error",
       {
