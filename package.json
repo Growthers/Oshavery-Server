@@ -11,7 +11,8 @@
     "build": "npx tsc -p .",
     "init": "npx tsc -p . && GIT_COMMIT_HASH=$(git rev-parse --short HEAD) node ./build/init/init.js",
     "lint": "eslint --ignore-path .gitignore 'src/**/*.{js,jsx,ts,tsx}'",
-    "lint:fix": "eslint --ignore-path .gitignore  --fix"
+    "lint:fix": "eslint --ignore-path .gitignore  --fix",
+    "test": "jest"
   },
   "devDependencies": {
     "@types/express": "^4.17.13",
