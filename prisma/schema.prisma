@@ -21,7 +21,7 @@ model messages {
   channel_id String
   user       users?   @relation(fields: [userId], references: [id])
   userId     String?
-  media      media[]
+  media      media?
   guilds     guilds?  @relation(fields: [guildsId], references: [id])
   guildsId   String?
 }
