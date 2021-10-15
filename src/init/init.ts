@@ -101,6 +101,11 @@ async function init() {
   console.log(chalk.cyan("完了"));
 
   process.stdout.write(
+    chalk.red("インスタンス情報を削除しています...")
+  );
+  await prisma.server_info.deleteMany({});
+  console.log(chalk.cyan("完了"))
+  process.stdout.write(
     chalk.red("ギルドとユーザーの関連付けを解除しています...")
   );
   await prisma.guild_users_mappings.deleteMany({});
