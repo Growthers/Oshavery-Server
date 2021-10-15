@@ -94,11 +94,14 @@ model guild_users_mappings {
 
 model users {
   id                   String                 @id @default(uuid())
-  name                 String
+  name                 String                 @unique
   bot                  Boolean
   origin               String
+  secret_key           String
+  public_key           String
+  avatar               media                  @relation(name: "123", fields: [avatar_id], references: [id])
+  avatar_id            String
   sub                  String                 @unique
-  avatarurl            String
   medias               media[]
   messages             messages[]
   guild_users_mappings guild_users_mappings[]
@@ -133,7 +136,7 @@ model media {
   path     String
   type     String
   guild    guilds @relation(fields: [guild_id], references: [id])
-  guild_id String @unique
+  guild_id String
 
   message    messages @relation(fields: [message_id], references: [id])
   message_id String
