@@ -13,6 +13,7 @@
     "lint": "eslint --ignore-path .gitignore 'src/**/*.{js,jsx,ts,tsx}'",
     "lint:fix": "eslint --ignore-path .gitignore 'src/**/*.{js,jsx,ts,tsx}' --fix",
     "format": "prettier --write src/"
+
   },
   "devDependencies": {
     "@types/node": "^16.7.1",
