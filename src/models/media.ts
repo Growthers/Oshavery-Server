@@ -36,7 +36,7 @@ export const medias = {
   },
 
   async searchGuildIcon(id: string) {
-    return prisma.media.findUnique({
+    return prisma.media.findMany({
       where: {
         guild_id: id,
       },

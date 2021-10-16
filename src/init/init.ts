@@ -61,12 +61,29 @@ async function init() {
     });
   }
 
+  await prisma.media.deleteMany({});
+  const media = await prisma.media.create({
+    data: {
+      id: "00000000-0000-0000-0000-000000000000",
+      name: "default.png",
+      size: 1000,
+      path: "/",
+      fullpath: "https://test.invalid",
+      type: "avatar",
+      mime: "image/png",
+    },
+  });
+
   await prisma.users.create({
     data: {
       id: "00000000-0000-0000-0000-000000000000",
       name: "SYSTEM ACCOUNT",
       bot: true,
       origin: "",
+      avatar: { connect: { id: media.id } },
+      secret_key: "",
+      public_key: "",
+      password: "",
       avatarurl: "",
       sub: "oshavery|0",
     },
@@ -82,6 +99,10 @@ async function init() {
       name: "TEST ACCOUNT",
       bot: true,
       origin: "",
+      avatar: { connect: { id: media.id } },
+      secret_key: "",
+      public_key: "",
+      password: "",
       avatarurl: "",
       sub: "oshavery|1",
     },
@@ -116,6 +137,7 @@ async function init() {
     data: {
       name: "SYSTEM ACCOUNT",
       users: { connect: { id: "00000000-0000-0000-0000-000000000000" } },
+      avatar: { connect: { id: media.id } },
       guild: { connect: { id: guild.id } },
     },
   });

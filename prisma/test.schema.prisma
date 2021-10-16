@@ -83,8 +83,10 @@ model guilds {
 }
 
 model guild_users_mappings {
-  id   String @id @default(uuid())
-  name String
+  id        String @id @default(uuid())
+  name      String
+  avatar    media  @relation(name: "guild_users_mappings_avatar_media_mediaId", fields: [avatar_id], references: [id])
+  avatar_id String
 
   guild    guilds? @relation(fields: [guild_id], references: [id])
   guild_id String?
@@ -94,14 +96,16 @@ model guild_users_mappings {
 
 model users {
   id                   String                 @id @default(uuid())
-  name                 String                 @unique
+  name                 String
   bot                  Boolean
   origin               String
+  password             String
   secret_key           String
   public_key           String
-  avatar               media                  @relation(name: "123", fields: [avatar_id], references: [id])
+  avatar               media?                 @relation(name: "users_avatar_media_mediaId", fields: [avatar_id], references: [id])
   avatar_id            String
   sub                  String                 @unique
+  avatarurl            String
   medias               media[]
   messages             messages[]
   guild_users_mappings guild_users_mappings[]
@@ -128,21 +132,23 @@ model role {
 }
 
 model media {
-  id       String @id @default(uuid())
+  id       String  @id @default(uuid())
   name     String
   mime     String
   size     Int
   fullpath String
   path     String
   type     String
-  guild    guilds @relation(fields: [guild_id], references: [id])
-  guild_id String
+  guild    guilds? @relation(fields: [guild_id], references: [id])
+  guild_id String?
+  user     users?  @relation(name: "users_avatar_media_mediaId")
 
-  message    messages @relation(fields: [message_id], references: [id])
-  message_id String
+  message    messages? @relation(fields: [message_id], references: [id])
+  message_id String?
 
-  channel    channels? @relation(fields: [channelId], references: [id])
-  channelId  String?
-  users      users?    @relation(fields: [uploaderId], references: [id])
-  uploaderId String?
+  channel              channels?              @relation(fields: [channelId], references: [id])
+  channelId            String?
+  users                users?                 @relation(fields: [uploaderId], references: [id])
+  uploaderId           String
+  guild_users_mappings guild_users_mappings[] @relation("guild_users_mappings_avatar_media_mediaId")
 }

@@ -75,6 +75,10 @@ export const users = {
         bot: false,
         origin: "oshavery-app.net", // ToDo: オリジンの設定を変更できるようにする
         sub: data.sub,
+        avatar: { connect: { id: "00000000-0000-0000-0000-000000000000" } },
+        secret_key: "",
+        public_key: "",
+        password: "",
         avatarurl: data.avatar,
       },
     });

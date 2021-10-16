@@ -81,7 +81,8 @@ export const guild = {
     // guild_users_mappingsを作成するとギルドに参加したことになる
     await prisma.guild_users_mappings.create({
       data: {
-        name,
+        name: name,
+        avatar: { connect: { id: "00000000-0000-0000-0000-000000000000" } },
         guild: { connect: { id: guildid } },
         users: { connect: { id: userid } },
       },

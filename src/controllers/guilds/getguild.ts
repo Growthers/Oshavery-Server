@@ -23,7 +23,7 @@ export async function getGuild(req: any, res: FastifyReply) {
     resp = {
       id: g.id,
       name: g.name,
-      icon: icon.fullpath,
+      icon: icon[0].fullpath,
       topic: g.topic || "",
       created_at: g.created_at,
     };

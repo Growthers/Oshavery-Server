@@ -102,7 +102,7 @@ model users {
   password             String
   secret_key           String
   public_key           String
-  avatar               media                  @relation(name: "users_avatar_media_mediaId", fields: [avatar_id], references: [id])
+  avatar               media?                 @relation(name: "users_avatar_media_mediaId", fields: [avatar_id], references: [id])
   avatar_id            String
   sub                  String                 @unique
   avatarurl            String
@@ -132,23 +132,23 @@ model role {
 }
 
 model media {
-  id       String @id @default(uuid())
+  id       String  @id @default(uuid())
   name     String
   mime     String
   size     Int
   fullpath String
   path     String
   type     String
-  guild    guilds @relation(fields: [guild_id], references: [id])
-  guild_id String
-  user     users? @relation(name: "users_avatar_media_mediaId")
+  guild    guilds? @relation(fields: [guild_id], references: [id])
+  guild_id String?
+  user     users?  @relation(name: "users_avatar_media_mediaId")
 
-  message    messages @relation(fields: [message_id], references: [id])
-  message_id String
+  message    messages? @relation(fields: [message_id], references: [id])
+  message_id String?
 
   channel              channels?              @relation(fields: [channelId], references: [id])
   channelId            String?
   users                users?                 @relation(fields: [uploaderId], references: [id])
-  uploaderId           String?
+  uploaderId           String
   guild_users_mappings guild_users_mappings[] @relation("guild_users_mappings_avatar_media_mediaId")
 }
