@@ -1,13 +1,22 @@
-import fastify, { FastifyInstance } from "fastify";
+import fastify, {
+  FastifyInstance,
+  FastifyReply,
+  FastifyRequest,
+} from "fastify";
+import { Server as httpServer, IncomingMessage, ServerResponse } from "http";
 import cors from "fastify-cors";
 import Log4js from "log4js";
 import dotenv from "dotenv";
 import chalk from "chalk";
 import { MainRouting } from "./routes/main";
 
-export const Server: FastifyInstance = fastify({
+export const Server: FastifyInstance<
+  httpServer,
+  IncomingMessage,
+  ServerResponse
+> = fastify({
   logger: true,
-}).register(cors);
+});
 
 const { GIT_COMMIT_HASH } = process.env;
 Log4js.configure("log-config.json");

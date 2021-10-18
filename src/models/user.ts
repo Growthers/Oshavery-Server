@@ -7,6 +7,7 @@ export interface register {
   name: string;
   avatar: string;
   sub: string;
+  password: string;
 }
 
 export interface user {
@@ -75,6 +76,7 @@ export const users = {
         bot: false,
         origin: "oshavery-app.net", // ToDo: オリジンの設定を変更できるようにする
         sub: data.sub,
+        password: data.password,
         avatarurl: data.avatar,
       },
     });

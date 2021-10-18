@@ -28,6 +28,7 @@ export async function register(req: any, res: FastifyReply) {
     name: response.name,
     sub: response.sub,
     avatar: response.picture,
+    password: response.password,
   };
 
   await users

@@ -61,6 +61,7 @@ async function init() {
       id: "00000000-0000-0000-0000-000000000000",
       name: "SYSTEM ACCOUNT",
       bot: true,
+      password: "password",
       origin: "",
       avatarurl: "",
       sub: "oshavery|0",
@@ -82,6 +83,7 @@ async function init() {
       bot: true,
       origin: "",
       avatarurl: "",
+      password: "password",
       sub: "oshavery|1",
     },
   });

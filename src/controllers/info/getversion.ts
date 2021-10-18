@@ -1,5 +1,7 @@
+import { FastifyReply, FastifyRequest } from "fastify";
+
 // eslint-disable-next-line
-export function getVersion(_req: any, res: any) {
+export function getVersion(_req: FastifyRequest, res: FastifyReply) {
   const { GIT_COMMIT_HASH } = process.env;
   const version = "Oshavery v.0.1";
   const revision: string = GIT_COMMIT_HASH || "";

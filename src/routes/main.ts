@@ -4,27 +4,22 @@ import { ChannelRouter } from "./channel";
 import { MediaRouter } from "./media";
 import { UserRouter } from "./user";
 import { GuildRouter } from "./guild";
-// import jwt from "express-jwt";
-// import jwksRsa from "jwks-rsa";
-//
-// if (!process.env.AUTH0_DOMAIN || !process.env.AUTH0_AUDIENCE) {
-//   throw new Error('Make sure you have AUTH0_DOMAIN, and AUTH0_AUDIENCE in your .env file');
-// }
-//
-// export const checkJwt = jwt({
-//   // Dynamically provide a signing key based on the [Key ID](https://tools.ietf.org/html/rfc7515#section-4.1.4) header parameter ("kid") and the signing keys provided by the JWKS endpoint.
-//   secret: jwksRsa.expressJwtSecret({
-//     cache: true,
-//     rateLimit: true,
-//     jwksRequestsPerMinute: 5,
-//     jwksUri: `https://${process.env.AUTH0_DOMAIN}/.well-known/jwks.json`
-//   }),
-//
-//   // Validate the audience and the issuer.
-//   audience: process.env.AUTH0_AUDIENCE,
-//   issuer: [`https://${process.env.AUTH0_DOMAIN}/`],
-//   algorithms: ['RS256']
-// });
+import jwt from "jsonwebtoken";
+import { logger } from "../main";
+import { Login } from "../controllers/auth/login";
+
+export class InvalidTokenError extends Error {}
+
+export async function verifyToken(
+  token: string
+): Promise<string | InvalidTokenError> {
+  try {
+    return jwt.sign(token, "12");
+  } catch (e) {
+    logger.error("authencation failed");
+    return new InvalidTokenError();
+  }
+}
 
 export async function MainRouting(server: FastifyInstance) {
   // /version /server-info
@@ -33,4 +28,6 @@ export async function MainRouting(server: FastifyInstance) {
   await MediaRouter(server);
   await UserRouter(server);
   await GuildRouter(server);
+
+  await Login(server);
 }
