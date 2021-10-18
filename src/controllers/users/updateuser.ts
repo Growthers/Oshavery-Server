@@ -1,48 +1,51 @@
 import axios from "axios";
-import {FastifyReply} from "fastify";
+import { FastifyReply } from "fastify";
 import { users } from "../../models/user";
 import { logger } from "../../main";
 
-export async function updateUser(req: any, res: FastifyReply){
+// eslint-disable-next-line
+export async function updateUser(req: any, res: FastifyReply) {
   if (req.params.userId === "me") {
     await updateMe(req, res);
-    return;
-  }
-  else{
+  } else {
     res.status(403).send("Forbidden");
-    return;
   }
   //  強制アップデート用
 }
 
-export async function updateMe(req: any, res: FastifyReply){
+// eslint-disable-next-line
+export async function updateMe(req: any, res: FastifyReply) {
   let usr;
-  if (process.env.NODE_ENV === "production"){
+  if (process.env.NODE_ENV === "production") {
     // Auth0からユーザー情報を取得(廃止予定
     const accessToken = req.headers.authorization;
-    const response = await axios("https://" + process.env.AUTH0_DOMAIN + "/userinfo" || "", {
-      method: "GET",
-      headers: {
-        Authorization: accessToken,
+    const response = await axios(
+      `https://${process.env.AUTH0_DOMAIN}/userinfo` || "",
+      {
+        method: "GET",
+        headers: {
+          Authorization: accessToken,
+        },
       }
-    })
-      .then((res) => {
-        return res.data;
-      })
+    )
+      .then((res) => res.data)
       .catch((err) => {
         console.log(err);
       });
 
-
-    usr = await users.getFromSub(response.sub)
-  }else {
-    usr = await users.getFromSub("oshavery|1")
+    usr = await users.getFromSub(response.sub);
+  } else {
+    usr = await users.getFromSub("oshavery|1");
   }
 
-  if (!usr){res.status(400).send("Invalid request"); return}
+  if (!usr) {
+    res.status(400).send("Invalid request");
+    return;
+  }
   // このupdateはインスタンスのユーザー情報の変更(ギルドごとの設定は未実装
-  await users.updateUser(usr.id, req.body.name).then(() => {return}).catch((e) => {logger.error(e); res.status(400)})
+  await users.updateUser(usr.id, req.body.name).catch((e) => {
+    logger.error(e);
+    res.status(400);
+  });
   res.status(204).send("done");
-  return;
-
 }
