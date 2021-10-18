@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+
 const prisma = new PrismaClient();
 
 // メディアの型
@@ -16,101 +17,96 @@ export interface media {
 }
 
 // メディアが存在しないことを返すためのエラーを定義
-export class MediaNotFoundError extends Error{}
+export class MediaNotFoundError extends Error {}
 
-
-//命名がややこしいので要検討
+// 命名がややこしいので要検討
 export const medias = {
-
   async get(id: string) {
-    const media =  await prisma.media.findUnique({
+    const media = await prisma.media.findUnique({
       where: {
-        id: id
-      }
+        id,
+      },
     });
     // メディアが存在しないときはエラーを投げる
     if (!media) {
       throw new MediaNotFoundError();
-    }else {
-      return media
+    } else {
+      return media;
     }
-
   },
 
-  async searchGuildIcon(id: string){
-    return await prisma.media.findUnique({
+  async searchGuildIcon(id: string) {
+    return prisma.media.findUnique({
       where: {
-        guild_id: id
-      }
-    })
+        guild_id: id,
+      },
+    });
   },
 
   // POST
-  async upload(media:media) {
-    let id:string = "";
+  async upload(media: media) {
+    let id = "";
 
     // 先にメディアを含んだメッセージを作成
-    await prisma.messages.create({
-      data: {
-        ip: media.ip,
-        content: "",
-        user: {connect: {id: media.uploaderId}},
-        channels: {connect: {id: media.channelId}},
-      }
-    })
-    .then((f) => {
-      id = f.id
-    })
-    .catch((e) => {
-      console.error("error!: "+e);
-      return;
-    });
+    await prisma.messages
+      .create({
+        data: {
+          ip: media.ip,
+          content: "",
+          user: { connect: { id: media.uploaderId } },
+          channels: { connect: { id: media.channelId } },
+        },
+      })
+      .then((f) => {
+        id = f.id;
+      })
+      .catch((e) => {
+        console.error(`error!: ${e}`);
+      });
 
     // メディアをDBに登録
-    return await prisma.media.create({
-      data: {
-        name: media.name,
-        mime: media.mime,
-        size: 0,
-        path: media.path,
-        fullpath: media.fullpath,
-        type: media.type,
-        channel: {
-          connect: {id: media.channelId},
+    return prisma.media
+      .create({
+        data: {
+          name: media.name,
+          mime: media.mime,
+          size: 0,
+          path: media.path,
+          fullpath: media.fullpath,
+          type: media.type,
+          channel: {
+            connect: { id: media.channelId },
+          },
+          guild: {
+            connect: { id: media.guildId },
+          },
+          message: {
+            connect: { id },
+          },
         },
-        guild: {
-          connect: {id: media.guildId}
-        },
-        message: {
-          connect: {id: id},
-        }
-      },
-    }).then((r) => {return r;})
-
+      })
+      .then((r) => r);
   },
 
-  async delete(id:string){
+  async delete(id: string) {
     await prisma.media.delete({
       where: {
-        id: id,
-      }
+        id,
+      },
     });
-    return;
-
   },
 
-  async getMediaFromMessageId(id:string){
-    const media =  await prisma.media.findFirst({
+  async getMediaFromMessageId(id: string) {
+    const media = await prisma.media.findFirst({
       where: {
-        message_id: id
-      }
+        message_id: id,
+      },
     });
-    //同様に存在しないときにはエラーを投げる
-    if (!id){
+    // 同様に存在しないときにはエラーを投げる
+    if (!id) {
       throw new MediaNotFoundError();
-    }else {
+    } else {
       return media;
     }
-
-  }
-}
+  },
+};
