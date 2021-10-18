@@ -1,20 +1,29 @@
-import fastify, { FastifyInstance } from "fastify";
+import fastify from "fastify";
 import cors from "fastify-cors";
 import Log4js from "log4js";
 import dotenv from "dotenv";
 import chalk from "chalk";
 import { MainRouting } from "./routes/main";
+import process from "process";
 
-export const Server: FastifyInstance = fastify({
-  logger: true,
-}).register(cors);
+export function build(options = {}) {
+  const app = fastify(options).register(cors);
+  MainRouting(app);
+  return app;
+}
+
+export const Server = build({
+  logger: {
+    level: "info",
+    prettyPrint: true,
+  },
+});
 
 const { GIT_COMMIT_HASH } = process.env;
+
 Log4js.configure("log-config.json");
 export const logger = Log4js.getLogger("system");
 dotenv.config();
-
-MainRouting(Server);
 
 console.log(
   chalk.red("Now Working On ") +

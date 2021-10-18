@@ -52,9 +52,14 @@ async function init() {
 
   process.stdout.write(chalk.cyan("システムアカウントを作成しています..."));
 
-  await prisma.users.delete({
-    where: { id: "00000000-0000-0000-0000-000000000000" },
-  });
+  if ((await prisma.users.count()) === 2) {
+    await prisma.users.delete({
+      where: { id: "00000000-0000-0000-0000-000000000000" },
+    });
+    await prisma.users.delete({
+      where: { id: "11111111-1111-1111-1111-111111111111" },
+    });
+  }
 
   await prisma.users.create({
     data: {
@@ -70,10 +75,6 @@ async function init() {
   console.log(chalk.cyan("完了"));
 
   process.stdout.write(chalk.cyan("テスト用アカウントを作成しています..."));
-
-  await prisma.users.delete({
-    where: { id: "11111111-1111-1111-1111-111111111111" },
-  });
 
   await prisma.users.create({
     data: {
@@ -100,6 +101,9 @@ async function init() {
   });
   console.log(chalk.cyan("完了"));
 
+  process.stdout.write(chalk.red("インスタンス情報を削除しています..."));
+  await prisma.server_info.deleteMany({});
+  console.log(chalk.cyan("完了"));
   process.stdout.write(
     chalk.red("ギルドとユーザーの関連付けを解除しています...")
   );

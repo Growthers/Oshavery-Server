@@ -1,4 +1,7 @@
 {
+  "env": {
+    "node": true
+  },
   "extends": [
     "eslint:recommended",
 //    "airbnb-base",
@@ -20,7 +23,7 @@
     "linebreak-style": ["error", "unix"] ,
     "semi": "error",
     "@typescript-eslint/explicit-module-boundary-types" : ["off"],
-    "@typescript-eslint/semi": ["error"]
+    "@typescript-eslint/semi": ["error"],
     "quotes": "off",
     "@typescript-eslint/dot-notation": [
       "error",

@@ -12,11 +12,13 @@
     "init": "npx tsc -p . && GIT_COMMIT_HASH=$(git rev-parse --short HEAD) node ./build/init/init.js",
     "lint": "eslint --ignore-path .gitignore 'src/**/*.{js,jsx,ts,tsx}'",
     "lint:fix": "eslint --ignore-path .gitignore 'src/**/*.{js,jsx,ts,tsx}' --fix",
-    "format": "prettier --write src/"
-
+    "format": "prettier --write src/",
+    "test": "jest --forceExit"
   },
   "devDependencies": {
+    "@types/jest": "^27.0.2",
     "@types/node": "^16.7.1",
+    "@types/tap": "^15.0.5",
     "@types/ws": "^7.4.7",
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.33.0",
@@ -26,8 +28,10 @@
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-import": "^2.24.2",
     "eslint-plugin-prettier": "^4.0.0",
+    "jest": "^27.2.5",
     "prettier": "^2.4.1",
     "prisma": "^2.30.0",
+    "ts-jest": "^27.0.6",
     "ts-node": "^10.2.1",
     "typescript": "^4.3.5"
   },
@@ -38,6 +42,8 @@
     "@types/file-type": "^10.9.1",
     "@types/jwt-decode": "^3.1.0",
     "@types/multer": "^1.4.7",
+    "@types/supertest": "^2.0.11",
+    "ansi-regex": ">=5.0.1",
     "axios": "^0.21.4",
     "chalk": "^4.1.2",
     "cors": "^2.8.5",
@@ -51,6 +57,9 @@
     "jwt-decode": "^3.1.2",
     "log4js": "^6.3.0",
     "multer": "^1.4.3",
+    "pino-pretty": "^7.1.0",
+    "supertest": "^6.1.6",
+    "tree-kill": "^1.2.2",
     "ws": "^8.2.2"
   }
 }
