@@ -1,10 +1,16 @@
-import { FastifyReply } from "fastify";
+import { FastifyReply, FastifyRequest } from "fastify";
 import { channels, channel } from "../../models/channel";
 import { channelCreated } from "../notificationcontroller";
 import { logger } from "../../main";
+import {
+  Channel,
+  ChannelIdParams,
+  CreateChannel,
+} from "../../types/channel_types";
+import { IncomingMessage, Server, ServerResponse } from "http";
 
 // eslint-disable-next-line
-export async function createChannel(req: any, res: FastifyReply) {
+export async function createChannel(req: FastifyRequest<{Body: CreateChannel, Params: ChannelIdParams}>, res: FastifyReply<Server, IncomingMessage, ServerResponse, { Body: Channel }>) {
   const RequestBody = req.body;
   const guild_id = req.params.guildId;
 
