@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { guild, guild_struct_post } from "../../models/guild";
 import { logger } from "../../main";
-import { CreateGuild, GetGuild, GuildIdParam } from "../../types/guild_types";
+import { CreateGuild, GuildIdParam } from "../../types/guild_types";
 import { IncomingMessage, Server } from "http";
 
 export type guild = {

@@ -1,6 +1,8 @@
-import { FastifyReply } from "fastify";
+import { FastifyReply, FastifyRequest } from "fastify";
 import { guild } from "../../models/guild";
 import { logger } from "../../main";
+import { GuildIdParam, UpdateGuildInfo } from "../../types/guild_types";
+import { IncomingMessage, Server } from "http";
 
 export type guild = {
   id: string; // id
@@ -12,12 +14,16 @@ export type guild = {
   deleted_at?: Date; // 削除日時(使えるのかは未検証
 };
 
-// eslint-disable-next-line
-export async function updateGuild(req: any, res: FastifyReply) {
-  const guild_id = req.params.guildId;
+export async function updateGuild(
+  req: FastifyRequest<
+    { Body: UpdateGuildInfo; Params: GuildIdParam },
+    Server,
+    IncomingMessage
+  >,
+  res: FastifyReply
+) {
+  const guild_id = req.params.id;
   const { body } = req;
-
-  console.log(req.path);
 
   await guild
     .update(guild_id, body)

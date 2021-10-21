@@ -19,3 +19,9 @@ export type CreateGuild = {
 export type GuildIdParam = {
   id: string;
 };
+
+export type UpdateGuildInfo = {
+  name: string;
+  icon: string;
+  owner_id: string;
+};

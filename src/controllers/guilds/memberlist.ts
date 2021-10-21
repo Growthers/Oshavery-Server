@@ -1,7 +1,9 @@
-import { FastifyReply } from "fastify";
+import { FastifyReply, FastifyRequest } from "fastify";
 import { guild } from "../../models/guild";
 import { logger } from "../../main";
 import { users } from "../../models/user";
+import { GuildIdParam } from "../../types/guild_types";
+import { IncomingMessage, Server } from "http";
 
 export type guild = {
   id: string; // id
@@ -14,10 +16,13 @@ export type guild = {
 };
 
 // eslint-disable-next-line
-export async function memberList(req: any, res: FastifyReply) {
+export async function memberList(
+  req: FastifyRequest<{ Params: GuildIdParam }, Server, IncomingMessage>,
+  res: FastifyReply
+) {
   // eslint-disable-next-line
   const re: Array<any> = await guild
-    .searchJoinedGuildMembers(req.params.guildId)
+    .searchJoinedGuildMembers(req.params.id)
     .then((r) => r)
     .catch((e) => {
       logger.error(e);
