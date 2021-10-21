@@ -75,6 +75,10 @@ export async function getMe(req: any, res: FastifyReply) {
     guild_datas[i].channels = gld;
   }
 
+  if (!userdata.avatarurl) {
+    return;
+  }
+
   response_data = {
     id: userdata.id,
     name: userdata.name,

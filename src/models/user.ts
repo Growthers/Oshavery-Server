@@ -38,7 +38,7 @@ export const users = {
       })
       .catch((e) => logger.error(e));
 
-    if (!res) {
+    if (!res || !res.avatarurl) {
       return resp;
     }
 

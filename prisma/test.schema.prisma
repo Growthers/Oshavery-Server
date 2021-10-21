@@ -1,6 +1,6 @@
 datasource db {
   provider = "sqlite"
-  url      = env("DATABASE_URL")
+  url      = "file:./dev.db"
 }
 
 generator client {
@@ -21,7 +21,7 @@ model messages {
   channel_id String
   user       users?   @relation(fields: [userId], references: [id])
   userId     String?
-  media      media[]
+  media      media?
   guilds     guilds?  @relation(fields: [guildsId], references: [id])
   guildsId   String?
 }
@@ -96,12 +96,14 @@ model users {
   id                   String                 @id @default(uuid())
   name                 String
   bot                  Boolean
+  password             String
   origin               String
   sub                  String                 @unique
-  avatarurl            String
+  avatarurl            String?
   medias               media[]
   messages             messages[]
   guild_users_mappings guild_users_mappings[]
+  user_token           user_token[]
 }
 
 model server_info {
@@ -142,4 +144,10 @@ model media {
   channelId  String?
   users      users?    @relation(fields: [uploaderId], references: [id])
   uploaderId String?
+}
+
+model user_token {
+  token   String @id
+  user    users  @relation(fields: [user_id], references: [id])
+  user_id String
 }

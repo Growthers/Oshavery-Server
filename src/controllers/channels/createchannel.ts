@@ -3,14 +3,20 @@ import { channels, channel } from "../../models/channel";
 import { channelCreated } from "../notificationcontroller";
 import { logger } from "../../main";
 import {
-  Channel,
+  // Channel,
   ChannelIdParams,
   CreateChannel,
 } from "../../types/channel_types";
-import { IncomingMessage, Server, ServerResponse } from "http";
+import { IncomingMessage, Server } from "http";
 
-// eslint-disable-next-line
-export async function createChannel(req: FastifyRequest<{Body: CreateChannel, Params: ChannelIdParams}>, res: FastifyReply<Server, IncomingMessage, ServerResponse, { Body: Channel }>) {
+export async function createChannel(
+  req: FastifyRequest<
+    { Body: CreateChannel; Params: ChannelIdParams },
+    Server,
+    IncomingMessage
+  >,
+  res: FastifyReply
+) {
   const RequestBody = req.body;
   const guild_id = req.params.guildId;
 
@@ -21,15 +27,12 @@ export async function createChannel(req: FastifyRequest<{Body: CreateChannel, Pa
     channel_position: RequestBody.channel_position,
   };
 
-  await channels
-    .create(channel, guild_id)
-    .then((ch) => {
-      logger.info("Channel created");
-      channelCreated(ch.id);
-      res.status(201).send(ch);
-    })
-    .catch((e) => {
-      logger.error(e);
-      res.status(400).send("Bad Request");
-    });
+  try {
+    const Channels = await channels.create(channel, guild_id);
+    await channelCreated(Channels.id);
+    logger.info("Channel Created");
+    return res.status(201).send(Channels);
+  } catch (e) {
+    return res.status(400).send("Invalid request");
+  }
 }

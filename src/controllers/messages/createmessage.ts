@@ -31,6 +31,8 @@ export async function createMessage(req: any, res: FastifyReply) {
     return res.status(404).send("Not found");
   }
 
+  if (!author.avatarurl) return;
+
   const mes: message_struct = {
     timestamp: now,
     author: {

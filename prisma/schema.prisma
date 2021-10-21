@@ -21,7 +21,7 @@ model messages {
   channel_id String
   user       users?   @relation(fields: [userId], references: [id])
   userId     String?
-  media      media[]
+  media      media?
   guilds     guilds?  @relation(fields: [guildsId], references: [id])
   guildsId   String?
 }
@@ -99,7 +99,7 @@ model users {
   password             String
   origin               String
   sub                  String                 @unique
-  avatarurl            String
+  avatarurl            String?
   medias               media[]
   messages             messages[]
   guild_users_mappings guild_users_mappings[]

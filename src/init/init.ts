@@ -15,7 +15,7 @@ async function init() {
       "ギルド,ユーザー,メッセージのデータが*すべて*削除されます。5秒後に作業を開始します..."
     )
   );
-  await Sleep(5000);
+  await Sleep(20);
   console.log("DBを設定しています...");
 
   process.stdout.write(chalk.cyan("テーブルを初期化しています..."));
@@ -52,9 +52,20 @@ async function init() {
 
   process.stdout.write(chalk.cyan("システムアカウントを作成しています..."));
 
-  await prisma.users.delete({
-    where: { id: "00000000-0000-0000-0000-000000000000" },
-  });
+  const usercount = await prisma.users.count();
+
+  if (usercount === 2) {
+    await prisma.users
+      .delete({
+        where: { id: "00000000-0000-0000-0000-000000000000" },
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+    await prisma.users.delete({
+      where: { id: "11111111-1111-1111-1111-111111111111" },
+    });
+  }
 
   await prisma.users.create({
     data: {
@@ -71,10 +82,6 @@ async function init() {
   console.log(chalk.cyan("完了"));
 
   process.stdout.write(chalk.cyan("テスト用アカウントを作成しています..."));
-
-  await prisma.users.delete({
-    where: { id: "11111111-1111-1111-1111-111111111111" },
-  });
 
   await prisma.users.create({
     data: {
