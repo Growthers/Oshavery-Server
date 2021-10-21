@@ -15,7 +15,6 @@ export type guild = {
   deleted_at?: Date; // 削除日時(使えるのかは未検証
 };
 
-// eslint-disable-next-line
 export async function memberList(
   req: FastifyRequest<{ Params: GuildIdParam }, Server, IncomingMessage>,
   res: FastifyReply
