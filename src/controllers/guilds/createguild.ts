@@ -1,6 +1,8 @@
-import { FastifyReply } from "fastify";
-import { guild } from "../../models/guild";
+import { FastifyReply, FastifyRequest } from "fastify";
+import { guild, guild_struct_post } from "../../models/guild";
 import { logger } from "../../main";
+import { CreateGuild, GetGuild, GuildIdParam } from "../../types/guild_types";
+import { IncomingMessage, Server } from "http";
 
 export type guild = {
   id: string; // id
@@ -12,18 +14,27 @@ export type guild = {
   deleted_at?: Date; // 削除日時(使えるのかは未検証
 };
 
-// eslint-disable-next-line
-export async function createGuild(req: any, res: FastifyReply) {
-  const { body } = req;
+export async function createGuild(
+  req: FastifyRequest<
+    { Body: CreateGuild; Params: GuildIdParam },
+    Server,
+    IncomingMessage
+  >,
+  res: FastifyReply
+) {
+  const body: guild_struct_post = {
+    guild_name: req.body.name,
+    guild_topics: req.body.topic,
+  };
 
-  await guild
-    .create(body)
-    .then((gld) => {
-      logger.info("Guild created");
-      res.status(201).send(gld);
-    })
-    .catch((e) => {
-      logger.error(e);
-      res.status(400).send("Invaild reqest");
-    });
+  let CreatedGuild;
+  try {
+    CreatedGuild = await guild.create(body);
+    logger.info("Guild created");
+    return res.status(201).send(CreatedGuild);
+  } catch (e) {
+    logger.error(e);
+    res.status(400).send("invalid request");
+    return;
+  }
 }

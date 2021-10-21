@@ -1,16 +1,56 @@
-import { FastifyInstance } from "fastify";
+import { FastifyInstance, RouteShorthandOptions } from "fastify";
 import { memberList } from "../controllers/guilds/memberlist";
 import { createGuild } from "../controllers/guilds/createguild";
 import { getGuild } from "../controllers/guilds/getguild";
 import { updateGuild } from "../controllers/guilds/updateguild";
 import { deleteGuild } from "../controllers/guilds/deleteguild";
+import { CreateGuild, GetGuild, GuildIdParam } from "../types/guild_types";
 
 export async function GuildRouter(server: FastifyInstance) {
-  server.post("/guilds", createGuild);
+  const GuildReturnObjectSchema: RouteShorthandOptions = {
+    schema: {
+      body: {
+        type: "object",
+        properties: {
+          id: { type: "string" },
+          name: { type: "string" },
+          topic: { type: "string" },
+          icon: { type: "string" },
+          owner_id: { type: "string" },
+          users: { type: "array" },
+          channels: { type: "array" },
+        },
+      },
+    },
+  };
+
+  const UpdateGuildInformationObjectSchema: RouteShorthandOptions = {
+    schema: {
+      body: {
+        type: "object",
+        properties: {
+          name: { type: "string" },
+          icon: { type: "string" },
+          topic: { type: "string" },
+          owner_id: { type: "string" },
+        },
+      },
+    },
+  };
+
+  server.post<{ Body: CreateGuild; Params: GuildIdParam; Reply: GetGuild }>(
+    "/guilds",
+    GuildReturnObjectSchema,
+    createGuild
+  );
 
   server
-    .get("/guilds/:guildId", getGuild)
-    .patch("/guilds/:guildId", updateGuild)
+    .get<{ Params: GuildIdParam }>("/guilds/:guildId", getGuild)
+    .patch<{ Params: GuildIdParam }>(
+      "/guilds/:guildId",
+      UpdateGuildInformationObjectSchema,
+      updateGuild
+    )
     .delete("/guilds/:guildId", deleteGuild);
 
   // router_guild.route("/:guildId/roles") ToDo: ロールの実装

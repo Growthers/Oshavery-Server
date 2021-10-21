@@ -14,12 +14,12 @@ export async function ChannelRouter(server: FastifyInstance) {
       body: {
         type: "object",
         properties: {
-          id: "string",
-          channel_name: "string",
-          channel_topics: "string",
-          channel_type: "string",
-          channel_position: 0,
-          creator_id: "string",
+          id: { type: "string" },
+          channel_name: { type: "string" },
+          channel_topics: { type: "string" },
+          channel_type: { type: "string" },
+          channel_position: { type: "number" },
+          creator_id: { type: "string" },
         },
       },
     },

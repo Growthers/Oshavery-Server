@@ -2,11 +2,7 @@ import { FastifyReply, FastifyRequest } from "fastify";
 import { channels, channel } from "../../models/channel";
 import { channelCreated } from "../notificationcontroller";
 import { logger } from "../../main";
-import {
-  // Channel,
-  ChannelIdParams,
-  CreateChannel,
-} from "../../types/channel_types";
+import { ChannelIdParams, CreateChannel } from "../../types/channel_types";
 import { IncomingMessage, Server } from "http";
 
 export async function createChannel(
