@@ -11,4 +11,5 @@ export async function InstanceInfoRouter(server: FastifyInstance) {
   await server.get("/server-info", getServerInfo);
   await server.post("/server-info", createServerInfo);
   await server.patch("/server-info", updateServerInfo);
+  return;
 }
