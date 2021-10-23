@@ -10,3 +10,11 @@ export type Register = {
   name: string;
   password: string;
 };
+
+export type userIdParams = {
+  id: string;
+};
+
+export type updateMeAccountInfo = {
+  name: string;
+};

@@ -1,13 +1,12 @@
 import { FastifyInstance } from "fastify";
-import { AuthHeaders, AuthQueryString, Token } from "../../types/auth_types";
+import { AuthHeaders, AuthQueryString, Token } from "../../types/auth_types.js";
 import bcrypt from "bcrypt";
-import { users } from "../../models/user";
+import { users } from "../../models/user.js";
 import jwt from "jsonwebtoken";
-import { logger } from "../../main";
+import { logger } from "../../main.js";
 import * as fs from "fs";
+import { loadConfig } from "../../config/load";
 
-const key = fs.readFileSync("");
-const pkey = fs.readFileSync("");
 /*
   仕様: ログインできるのは自分のパスワードデータがあるインスタンスだけ
   (データは各インスタンスにあるにはあるがログインはできない)
@@ -22,6 +21,10 @@ export async function Login(server: FastifyInstance) {
     Headers: AuthHeaders;
     Reply: Token | string;
   }>("/login", async (req, res) => {
+    const Config = await loadConfig();
+    const key = fs.readFileSync(Config.secretKeyFilePath);
+    const pkey = fs.readFileSync(Config.publicKeyFilePath);
+
     if (req.headers.authorization) {
       // headerになにかが入っていたらreject
       res.status(400).send("No");
@@ -38,7 +41,7 @@ export async function Login(server: FastifyInstance) {
       return;
     }
 
-    if (userdata.origin !== "oshavery-app.net") {
+    if (userdata.origin !== Config.url) {
       // originが設定されているものと違ったら別インスタンスのユーザと判断してreject
       res.status(400).send("You are not this instance's user");
       return;
@@ -59,10 +62,9 @@ export async function Login(server: FastifyInstance) {
         uname: userdata.name,
       };
 
-      // Todo: tokenを生成するときの鍵を何にするか決める
       const token = jwt.sign(responseData, key, {
         algorithm: "RS256",
-        issuer: "oshavery-app.net",
+        issuer: Config.url,
         audience: userdata.sub,
       });
       logger.debug(jwt.verify(token, pkey));

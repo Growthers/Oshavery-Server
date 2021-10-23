@@ -1,10 +1,27 @@
-import { FastifyReply } from "fastify";
-import { message } from "../../models/message";
-import { messageDeleted } from "../notificationcontroller";
-import { logger } from "../../main";
+import { FastifyReply, FastifyRequest } from "fastify";
+import { message } from "../../models/message.js";
+import { messageDeleted } from "../notificationcontroller.js";
+import { logger } from "../../main.js";
+import { GetOneMessageParams } from "../../types/message_types";
+import { AuthHeaders } from "../../types/auth_types";
+import { IncomingMessage, Server } from "http";
+import { checklogin } from "../auth/checklogin";
+import { InvalidTokenError } from "../auth/verifytoken";
 
-// eslint-disable-next-line
-export async function deleteMessage(req: any, res: FastifyReply) {
+export async function deleteMessage(
+  req: FastifyRequest<
+    { Params: GetOneMessageParams; Headers: AuthHeaders },
+    Server,
+    IncomingMessage
+  >,
+  res: FastifyReply
+) {
+  if (!req.headers.authorization) return;
+  const check = await checklogin(req.headers.authorization);
+  if (check instanceof InvalidTokenError) {
+    res.status(401).send("Invalid request");
+    return;
+  }
   const { messageId } = req.params;
   const date: Date = new Date();
 

@@ -1,12 +1,13 @@
 import { FastifyInstance, RouteShorthandOptions } from "fastify";
 
-import { createChannel } from "../controllers/channels/createchannel";
-import { getChannels } from "../controllers/channels/getchannels";
+import { createChannel } from "../controllers/channels/createchannel.js";
+import { getChannels } from "../controllers/channels/getchannels.js";
 import {
   Channel,
   ChannelIdParams,
   CreateChannel,
-} from "../types/channel_types";
+} from "../types/channel_types.js";
+import { AuthHeaders } from "../types/auth_types";
 
 export async function ChannelRouter(server: FastifyInstance) {
   const options: RouteShorthandOptions = {
@@ -25,16 +26,17 @@ export async function ChannelRouter(server: FastifyInstance) {
     },
   };
 
-  await server.get<{ Params: ChannelIdParams; Body: Channel }>(
-    "/guilds/:guildId/channels",
-    options,
-    getChannels
-  );
+  await server.get<{
+    Params: ChannelIdParams;
+    Body: Channel;
+    Headers: AuthHeaders;
+  }>("/guilds/:guildId/channels", options, getChannels);
 
   await server.post<{
     Body: CreateChannel;
     Params: ChannelIdParams;
     Reply: Channel;
+    Headers: AuthHeaders;
   }>("/guilds/:guildId/channels", options, createChannel);
   // .patch(() => {console.log("ぱっちうえー")}); ToDo: チャンネルの更新の実装
 

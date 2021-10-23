@@ -1,18 +1,28 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { channels, channel } from "../../models/channel";
-import { channelCreated } from "../notificationcontroller";
-import { logger } from "../../main";
-import { ChannelIdParams, CreateChannel } from "../../types/channel_types";
+import { channels, channel } from "../../models/channel.js";
+import { channelCreated } from "../notificationcontroller.js";
+import { logger } from "../../main.js";
+import { ChannelIdParams, CreateChannel } from "../../types/channel_types.js";
 import { IncomingMessage, Server } from "http";
+import { AuthHeaders } from "../../types/auth_types";
+import { checklogin } from "../auth/checklogin";
+import { InvalidTokenError } from "../auth/verifytoken";
 
 export async function createChannel(
   req: FastifyRequest<
-    { Body: CreateChannel; Params: ChannelIdParams },
+    { Body: CreateChannel; Params: ChannelIdParams; Headers: AuthHeaders },
     Server,
     IncomingMessage
   >,
   res: FastifyReply
 ) {
+  if (!req.headers.authorization) return;
+  const check = await checklogin(req.headers.authorization);
+  if (check instanceof InvalidTokenError) {
+    res.status(401).send("Invalid request");
+    return;
+  }
+
   const RequestBody = req.body;
   const guild_id = req.params.guildId;
 

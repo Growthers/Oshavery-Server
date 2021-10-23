@@ -1,9 +1,9 @@
 import fastify, { FastifyInstance } from "fastify";
 import Log4js from "log4js";
-import dotenv from "dotenv";
 import chalk from "chalk";
-import { MainRouting } from "./routes/main";
+import { MainRouting } from "./routes/main.js";
 import { IncomingMessage, Server, ServerResponse } from "http";
+import { loadConfig } from "./config/load.js";
 
 export const server: FastifyInstance<Server, IncomingMessage, ServerResponse> =
   fastify({
@@ -13,8 +13,8 @@ export const server: FastifyInstance<Server, IncomingMessage, ServerResponse> =
 const { GIT_COMMIT_HASH } = process.env;
 Log4js.configure("log-config.json");
 export const logger = Log4js.getLogger("system");
-dotenv.config();
-
+export const Config = loadConfig();
+logger.debug(Config + "123");
 MainRouting(server);
 
 console.log(
@@ -24,7 +24,7 @@ console.log(
     chalk.red.bold("*WILL NOT* ask for an authentication token.")
 );
 
-server.listen(3080, async (e) => {
+server.listen(Config.port, async (e) => {
   console.log(
     chalk.red("░█████╗") +
       chalk.green("░░██████╗") +
@@ -94,7 +94,7 @@ server.listen(3080, async (e) => {
   );
 
   console.log(
-    `\nOshavery(alpha) Revision ${GIT_COMMIT_HASH}\n(c) 2021 Oshavery Developers\nWorks on port: 3080`
+    `\nOshavery(alpha) Revision ${GIT_COMMIT_HASH}\n(c) 2021 Oshavery Developers\nWorks on port: ${Config.port}`
   );
   if (e) {
     logger.fatal(e);

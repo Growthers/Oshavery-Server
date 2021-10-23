@@ -1,16 +1,17 @@
 import { FastifyInstance, RouteShorthandOptions } from "fastify";
-import { memberList } from "../controllers/guilds/memberlist";
-import { createGuild } from "../controllers/guilds/createguild";
-import { getGuild } from "../controllers/guilds/getguild";
-import { updateGuild } from "../controllers/guilds/updateguild";
-import { deleteGuild } from "../controllers/guilds/deleteguild";
+import { memberList } from "../controllers/guilds/memberlist.js";
+import { createGuild } from "../controllers/guilds/createguild.js";
+import { getGuild } from "../controllers/guilds/getguild.js";
+import { updateGuild } from "../controllers/guilds/updateguild.js";
+import { deleteGuild } from "../controllers/guilds/deleteguild.js";
 import {
   CreateGuild,
   GetGuild,
   GuildIdParam,
   UpdateGuildInfo,
-} from "../types/guild_types";
-import { User } from "../types/user_types";
+} from "../types/guild_types.js";
+import { User } from "../types/user_types.js";
+import { AuthHeaders } from "../types/auth_types";
 
 export async function GuildRouter(server: FastifyInstance) {
   const GuildReturnObjectSchema: RouteShorthandOptions = {
@@ -44,20 +45,28 @@ export async function GuildRouter(server: FastifyInstance) {
     },
   };
 
-  server.post<{ Body: CreateGuild; Params: GuildIdParam; Reply: GetGuild }>(
-    "/guilds",
-    GuildReturnObjectSchema,
-    createGuild
+  server.post<{
+    Body: CreateGuild;
+    Params: GuildIdParam;
+    Reply: GetGuild;
+    Headers: AuthHeaders;
+  }>("/guilds", GuildReturnObjectSchema, createGuild);
+
+  server.get<{ Params: GuildIdParam; Headers: AuthHeaders }>(
+    "/guilds/:guildId",
+    getGuild
   );
 
   server
-    .get<{ Params: GuildIdParam }>("/guilds/:guildId", getGuild)
-    .patch<{ Body: UpdateGuildInfo; Params: GuildIdParam }>(
+    .patch<{
+      Body: UpdateGuildInfo;
+      Params: GuildIdParam;
+      Headers: AuthHeaders;
+    }>("/guilds/:guildId", UpdateGuildInformationObjectSchema, updateGuild)
+    .delete<{ Params: GuildIdParam; Headers: AuthHeaders }>(
       "/guilds/:guildId",
-      UpdateGuildInformationObjectSchema,
-      updateGuild
-    )
-    .delete("/guilds/:guildId", deleteGuild);
+      deleteGuild
+    );
 
   // router_guild.route("/:guildId/roles") ToDo: ロールの実装
   //   .get(() => {console.log("げっとうえー")})
@@ -65,10 +74,11 @@ export async function GuildRouter(server: FastifyInstance) {
   //   .patch(() => {console.log("ぱっちうえー")})
   //   .delete(() => {console.log("でりーとうえー")})
 
-  server.get<{ Params: GuildIdParam; Reply: Array<User> }>(
-    "/guilds/:guildId/members",
-    memberList
-  );
+  server.get<{
+    Params: GuildIdParam;
+    Reply: Array<User>;
+    Headers: AuthHeaders;
+  }>("/guilds/:guildId/members", memberList);
 
   // router_guild.route("/:guildId/members/:userId") ToDo: ギルドの特定ユーザー情報取得関連の実装
   //   .get(() => {console.log("げっとうえー")})

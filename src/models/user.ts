@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { logger } from "../main";
+import { Config, logger } from "../main.js";
 
 const prisma = new PrismaClient();
 
@@ -76,7 +76,7 @@ export const users = {
       .findFirst({
         where: {
           name: user_name,
-          origin: "oshavery-app.net",
+          origin: Config.url,
         },
       })
       .catch((e) => logger.error(e));
@@ -121,7 +121,7 @@ export const users = {
       data: {
         name: data.name,
         bot: false,
-        origin: "oshavery-app.net", // ToDo: オリジンの設定を変更できるようにする
+        origin: Config.url,
         sub: data.sub,
         public_key: "", // ToDo: ユーザー用秘密鍵/公開鍵を発行する処理を作る
         password: data.password,

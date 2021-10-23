@@ -1,9 +1,10 @@
-import axios from "axios";
 import { FastifyReply } from "fastify";
-import { users } from "../../models/user";
-import { logger } from "../../main";
-import { guild } from "../../models/guild";
-import { channels } from "../../models/channel";
+import { users } from "../../models/user.js";
+import { guild } from "../../models/guild.js";
+import { channels } from "../../models/channel.js";
+import { checklogin } from "../auth/checklogin";
+import { InvalidTokenError } from "../auth/verifytoken";
+import jwt_decode from "jwt-decode";
 
 type me = {
   id: string;
@@ -17,6 +18,12 @@ type me = {
 
 // eslint-disable-next-line
 export async function getMe(req: any, res: FastifyReply) {
+  if (!req.headers.authorization) return;
+  const check = await checklogin(req.headers.authorization);
+  if (check instanceof InvalidTokenError) {
+    res.status(401).send("Invalid request");
+    return;
+  }
   let response_data: me = {
     id: "",
     name: "",
@@ -26,33 +33,11 @@ export async function getMe(req: any, res: FastifyReply) {
     guilds: [],
   };
 
-  let userdata;
-  if (process.env.NODE_ENV === "production") {
-    // Auth0にユーザー情報を問い合わせる(廃止予定
-    // ToDo: Auth0での認証をやめる
-    const accessToken = req.headers.authorization;
-    const response = await axios(
-      `https://${process.env.AUTH0_DOMAIN}/userinfo` || "",
-      {
-        method: "GET",
-        headers: {
-          Authorization: accessToken,
-        },
-      }
-    )
-      .then((res) => res.data)
-      .catch((err) => {
-        logger.error(err);
-      });
+  const user = jwt_decode(req.headers.authorization);
 
-    // 返ってきたAuth0ユーザー情報からOshaveryのユーザー情報を取得
-    userdata = await users.getFromSub(response.sub);
-    if (!userdata) {
-      return res.status(400).send("Invalid request");
-    }
-  } else {
-    userdata = await users.getFromSub("oshavery|1");
-  }
+  // eslint-disable-next-line
+  // @ts-ignore
+  const userdata = await users.getFromSub(user.uid);
 
   // 参加しているギルドを取得
   const guilds = await guild.searchJoinedGuilds(userdata.id);

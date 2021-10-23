@@ -1,8 +1,11 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { guild, guild_struct_post } from "../../models/guild";
-import { logger } from "../../main";
-import { CreateGuild, GuildIdParam } from "../../types/guild_types";
+import { guild, guild_struct_post } from "../../models/guild.js";
+import { logger } from "../../main.js";
+import { CreateGuild, GuildIdParam } from "../../types/guild_types.js";
 import { IncomingMessage, Server } from "http";
+import { checklogin } from "../auth/checklogin";
+import { InvalidTokenError } from "../auth/verifytoken";
+import { AuthHeaders } from "../../types/auth_types";
 
 export type guild = {
   id: string; // id
@@ -16,12 +19,18 @@ export type guild = {
 
 export async function createGuild(
   req: FastifyRequest<
-    { Body: CreateGuild; Params: GuildIdParam },
+    { Body: CreateGuild; Params: GuildIdParam; Headers: AuthHeaders },
     Server,
     IncomingMessage
   >,
   res: FastifyReply
 ) {
+  if (!req.headers.authorization) return;
+  const check = await checklogin(req.headers.authorization);
+  if (check instanceof InvalidTokenError) {
+    res.status(401).send("Invalid request");
+    return;
+  }
   const body: guild_struct_post = {
     guild_name: req.body.name,
     guild_topics: req.body.topic,

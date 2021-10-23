@@ -1,5 +1,5 @@
-import { User } from "./user_types";
-import { Channel } from "./channel_types";
+import { User } from "./user_types.js";
+import { Channel } from "./channel_types.js";
 
 export type GetGuild = {
   id: string;
@@ -17,7 +17,7 @@ export type CreateGuild = {
 };
 
 export type GuildIdParam = {
-  id: string;
+  guildId: string;
 };
 
 export type UpdateGuildInfo = {

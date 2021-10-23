@@ -1,20 +1,37 @@
-import { FastifyReply } from "fastify";
-import { message } from "../../models/message";
-import { users } from "../../models/user";
-import { medias } from "../../models/media";
-import { logger } from "../../main";
+import { FastifyReply, FastifyRequest } from "fastify";
+import { message } from "../../models/message.js";
+import { users } from "../../models/user.js";
+import { medias } from "../../models/media.js";
+import { logger } from "../../main.js";
+import { GuildIdParam } from "../../types/guild_types";
+import { AuthHeaders } from "../../types/auth_types";
+import { messageQuery } from "../../types/message_types";
+import { checklogin } from "../auth/checklogin";
+import { InvalidTokenError } from "../auth/verifytoken";
 
-// eslint-disable-next-line
-export async function getMessages(req: any, res: FastifyReply) {
-  const { channelId } = req.params;
+export async function getMessages(
+  req: FastifyRequest<{
+    Params: GuildIdParam;
+    Headers: AuthHeaders;
+    Querystring: messageQuery;
+  }>,
+  res: FastifyReply
+) {
+  if (!req.headers.authorization) return;
+  const check = await checklogin(req.headers.authorization);
+  if (check instanceof InvalidTokenError) {
+    res.status(401).send("Invalid request");
+    return;
+  }
+  const channelId = req.params.guildId;
   let before;
   const respo = [];
 
   // before: 指定したidのメッセージより前のメッセージを取得できる  指定しないと最新のメッセージ以降100件を返す
-  if (req.query.before === undefined) {
+  if (req.query.beforeId === undefined) {
     before = await message.getFirstMessage(channelId).then((r) => r?.id);
   } else {
-    before = req.query.before;
+    before = req.query.beforeId;
   }
 
   /*

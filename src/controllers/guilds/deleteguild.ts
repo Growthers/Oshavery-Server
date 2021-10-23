@@ -1,6 +1,10 @@
-import { FastifyReply } from "fastify";
-import { guild } from "../../models/guild";
-import { logger } from "../../main";
+import { FastifyReply, FastifyRequest } from "fastify";
+import { guild } from "../../models/guild.js";
+import { logger } from "../../main.js";
+import { GuildIdParam } from "../../types/guild_types";
+import { AuthHeaders } from "../../types/auth_types";
+import { checklogin } from "../auth/checklogin";
+import { InvalidTokenError } from "../auth/verifytoken";
 
 export type guild = {
   id: string; // id
@@ -12,9 +16,17 @@ export type guild = {
   deleted_at?: Date; // 削除日時(使えるのかは未検証
 };
 
-// eslint-disable-next-line
-export async function deleteGuild(req: any, res: FastifyReply) {
-  console.log(req.path);
+export async function deleteGuild(
+  req: FastifyRequest<{ Params: GuildIdParam; Headers: AuthHeaders }>,
+  res: FastifyReply
+) {
+  if (!req.headers.authorization) return;
+  const check = await checklogin(req.headers.authorization);
+  if (check instanceof InvalidTokenError) {
+    res.status(401).send("Invalid request");
+    return;
+  }
+
   await guild
     .delete(req.params.guildId)
     .then(() => {

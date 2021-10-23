@@ -1,9 +1,9 @@
 import { FastifyReply } from "fastify";
 import jwt_decode from "jwt-decode";
-import { message, message_struct } from "../../models/message";
-import { users } from "../../models/user";
-import { messageCreated } from "../notificationcontroller";
-import { logger } from "../../main";
+import { message, message_struct } from "../../models/message.js";
+import { users } from "../../models/user.js";
+import { messageCreated } from "../notificationcontroller.js";
+import { logger } from "../../main.js";
 
 // eslint-disable-next-line
 export async function createMessage(req: any, res: FastifyReply) {

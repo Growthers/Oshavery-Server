@@ -1,26 +1,11 @@
 import { FastifyInstance } from "fastify";
-import { InstanceInfoRouter } from "./info";
-import { ChannelRouter } from "./channel";
-import { MediaRouter } from "./media";
-import { UserRouter } from "./user";
-import { GuildRouter } from "./guild";
-// import jwt from "jsonwebtoken";
-// import { logger } from "../main";
-import { Login } from "../controllers/auth/login";
-import { MessageRouter } from "./message";
-
-// export class InvalidTokenError extends Error {}
-
-// export async function verifyToken(
-//   token: string
-// ): Promise<string | InvalidTokenError> {
-//   try {
-//     return jwt.sign(token, "12");
-//   } catch (e) {
-//     logger.error("authentication failed");
-//     return new InvalidTokenError();
-//   }
-// }
+import { InstanceInfoRouter } from "./info.js";
+import { ChannelRouter } from "./channel.js";
+import { MediaRouter } from "./media.js";
+import { UserRouter } from "./user.js";
+import { GuildRouter } from "./guild.js";
+import { Login } from "../controllers/auth/login.js";
+import { MessageRouter } from "./message.js";
 
 export async function MainRouting(server: FastifyInstance) {
   // /version /server-info
