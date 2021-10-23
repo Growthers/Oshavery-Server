@@ -7,6 +7,7 @@ import { GuildRouter } from "./guild";
 // import jwt from "jsonwebtoken";
 // import { logger } from "../main";
 import { Login } from "../controllers/auth/login";
+import { MessageRouter } from "./message";
 
 // export class InvalidTokenError extends Error {}
 
@@ -16,7 +17,7 @@ import { Login } from "../controllers/auth/login";
 //   try {
 //     return jwt.sign(token, "12");
 //   } catch (e) {
-//     logger.error("authencation failed");
+//     logger.error("authentication failed");
 //     return new InvalidTokenError();
 //   }
 // }
@@ -29,6 +30,7 @@ export async function MainRouting(server: FastifyInstance) {
   await UserRouter(server);
   await GuildRouter(server);
   await AuthRouter(server);
+  await MessageRouter(server);
 }
 
 async function AuthRouter(server: FastifyInstance) {

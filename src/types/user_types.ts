@@ -5,3 +5,8 @@ export type User = {
   bot: boolean;
   state: number;
 };
+
+export type Register = {
+  name: string;
+  password: string;
+};

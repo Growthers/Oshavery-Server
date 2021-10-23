@@ -96,14 +96,15 @@ model users {
   id                   String                 @id @default(uuid())
   name                 String
   bot                  Boolean
-  password             String
+  password             String?
   origin               String
   sub                  String                 @unique
   avatarurl            String?
+  private_key          String?
+  public_key           String
   medias               media[]
   messages             messages[]
   guild_users_mappings guild_users_mappings[]
-  user_token           user_token[]
 }
 
 model server_info {
@@ -144,10 +145,4 @@ model media {
   channelId  String?
   users      users?    @relation(fields: [uploaderId], references: [id])
   uploaderId String?
-}
-
-model user_token {
-  token   String @id
-  user    users  @relation(fields: [user_id], references: [id])
-  user_id String
 }

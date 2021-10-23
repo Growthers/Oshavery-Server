@@ -14,7 +14,10 @@ export interface user {
   id: string;
   name: string;
   bot: boolean;
+  password: string | null;
   avatarurl: string;
+  origin: string;
+  sub: string;
 }
 
 export class UserNotFoundError extends Error {}
@@ -28,6 +31,9 @@ export const users = {
       name: "",
       bot: true,
       avatarurl: "",
+      password: "",
+      origin: "",
+      sub: "",
     };
 
     const res = await prisma.users
@@ -41,16 +47,57 @@ export const users = {
     if (!res || !res.avatarurl) {
       return resp;
     }
+    logger.debug(res, user_id);
 
     return (resp = {
       id: res.id,
       name: res.name,
       bot: res.bot,
       avatarurl: res.avatarurl,
+      password: res.password,
+      origin: res.origin,
+      sub: res.sub,
     });
   },
 
-  // Auth0からのユーザーIDで検索する関数(廃止予定)
+  async getUserbyUsername(user_name: string) {
+    logger.debug(user_name);
+    let resp: user = {
+      id: "",
+      name: "",
+      bot: true,
+      avatarurl: "",
+      password: "",
+      origin: "",
+      sub: "",
+    };
+
+    const res = await prisma.users
+      .findFirst({
+        where: {
+          name: user_name,
+          origin: "oshavery-app.net",
+        },
+      })
+      .catch((e) => logger.error(e));
+
+    logger.debug(res);
+    if (!res || !res.avatarurl) {
+      return resp;
+    }
+
+    return (resp = {
+      id: res.id,
+      name: res.name,
+      bot: res.bot,
+      avatarurl: res.avatarurl,
+      password: res.password,
+      origin: res.origin,
+      sub: res.sub,
+    });
+  },
+
+  // グーロバルなユーザーIDで検索する関数
   async getFromSub(sub: string) {
     const user = await prisma.users.findUnique({
       where: {
@@ -76,6 +123,7 @@ export const users = {
         bot: false,
         origin: "oshavery-app.net", // ToDo: オリジンの設定を変更できるようにする
         sub: data.sub,
+        public_key: "", // ToDo: ユーザー用秘密鍵/公開鍵を発行する処理を作る
         password: data.password,
         avatarurl: data.avatar,
       },

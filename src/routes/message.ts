@@ -8,7 +8,7 @@ export async function MessageRouter(server: FastifyInstance) {
   server.get("/channels/:channelId/messages", getMessages);
   server.post("/channels/:channelId/messages", createMessage);
 
-  server.get("/channels/:channelId/messages", getOneMessage);
-  server.patch("/channels/:channelId/messages", updateMessage);
-  server.delete("/channels/:channelId/messages", deleteMessage);
+  server.get("/channels/:channelId/messages/:messageId", getOneMessage);
+  server.patch("/channels/:channelId/messages/:messageId", updateMessage);
+  server.delete("/channels/:channelId/messages/:messageId", deleteMessage);
 }

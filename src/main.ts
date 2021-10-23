@@ -24,7 +24,7 @@ console.log(
     chalk.red.bold("*WILL NOT* ask for an authentication token.")
 );
 
-server.listen(3080, async () => {
+server.listen(3080, async (e) => {
   console.log(
     chalk.red("░█████╗") +
       chalk.green("░░██████╗") +
@@ -94,6 +94,9 @@ server.listen(3080, async () => {
   );
 
   console.log(
-    `\nOshavery(alpha) Revision ${GIT_COMMIT_HASH}\n(c) 2021 Oshavery Developers`
+    `\nOshavery(alpha) Revision ${GIT_COMMIT_HASH}\n(c) 2021 Oshavery Developers\nWorks on port: 3080`
   );
+  if (e) {
+    logger.fatal(e);
+  }
 });
