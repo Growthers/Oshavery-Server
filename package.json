@@ -8,7 +8,7 @@
   "author": "Undecided Oshavery Development Team",
   "license": "MIT",
   "scripts": {
-    "start": "npx tsc -p . --noImplicitAny && echo *build done* &&node ./build/main.js",
+    "start": "npx tsc -p . --noImplicitAny && echo *build done* && GIT_COMMIT_HASH=$(git rev-parse --short HEAD) node ./build/main.js",
     "build": "npx tsc -p . --noImplicitAny",
     "init": "npx tsc -p . && GIT_COMMIT_HASH=$(git rev-parse --short HEAD) node ./build/init/init.js",
     "lint": "eslint --ignore-path .gitignore 'src/**/*.{js,jsx,ts,tsx}'",

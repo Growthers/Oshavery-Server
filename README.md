@@ -9,6 +9,22 @@ The Backend is written by TypeScript.
 * Backend:This Repository
 * Frontend: [Oshavery-Front](https://github.com/Undecided-Discord/Oshavery-Front)
 
+## Requirement
+
+- Node.js 14+
+- Yarn 2+
+- MariaDB
+
+## Usage
+
+1. `yarn install`
+2. `npx prisma db push`
+3. `yarn start`
+
+![Oshavery-Server's Screen Shot](docs/oshavery.png)
+
+## Screenshot
+![Screenshot](docs/oshavery-screenshot.png)
 
 ## Authors
 |  <img src="https://github.com/sigumaa.png" width="130px"> | <img src="https://github.com/yusuke4869.png" width="130px"> | <img src="https://github.com/laminne.png" width="130px"> | <img src="https://github.com/sobonn.png" width="130px"> |
