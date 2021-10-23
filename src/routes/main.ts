@@ -1,30 +1,11 @@
 import { FastifyInstance } from "fastify";
-import { InstanceInfoRouter } from "./info";
-import { ChannelRouter } from "./channel";
-import { MediaRouter } from "./media";
-import { UserRouter } from "./user";
-import { GuildRouter } from "./guild";
-// import jwt from "express-jwt";
-// import jwksRsa from "jwks-rsa";
-//
-// if (!process.env.AUTH0_DOMAIN || !process.env.AUTH0_AUDIENCE) {
-//   throw new Error('Make sure you have AUTH0_DOMAIN, and AUTH0_AUDIENCE in your .env file');
-// }
-//
-// export const checkJwt = jwt({
-//   // Dynamically provide a signing key based on the [Key ID](https://tools.ietf.org/html/rfc7515#section-4.1.4) header parameter ("kid") and the signing keys provided by the JWKS endpoint.
-//   secret: jwksRsa.expressJwtSecret({
-//     cache: true,
-//     rateLimit: true,
-//     jwksRequestsPerMinute: 5,
-//     jwksUri: `https://${process.env.AUTH0_DOMAIN}/.well-known/jwks.json`
-//   }),
-//
-//   // Validate the audience and the issuer.
-//   audience: process.env.AUTH0_AUDIENCE,
-//   issuer: [`https://${process.env.AUTH0_DOMAIN}/`],
-//   algorithms: ['RS256']
-// });
+import { InstanceInfoRouter } from "./info.js";
+import { ChannelRouter } from "./channel.js";
+import { MediaRouter } from "./media.js";
+import { UserRouter } from "./user.js";
+import { GuildRouter } from "./guild.js";
+import { Login } from "../controllers/auth/login.js";
+import { MessageRouter } from "./message.js";
 
 export async function MainRouting(server: FastifyInstance) {
   // /version /server-info
@@ -33,4 +14,10 @@ export async function MainRouting(server: FastifyInstance) {
   await MediaRouter(server);
   await UserRouter(server);
   await GuildRouter(server);
+  await AuthRouter(server);
+  await MessageRouter(server);
+}
+
+async function AuthRouter(server: FastifyInstance) {
+  await Login(server);
 }

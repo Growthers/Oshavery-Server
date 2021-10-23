@@ -2,7 +2,8 @@ import { PrismaClient } from "@prisma/client";
 import {
   messageCreated,
   userJoined,
-} from "../controllers/notificationcontroller";
+} from "../controllers/notificationcontroller.js";
+import { logger } from "../main";
 
 const prisma = new PrismaClient();
 
@@ -56,12 +57,13 @@ export const guild = {
 
   // GET /guilds/:guildId
   async get(guildId: string) {
+    logger.debug(guildId);
     const res = await prisma.guilds.findUnique({
       where: {
         id: guildId,
       },
     });
-
+    logger.debug(res);
     if (!res) {
       throw new GuildNotFoundError();
     } else {

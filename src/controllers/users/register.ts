@@ -1,50 +1,33 @@
-import axios from "axios";
-import { FastifyReply } from "fastify";
-import { users, register } from "../../models/user";
-import { logger } from "../../main";
-import { guild } from "../../models/guild";
+import { FastifyReply, FastifyRequest } from "fastify";
+import { users, register } from "../../models/user.js";
+import { Config, logger } from "../../main.js";
+import { Register } from "../../types/user_types.js";
+import { IncomingMessage, Server } from "http";
+import bcrypt from "bcrypt";
 
-// eslint-disable-next-line
-export async function register(req: any, res: FastifyReply) {
-  // Auth0にユーザー情報を問い合わせる(廃止予定)
-  const accessToken = req.headers.authorization;
-  const response = await axios(
-    `https://${process.env.AUTH0_DOMAIN}/userinfo` || "",
-    {
-      method: "GET",
-      headers: {
-        Authorization: accessToken,
-      },
-    }
-  )
-    .then((res) => res.data)
-    .catch((err) => {
-      logger.error(err);
-    });
+export async function CreateUserAccount(
+  req: FastifyRequest<{ Body: Register }, Server, IncomingMessage>,
+  res: FastifyReply
+) {
+  /*
+  ユーザー登録のフロー
+  Username / Passwordを入力して送信 -> ユーザーアカウントの形式にする
+   */
 
-  logger.info("User Created");
+  const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
   const data: register = {
-    name: response.name,
-    sub: response.sub,
-    avatar: response.picture,
+    name: req.body.name,
+    sub: req.body.name + "@" + Config.url, // sub #とは -> @<username>@<Instance_Origin> の形式(グローバルなユーザの識別子)
+    avatar: "", // デフォルトのアイコンのパスを指定したい
+    password: hashedPassword,
   };
 
-  await users
-    .createUserAccount(data)
-    .then((r) => {
-      // 即時実行関数を使って処理を回す
-      (async (userId: string, name: string) => {
-        const guildarr = await guild.allget();
-        for (let i = 0; i < guildarr.length; i++) {
-          await guild.addUsertoGuild(userId, guildarr[i].id, name);
-        }
-      })(r.id, r.name);
-
-      res.status(201).send(r);
-    })
-    .catch((e) => {
-      logger.error(e);
-      return res.status(400).send("Invalid request");
-    });
+  try {
+    const response = await users.createUserAccount(data);
+    return res.status(201).send(response);
+  } catch (e) {
+    logger.error(e);
+    return;
+  }
 }

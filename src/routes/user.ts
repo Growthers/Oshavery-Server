@@ -1,12 +1,27 @@
 import { FastifyInstance } from "fastify";
-import { getAllUsers, getUsers } from "../controllers/users/getusers";
-import { register } from "../controllers/users/register";
-import { updateUser } from "../controllers/users/updateuser";
+import { getAllUsers, getUsers } from "../controllers/users/getusers.js";
+import { CreateUserAccount } from "../controllers/users/register.js";
+import { updateMe } from "../controllers/users/updateuser.js";
+import {
+  Register,
+  updateMeAccountInfo,
+  userIdParams,
+} from "../types/user_types.js";
+import { AuthHeaders } from "../types/auth_types";
 
 export async function UserRouter(server: FastifyInstance) {
-  server.get("/users", getAllUsers).post("/users", register);
+  server
+    .get<{ Headers: AuthHeaders }>("/users", getAllUsers)
+    .post<{ Body: Register; Headers: AuthHeaders }>(
+      "/users",
+      CreateUserAccount
+    );
 
-  server.get("/users/:userId", getUsers);
+  server.get<{ Headers: AuthHeaders }>("/users/:userId", getUsers);
 
-  server.patch("/users/:userId", updateUser);
+  server.patch<{
+    Params: userIdParams;
+    Headers: AuthHeaders;
+    Body: updateMeAccountInfo;
+  }>("/users/me", updateMe);
 }

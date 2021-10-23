@@ -1,12 +1,29 @@
-import { FastifyReply } from "fastify";
-import { info, serverInfo } from "../../models/info";
+import { FastifyReply, FastifyRequest } from "fastify";
+import { info, serverInfo } from "../../models/info.js";
+import { InstanceInformation } from "../../types/info_types";
+import { AuthHeaders } from "../../types/auth_types";
+import { IncomingMessage, Server } from "http";
+import { checklogin } from "../auth/checklogin";
+import { InvalidTokenError } from "../auth/verifytoken";
 
-// eslint-disable-next-line
-export async function createServerInfo(req: any, res: FastifyReply) {
+export async function createServerInfo(
+  req: FastifyRequest<
+    { Body: InstanceInformation; Headers: AuthHeaders },
+    Server,
+    IncomingMessage
+  >,
+  res: FastifyReply
+) {
+  if (!req.headers.authorization) return;
+  const check = await checklogin(req.headers.authorization);
+  if (check instanceof InvalidTokenError) {
+    res.status(401).send("Invalid request");
+    return;
+  }
   const Requestbody = req.body;
 
   const serverInfo: serverInfo = {
-    instance_name: req.body.instance_name,
+    instance_name: req.body.name,
     admin: {
       account: Requestbody.admin.account,
       mail: Requestbody.admin.mail,

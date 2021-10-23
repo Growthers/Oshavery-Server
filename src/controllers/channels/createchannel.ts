@@ -1,10 +1,28 @@
-import { FastifyReply } from "fastify";
-import { channels, channel } from "../../models/channel";
-import { channelCreated } from "../notificationcontroller";
-import { logger } from "../../main";
+import { FastifyReply, FastifyRequest } from "fastify";
+import { channels, channel } from "../../models/channel.js";
+import { channelCreated } from "../notificationcontroller.js";
+import { logger } from "../../main.js";
+import { ChannelIdParams, CreateChannel } from "../../types/channel_types.js";
+import { IncomingMessage, Server } from "http";
+import { AuthHeaders } from "../../types/auth_types";
+import { checklogin } from "../auth/checklogin";
+import { InvalidTokenError } from "../auth/verifytoken";
 
-// eslint-disable-next-line
-export async function createChannel(req: any, res: FastifyReply) {
+export async function createChannel(
+  req: FastifyRequest<
+    { Body: CreateChannel; Params: ChannelIdParams; Headers: AuthHeaders },
+    Server,
+    IncomingMessage
+  >,
+  res: FastifyReply
+) {
+  if (!req.headers.authorization) return;
+  const check = await checklogin(req.headers.authorization);
+  if (check instanceof InvalidTokenError) {
+    res.status(401).send("Invalid request");
+    return;
+  }
+
   const RequestBody = req.body;
   const guild_id = req.params.guildId;
 
@@ -15,15 +33,12 @@ export async function createChannel(req: any, res: FastifyReply) {
     channel_position: RequestBody.channel_position,
   };
 
-  await channels
-    .create(channel, guild_id)
-    .then((ch) => {
-      logger.info("Channel created");
-      channelCreated(ch.id);
-      res.status(201).send(ch);
-    })
-    .catch((e) => {
-      logger.error(e);
-      res.status(400).send("Bad Request");
-    });
+  try {
+    const Channels = await channels.create(channel, guild_id);
+    await channelCreated(Channels.id);
+    logger.info("Channel Created");
+    return res.status(201).send(Channels);
+  } catch (e) {
+    return res.status(400).send("Invalid request");
+  }
 }

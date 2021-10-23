@@ -1,6 +1,6 @@
 import { FastifyInstance } from "fastify";
 
-import { getMedia } from "../controllers/medias/getmedia";
+import { getMedia } from "../controllers/medias/getmedia.js";
 // import {uploadMedia} from "../controllers/medias/uploadmedia";
 
 // import multer from "multer";

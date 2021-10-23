@@ -1,7 +1,12 @@
-import { FastifyReply } from "fastify";
-import { guild } from "../../models/guild";
-import { logger } from "../../main";
-import { users } from "../../models/user";
+import { FastifyReply, FastifyRequest } from "fastify";
+import { guild } from "../../models/guild.js";
+import { logger } from "../../main.js";
+import { users } from "../../models/user.js";
+import { GuildIdParam } from "../../types/guild_types.js";
+import { IncomingMessage, Server } from "http";
+import { AuthHeaders } from "../../types/auth_types";
+import { checklogin } from "../auth/checklogin";
+import { InvalidTokenError } from "../auth/verifytoken";
 
 export type guild = {
   id: string; // id
@@ -13,8 +18,20 @@ export type guild = {
   deleted_at?: Date; // 削除日時(使えるのかは未検証
 };
 
-// eslint-disable-next-line
-export async function memberList(req: any, res: FastifyReply) {
+export async function memberList(
+  req: FastifyRequest<
+    { Params: GuildIdParam; Headers: AuthHeaders },
+    Server,
+    IncomingMessage
+  >,
+  res: FastifyReply
+) {
+  if (!req.headers.authorization) return;
+  const check = await checklogin(req.headers.authorization);
+  if (check instanceof InvalidTokenError) {
+    res.status(401).send("Invalid request");
+    return;
+  }
   // eslint-disable-next-line
   const re: Array<any> = await guild
     .searchJoinedGuildMembers(req.params.guildId)
