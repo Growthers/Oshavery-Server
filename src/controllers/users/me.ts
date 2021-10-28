@@ -1,7 +1,5 @@
-import axios from "axios";
 import { FastifyReply } from "fastify";
 import { users } from "../../models/user";
-import { logger } from "../../main";
 import { guild } from "../../models/guild";
 import { channels } from "../../models/channel";
 

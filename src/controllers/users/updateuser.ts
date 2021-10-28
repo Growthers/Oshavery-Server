@@ -1,4 +1,3 @@
-import axios from "axios";
 import { FastifyReply } from "fastify";
 import { users } from "../../models/user";
 import { logger } from "../../main";

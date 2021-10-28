@@ -1,5 +1,4 @@
 import { FastifyReply } from "fastify";
-import jwt_decode from "jwt-decode";
 import { message, message_struct } from "../../models/message";
 import { users } from "../../models/user";
 import { messageCreated } from "../notificationcontroller";
