@@ -2,7 +2,6 @@ import { FastifyReply } from "fastify";
 
 // eslint-disable-next-line
 export async function register(_req: any, _res: FastifyReply) {
-
   // ToDo: 認証の独自実装
   // const data: register = {
   //   name: response.name,
