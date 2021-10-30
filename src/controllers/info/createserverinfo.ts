@@ -1,12 +1,15 @@
-import { FastifyReply } from "fastify";
+import { FastifyReply, FastifyRequest } from "fastify";
 import { info, serverInfo } from "../../models/info";
+import { InstanceInformation } from "../../types/info_types";
 
-// eslint-disable-next-line
-export async function createServerInfo(req: any, res: FastifyReply) {
+export async function createServerInfo(
+  req: FastifyRequest<{ Body: InstanceInformation }>,
+  res: FastifyReply
+) {
   const Requestbody = req.body;
 
   const serverInfo: serverInfo = {
-    instance_name: req.body.instance_name,
+    instance_name: req.body.name,
     admin: {
       account: Requestbody.admin.account,
       mail: Requestbody.admin.mail,
