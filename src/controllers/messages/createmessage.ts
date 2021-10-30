@@ -1,5 +1,4 @@
 import { FastifyReply } from "fastify";
-import jwt_decode from "jwt-decode";
 import { message, message_struct } from "../../models/message";
 import { users } from "../../models/user";
 import { messageCreated } from "../notificationcontroller";
@@ -11,21 +10,7 @@ export async function createMessage(req: any, res: FastifyReply) {
   const now = new Date();
   // ToDo: ユーザーIP取得の廃止
   const ip_address = req.headers["x-forwaded-for"] || "";
-  let author;
-
-  if (process.env.NODE_ENV === "production") {
-    // トークンを取る
-    const token = req.headers.authorization || "";
-    // デコード
-    // eslint-disable-next-line
-    const decoded: any = await jwt_decode(token);
-    const { sub } = decoded;
-
-    // トークンから得られるSubを使ってユーザー検索
-    author = await users.getFromSub(sub);
-  } else {
-    author = await users.getFromSub("oshavery|1");
-  }
+  const author = await users.getFromSub("oshavery|1");
 
   if (!author) {
     return res.status(404).send("Not found");
