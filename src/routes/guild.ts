@@ -4,14 +4,22 @@ import { createGuild } from "../controllers/guilds/createguild";
 import { getGuild } from "../controllers/guilds/getguild";
 import { updateGuild } from "../controllers/guilds/updateguild";
 import { deleteGuild } from "../controllers/guilds/deleteguild";
+import {
+  CreateGuild,
+  GuildIdParam,
+  UpdateGuildInfo,
+} from "../types/guild_types";
 
 export async function GuildRouter(server: FastifyInstance) {
-  server.post("/guilds", createGuild);
+  server.post<{ Body: CreateGuild }>("/guilds", createGuild);
 
   server
-    .get("/guilds/:guildId", getGuild)
-    .patch("/guilds/:guildId", updateGuild)
-    .delete("/guilds/:guildId", deleteGuild);
+    .get<{ Params: GuildIdParam }>("/guilds/:guildId", getGuild)
+    .patch<{ Params: GuildIdParam; Body: UpdateGuildInfo }>(
+      "/guilds/:guildId",
+      updateGuild
+    )
+    .delete<{ Params: GuildIdParam }>("/guilds/:guildId", deleteGuild);
 
   // router_guild.route("/:guildId/roles") ToDo: ロールの実装
   //   .get(() => {console.log("げっとうえー")})
@@ -19,7 +27,7 @@ export async function GuildRouter(server: FastifyInstance) {
   //   .patch(() => {console.log("ぱっちうえー")})
   //   .delete(() => {console.log("でりーとうえー")})
 
-  server.get("/guilds/:guildId/members", memberList);
+  server.get<{ Params: GuildIdParam }>("/guilds/:guildId/members", memberList);
 
   // router_guild.route("/:guildId/members/:userId") ToDo: ギルドの特定ユーザー情報取得関連の実装
   //   .get(() => {console.log("げっとうえー")})
