@@ -14,6 +14,7 @@ export async function createMessage(
   const now = new Date();
   // ToDo: ユーザーIP取得の廃止
   const ip_address = req.headers["x-forwaded-for"] || "";
+
   // ToDo: ここでテスト用アカウントを使うことを強制しているのでそれをやめる(開発モードの影響)
   const author = await users.getFromSub("oshavery|1");
 
