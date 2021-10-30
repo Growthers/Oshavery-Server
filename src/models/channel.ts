@@ -5,6 +5,7 @@ const prisma = new PrismaClient();
 
 // post時のbodyの型
 // /guilds/:guildId/channels
+// ToDo: Prismaの型を使う
 export type channel = {
   channel_name: string;
   channel_topics: string;
@@ -15,7 +16,7 @@ export type channel = {
 // ギルドが存在しないときに返すエラーを定義
 export class GuildNotFoundError extends Error {}
 
-// 命名がややこしいので要検討
+// ToDo: 命名がややこしいので要検討
 export const channels = {
   // GET
   // /guilds/:guildId/channels
