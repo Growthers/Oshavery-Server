@@ -1,8 +1,13 @@
-import { FastifyReply } from "fastify";
+import { FastifyReply, FastifyRequest } from "fastify";
 import { channels, GuildNotFoundError } from "../../models/channel";
+import { GuildIdParam } from "../../types/guild_types";
+import { Server } from "https";
+import { IncomingMessage } from "http";
 
-// eslint-disable-next-line
-export async function getChannels(req: any, res: FastifyReply) {
+export async function getChannels(
+  req: FastifyRequest<{ Params: GuildIdParam }, Server, IncomingMessage>,
+  res: FastifyReply
+) {
   const guild_id = req.params.guildId;
   const guilds = await channels.get(guild_id);
 
