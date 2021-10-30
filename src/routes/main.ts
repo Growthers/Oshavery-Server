@@ -4,6 +4,7 @@ import { ChannelRouter } from "./channel";
 import { MediaRouter } from "./media";
 import { UserRouter } from "./user";
 import { GuildRouter } from "./guild";
+import { MessageRouter } from "./message";
 // import jwt from "express-jwt";
 // import jwksRsa from "jwks-rsa";
 //
@@ -31,6 +32,7 @@ export async function MainRouting(server: FastifyInstance) {
   await InstanceInfoRouter(server);
   await ChannelRouter(server);
   await MediaRouter(server);
+  await MessageRouter(server);
   await UserRouter(server);
   await GuildRouter(server);
 }

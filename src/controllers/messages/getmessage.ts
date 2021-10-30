@@ -1,20 +1,29 @@
-import { FastifyReply } from "fastify";
+import { FastifyReply, FastifyRequest } from "fastify";
 import { message } from "../../models/message";
 import { users } from "../../models/user";
 import { medias } from "../../models/media";
 import { logger } from "../../main";
+import { GetOneMessageParams, messageQuery } from "../../types/message_types";
+import { Server } from "https";
+import { IncomingMessage } from "http";
 
-// eslint-disable-next-line
-export async function getMessages(req: any, res: FastifyReply) {
+export async function getMessages(
+  req: FastifyRequest<
+    { Querystring: messageQuery; Params: GetOneMessageParams },
+    Server,
+    IncomingMessage
+  >,
+  res: FastifyReply
+) {
   const { channelId } = req.params;
   let before;
   const respo = [];
 
   // before: 指定したidのメッセージより前のメッセージを取得できる  指定しないと最新のメッセージ以降100件を返す
-  if (req.query.before === undefined) {
+  if (req.query.beforeId === undefined) {
     before = await message.getFirstMessage(channelId).then((r) => r?.id);
   } else {
-    before = req.query.before;
+    before = req.query.beforeId;
   }
 
   /*
@@ -94,8 +103,10 @@ export async function getMessages(req: any, res: FastifyReply) {
   return res.send(respo);
 }
 
-// eslint-disable-next-line
-export async function getOneMessage(req: any, res: FastifyReply) {
+export async function getOneMessage(
+  req: FastifyRequest<{ Params: GetOneMessageParams }>,
+  res: FastifyReply
+) {
   const { messageId } = req.params;
 
   await message

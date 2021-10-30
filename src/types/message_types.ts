@@ -1,4 +1,4 @@
-export type createMessage = {
+export type createMessageBody = {
   content: string;
 };
 
@@ -14,4 +14,8 @@ export type messageQuery = {
 export type GetOneMessageParams = {
   channelId: string;
   messageId: string;
+};
+
+export type ChannelIdParams = {
+  id: string;
 };
