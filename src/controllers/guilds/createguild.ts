@@ -1,6 +1,9 @@
-import { FastifyReply } from "fastify";
-import { guild } from "../../models/guild";
+import { FastifyReply, FastifyRequest } from "fastify";
+import { guild, guild_struct_post } from "../../models/guild";
 import { logger } from "../../main";
+import { CreateGuild } from "../../types/guild_types";
+import { Server } from "https";
+import { IncomingMessage } from "http";
 
 export type guild = {
   id: string; // id
@@ -12,12 +15,17 @@ export type guild = {
   deleted_at?: Date; // 削除日時(使えるのかは未検証
 };
 
-// eslint-disable-next-line
-export async function createGuild(req: any, res: FastifyReply) {
-  const { body } = req;
-
+export async function createGuild(
+  req: FastifyRequest<{ Body: CreateGuild }, Server, IncomingMessage>,
+  res: FastifyReply
+) {
+  const body = req.body;
+  const data: guild_struct_post = {
+    guild_name: body.name,
+    guild_topics: body.topic,
+  };
   await guild
-    .create(body)
+    .create(data)
     .then((gld) => {
       logger.info("Guild created");
       res.status(201).send(gld);

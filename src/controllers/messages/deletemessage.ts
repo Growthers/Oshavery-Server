@@ -1,10 +1,13 @@
-import { FastifyReply } from "fastify";
+import { FastifyReply, FastifyRequest } from "fastify";
 import { message } from "../../models/message";
 import { messageDeleted } from "../notificationcontroller";
 import { logger } from "../../main";
+import { GetOneMessageParams } from "../../types/message_types";
 
-// eslint-disable-next-line
-export async function deleteMessage(req: any, res: FastifyReply) {
+export async function deleteMessage(
+  req: FastifyRequest<{ Params: GetOneMessageParams }>,
+  res: FastifyReply
+) {
   const { messageId } = req.params;
   const date: Date = new Date();
 

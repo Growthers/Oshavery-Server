@@ -22,7 +22,7 @@ describe("Check: Info Router", () => {
       .post("/server-info")
       .type("application/json")
       .send({
-        instance_name: "string",
+        name: "string",
         admin: {
           account: "string",
           mail: "string",

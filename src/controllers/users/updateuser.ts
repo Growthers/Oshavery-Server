@@ -1,6 +1,7 @@
-import { FastifyReply } from "fastify";
+import { FastifyReply, FastifyRequest } from "fastify";
 import { users } from "../../models/user";
 import { logger } from "../../main";
+import { updateMeAccountInfo } from "../../types/user_types";
 
 // eslint-disable-next-line
 export async function updateUser(req: any, res: FastifyReply) {
@@ -12,8 +13,10 @@ export async function updateUser(req: any, res: FastifyReply) {
   //  強制アップデート用
 }
 
-// eslint-disable-next-line
-export async function updateMe(req: any, res: FastifyReply) {
+export async function updateMe(
+  req: FastifyRequest<{ Body: updateMeAccountInfo }>,
+  res: FastifyReply
+) {
   const usr = await users.getFromSub("oshavery|1");
 
   if (!usr) {

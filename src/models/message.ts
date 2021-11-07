@@ -4,6 +4,7 @@ const prisma = new PrismaClient();
 
 export class MessageNotFoundError extends Error {}
 
+// ToDo: Prismaの型を使う
 export interface message_struct {
   timestamp: Date;
   author: {

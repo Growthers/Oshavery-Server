@@ -7,6 +7,7 @@ import {
 const prisma = new PrismaClient();
 
 // post時のbodyの型
+// ToDo: 型定義する
 export type guild_struct_post = {
   guild_name: string;
   guild_topics: string;

@@ -4,6 +4,7 @@ import { logger } from "../main";
 const prisma = new PrismaClient();
 
 // post時のbodyの型
+// ToDo: Prismaの型を使うようにする
 export type serverInfo = {
   instance_name: string;
   admin: {

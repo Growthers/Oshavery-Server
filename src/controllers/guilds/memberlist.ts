@@ -1,7 +1,8 @@
-import { FastifyReply } from "fastify";
+import { FastifyReply, FastifyRequest } from "fastify";
 import { guild } from "../../models/guild";
 import { logger } from "../../main";
 import { users } from "../../models/user";
+import { GuildIdParam } from "../../types/guild_types";
 
 export type guild = {
   id: string; // id
@@ -13,8 +14,10 @@ export type guild = {
   deleted_at?: Date; // 削除日時(使えるのかは未検証
 };
 
-// eslint-disable-next-line
-export async function memberList(req: any, res: FastifyReply) {
+export async function memberList(
+  req: FastifyRequest<{ Params: GuildIdParam }>,
+  res: FastifyReply
+) {
   // eslint-disable-next-line
   const re: Array<any> = await guild
     .searchJoinedGuildMembers(req.params.guildId)

@@ -3,6 +3,7 @@ import { logger } from "../main";
 
 const prisma = new PrismaClient();
 
+// ToDo: Prismaの吐く型を使う
 export interface register {
   name: string;
   avatar: string;
