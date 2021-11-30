@@ -6,24 +6,10 @@ import {
 
 const prisma = new PrismaClient();
 
-// post時のbodyの型
-// ToDo: 型定義する
-export type guild_struct_post = {
-  guild_name: string;
-  guild_topics: string;
-};
-
-// patch時のbodyの型
-export type guild_struct_patch = {
-  name: string;
-  icon: string;
-  owner_id: string;
-};
-
 export class GuildNotFoundError extends Error {}
 
 // POST /guilds
-export async function createGuild(data: { name: string; topics: string;}) {
+export async function createGuild(data: { name: string; topics: string }) {
   return prisma.guilds.create({
     data: {
       icon: "https://media.oshavery-app.net/logos/well.png",
@@ -34,7 +20,10 @@ export async function createGuild(data: { name: string; topics: string;}) {
 }
 
 // PATCH /guilds/:guildId
-export async function update(guildId: string, body: guild_struct_patch) {
+export async function updateGuild(
+  guildId: string,
+  body: { name: string; icon: string; owner: string }
+) {
   return prisma.guilds.update({
     where: {
       id: guildId,

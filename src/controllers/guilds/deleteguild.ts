@@ -1,7 +1,6 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { guild } from "../../repositories/guild";
-import { logger } from "../../main";
 import { GuildIdParam } from "../../types/guild_types";
+import { deleteGuild } from "../../service/guild/delete";
 
 export type guild = {
   id: string; // id
@@ -13,18 +12,17 @@ export type guild = {
   deleted_at?: Date; // 削除日時(使えるのかは未検証
 };
 
-export async function deleteGuild(
+export async function DeleteGuild(
   req: FastifyRequest<{ Params: GuildIdParam }>,
   res: FastifyReply
 ) {
-  await guild
-    .delete(req.params.guildId)
-    .then(() => {
-      res.status(204).send();
-      logger.info("Guild Deleted");
-    })
-    .catch((e) => {
-      logger.error(e);
-      res.status(400).send("Invalid reqest");
-    });
+  // Todo: Serviceに投げる
+  const resp = await deleteGuild(req.params.guildId);
+
+  if (resp !== null) {
+    return res.status(204).send();
+  } else {
+    req.log.error("Failed to Delete Guild");
+    return res.status(400).send("Invalid Request");
+  }
 }
