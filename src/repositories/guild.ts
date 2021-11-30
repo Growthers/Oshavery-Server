@@ -52,15 +52,15 @@ export async function get(guildId: string) {
   });
 
   if (!res) {
-    throw new GuildNotFoundError();
+    return null;
   } else {
     return res;
   }
 }
 
-export async function allget() {
-  return prisma.guilds.findMany();
-}
+// export async function allget() {
+//   return prisma.guilds.findMany();
+// }
 
 // 仮
 // 要動作確認

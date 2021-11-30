@@ -1,8 +1,6 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { guild } from "../../repositories/guild";
-import { logger } from "../../main";
-import { users } from "../../models/user";
 import { GuildIdParam } from "../../types/guild_types";
+import memberlist from "../../service/guild/memberlist";
 
 export type guild = {
   id: string; // id
@@ -18,25 +16,11 @@ export async function memberList(
   req: FastifyRequest<{ Params: GuildIdParam }>,
   res: FastifyReply
 ) {
-  // eslint-disable-next-line
-  const re: Array<any> = await guild
-    .searchJoinedGuildMembers(req.params.guildId)
-    .then((r) => r)
-    .catch((e) => {
-      logger.error(e);
-      return [];
-    });
-  // eslint-disable-next-line
-  const resp = Array<any>();
-
-  for (let i = 0; i < re.length; i++) {
-    resp[i] = await users
-      .get(re[i].usersId)
-      .then((r) => r)
-      .catch((e) => {
-        logger.error(e);
-      });
+  const member = await memberlist(req.params.guildId);
+  if (member !== null) {
+    return res.status(200).send(member);
+  } else {
+    req.log.info("Failed to get Guilds ");
+    return res.send(400).send("Invalid Request");
   }
-
-  return res.status(200).send(resp);
 }

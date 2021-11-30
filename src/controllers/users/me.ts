@@ -1,6 +1,6 @@
 import { FastifyReply } from "fastify";
 import { users } from "../../models/user";
-import { guild } from "../../repositories/guild";
+import { get, searchJoinedGuilds } from "../../repositories/guild";
 import { getChannels } from "../../repositories/channel";
 
 type me = {
@@ -27,7 +27,7 @@ export async function getMe(_req: any, res: FastifyReply) {
   const userdata = await users.getFromSub("oshavery|1");
 
   // 参加しているギルドを取得
-  const guilds = await guild.searchJoinedGuilds(userdata.id);
+  const guilds = await searchJoinedGuilds(userdata.id);
   if (!guilds) {
     return;
   }
@@ -37,7 +37,7 @@ export async function getMe(_req: any, res: FastifyReply) {
   const guild_datas = Array<any>(); // ToDo: Anyやめる
   for (let i = 0; i < guilds.length; i++) {
     // ギルド情報を取り出す
-    guild_datas[i] = await guild.get(guilds[i].guild_id || "");
+    guild_datas[i] = await get(guilds[i].guild_id || "");
 
     // ギルドからチャンネル一覧を取り出す
     const gld = await getChannels(guilds[i].guild_id || "");
