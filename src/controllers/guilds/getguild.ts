@@ -1,5 +1,5 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { guild } from "../../models/guild";
+import { guild } from "../../repositories/guild";
 import { medias } from "../../models/media";
 import { GuildIdParam } from "../../types/guild_types";
 import { Server } from "https";

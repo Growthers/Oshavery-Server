@@ -1,5 +1,5 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { guild } from "../../models/guild";
+import { guild } from "../../repositories/guild";
 import { logger } from "../../main";
 import { GuildIdParam, UpdateGuildInfo } from "../../types/guild_types";
 import { Server } from "https";

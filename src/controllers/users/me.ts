@@ -1,6 +1,6 @@
 import { FastifyReply } from "fastify";
 import { users } from "../../models/user";
-import { guild } from "../../models/guild";
+import { guild } from "../../repositories/guild";
 import { getChannels } from "../../repositories/channel";
 
 type me = {
