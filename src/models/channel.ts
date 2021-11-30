@@ -53,16 +53,22 @@ export const channels = {
 
   // POST
   // /guilds/:guildId/channel
-  async create(body: channel, guildId: string) {
+  async create(data: {
+    name: string;
+    topics: string;
+    type: string;
+    position: number;
+    guildId: string;
+  }) {
     // チャンネルを先に作る
     const res = await prisma.channels.create({
       data: {
         latest_message_id: "",
-        guilds: { connect: { id: guildId } },
-        name: body.channel_name,
-        topic: body.channel_topics,
-        type: body.channel_type,
-        position: body.channel_position,
+        guilds: { connect: { id: data.guildId } },
+        name: data.name,
+        topic: data.topics,
+        type: data.type,
+        position: data.position,
       },
     });
 
@@ -86,8 +92,6 @@ export const channels = {
         latest_message_id: systemmessage.id,
       },
     });
-
-    // Todo: 作成通知を出す
 
     return res;
   },
