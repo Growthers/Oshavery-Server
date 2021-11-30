@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { message } from "../../models/message";
 import { users } from "../../models/user";
-import { medias } from "../../models/media";
+import { getMediaFromMessageId } from "../../repositories/media";
 import { logger } from "../../main";
 import { GetOneMessageParams, messageQuery } from "../../types/message_types";
 import { Server } from "https";
@@ -51,7 +51,7 @@ export async function getMessages(
 
     // contentが空のメッセージはメディアファイルを含んでいるのでメディアをメッセージIDで検索
     if (messages[i].content === "") {
-      const media = await medias.getMediaFromMessageId(messages[i].id);
+      const media = await getMediaFromMessageId(messages[i].id);
       if (!media) {
         return;
       }

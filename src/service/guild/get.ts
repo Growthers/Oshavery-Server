@@ -1,10 +1,10 @@
 import { get as getGuild } from "../../repositories/guild";
-import { medias } from "../../models/media";
+import { searchGuildIcon } from "../../repositories/media";
 
 export default async function getOneGuild(id: string) {
   const guild = await getGuild(id);
   if (guild !== null) {
-    const icon = await medias.searchGuildIcon(guild.id);
+    const icon = await searchGuildIcon(guild.id);
 
     if (icon) {
       return {
