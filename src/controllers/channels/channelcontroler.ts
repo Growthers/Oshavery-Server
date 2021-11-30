@@ -1,10 +1,10 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { channels } from "../../models/channel";
 import { GuildIdParam } from "../../types/guild_types";
 import { CreateChannel } from "../../types/channel_types";
 import { Server } from "https";
 import { IncomingMessage } from "http";
 import create from "../../service/channel/create";
+import get from "../../service/channel/get";
 
 export async function createChannel(
   req: FastifyRequest<
@@ -34,11 +34,11 @@ export async function getChannels(
   res: FastifyReply
 ) {
   const guild_id = req.params.guildId;
+  const guilds = await get(guild_id);
 
-  try {
-    const guilds = await channels.get(guild_id);
+  if (guilds !== null) {
     return res.status(200).send(guilds);
-  } catch (e) {
+  } else {
     req.log.error("Guild Not Found");
     return res.status(404).send("Not found");
   }

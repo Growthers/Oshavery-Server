@@ -1,7 +1,7 @@
 import { FastifyReply } from "fastify";
 import { users } from "../../models/user";
 import { guild } from "../../models/guild";
-import { channels } from "../../models/channel";
+import { getChannels } from "../../repositories/channel";
 
 type me = {
   id: string;
@@ -40,7 +40,7 @@ export async function getMe(_req: any, res: FastifyReply) {
     guild_datas[i] = await guild.get(guilds[i].guild_id || "");
 
     // ギルドからチャンネル一覧を取り出す
-    const gld = await channels.get(guilds[i].guild_id || "");
+    const gld = await getChannels(guilds[i].guild_id || "");
     if (!gld) {
       return;
     }

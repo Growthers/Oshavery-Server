@@ -1,5 +1,5 @@
-import { channels } from "../../models/channel";
 import { channelCreated } from "../../controllers/notificationcontroller";
+import { createChannel } from "../../repositories/channel";
 
 export default async function (data: {
   name: string;
@@ -8,7 +8,7 @@ export default async function (data: {
   position: number;
   guildId: string;
 }) {
-  const res = await channels.create({
+  const res = await createChannel({
     name: data.name,
     topics: data.topics,
     type: data.type,
