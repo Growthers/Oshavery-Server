@@ -1,5 +1,5 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { message } from "../../models/message";
+import { message } from "../../repositories/message";
 import { messageUpdated } from "../notificationcontroller";
 import { logger } from "../../main";
 import {
