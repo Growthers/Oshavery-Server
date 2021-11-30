@@ -4,7 +4,6 @@ import { GuildIdParam } from "../../types/guild_types";
 import { CreateChannel } from "../../types/channel_types";
 import { Server } from "https";
 import { IncomingMessage } from "http";
-import { GuildNotFoundError } from "../../models/guild";
 import create from "../../service/channel/create";
 
 export async function createChannel(
@@ -27,9 +26,7 @@ export async function createChannel(
   });
 
   req.log.info("Channel Created");
-
-  res.status(200).send(response);
-  return;
+  return res.status(200).send(response);
 }
 
 export async function getChannels(
@@ -37,10 +34,12 @@ export async function getChannels(
   res: FastifyReply
 ) {
   const guild_id = req.params.guildId;
-  const guilds = await channels.get(guild_id);
 
-  if (guilds instanceof GuildNotFoundError) {
+  try {
+    const guilds = await channels.get(guild_id);
+    return res.status(200).send(guilds);
+  } catch (e) {
+    req.log.error("Guild Not Found");
     return res.status(404).send("Not found");
   }
-  return res.status(200).send(guilds);
 }
