@@ -1,5 +1,5 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { users } from "../../models/user";
+import { users } from "../../repositories/user";
 import { logger } from "../../main";
 import { updateMeAccountInfo } from "../../types/user_types";
 

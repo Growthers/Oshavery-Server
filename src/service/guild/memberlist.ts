@@ -1,5 +1,5 @@
 import { searchJoinedGuildMembers } from "../../repositories/guild";
-import { users } from "../../models/user";
+import { get } from "../../repositories/user";
 
 type User = {
   id: string;
@@ -19,7 +19,12 @@ export default async function (id: string) {
     // Todo: for v in はJSのループの中で一番速いが,中身がAwaitで非効率なのでPromise.allか何かに変更する
     // eslint-disable-next-line
     for (let i in GuildMembers) {
-      GuildMembersData[i] = await users.get(GuildMembers[i].id);
+      const tmp = await get(GuildMembers[i].id);
+      if (tmp === null) {
+        break;
+      } else {
+        GuildMembersData[i] = tmp;
+      }
     }
     return GuildMembersData;
   }

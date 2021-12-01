@@ -1,8 +1,7 @@
 import { FastifyRequest, FastifyReply } from "fastify";
-import { users } from "../../models/user";
-import { logger } from "../../main";
-import { getMe } from "./me";
+import { users } from "../../repositories/user";
 import { userIdParams } from "../../types/user_types";
+import { getUser } from "../../service/user/get";
 
 export async function getAllUsers(_req: FastifyRequest, res: FastifyReply) {
   return users
@@ -15,21 +14,12 @@ export async function getUsers(
   req: FastifyRequest<{ Params: userIdParams }>,
   res: FastifyReply
 ) {
-  // /users/me へのアクセスはmeのハンドラに処理を投げる
-  if (req.params.id === "me") {
-    await getMe(req, res);
-    return;
-  }
-
   const user_id = req.params.id;
-
-  await users
-    .get(user_id)
-    .then((ur) => {
-      res.status(200).send(ur);
-    })
-    .catch((e) => {
-      logger.error(e);
-      res.status(404).send("User Not Found");
-    });
+  const resp = await getUser(user_id);
+  if (resp !== null) {
+    return res.status(200).send(resp);
+  } else {
+    req.log.error("User Not Found");
+    return res.status(404).send("User Not Found");
+  }
 }

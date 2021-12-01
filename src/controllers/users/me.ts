@@ -1,7 +1,5 @@
 import { FastifyReply } from "fastify";
-import { users } from "../../models/user";
-import { get, searchJoinedGuilds } from "../../repositories/guild";
-import { getChannels } from "../../repositories/channel";
+import { getAccessedUser } from "../../service/user/me";
 
 type me = {
   id: string;
@@ -15,46 +13,19 @@ type me = {
 
 // eslint-disable-next-line
 export async function getMe(_req: any, res: FastifyReply) {
-  let response_data: me = {
-    id: "",
-    name: "",
-    avatarurl: "",
-    bot: false,
-    state: 0,
-    guilds: [],
-  };
+  const resp = await getAccessedUser();
+  if (resp !== null) {
+    const response_data: me = {
+      id: resp.id,
+      name: resp.name,
+      avatarurl: resp.avatarurl,
+      bot: resp.bot,
+      state: 0,
+      guilds: resp.guilds,
+    };
 
-  const userdata = await users.getFromSub("oshavery|1");
-
-  // 参加しているギルドを取得
-  const guilds = await searchJoinedGuilds(userdata.id);
-  if (!guilds) {
-    return;
+    return res.status(200).send(response_data);
+  } else {
+    return res.status(400).send("Invalid Request");
   }
-
-  // ギルドにあるチャンネルリストの取得
-  // eslint-disable-next-line
-  const guild_datas = Array<any>(); // ToDo: Anyやめる
-  for (let i = 0; i < guilds.length; i++) {
-    // ギルド情報を取り出す
-    guild_datas[i] = await get(guilds[i].guild_id || "");
-
-    // ギルドからチャンネル一覧を取り出す
-    const gld = await getChannels(guilds[i].guild_id || "");
-    if (!gld) {
-      return;
-    }
-    guild_datas[i].channels = gld;
-  }
-
-  response_data = {
-    id: userdata.id,
-    name: userdata.name,
-    avatarurl: userdata.avatarurl,
-    bot: userdata.bot,
-    state: 0,
-    guilds: guild_datas,
-  };
-
-  return res.send(response_data);
 }

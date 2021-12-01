@@ -1,4 +1,4 @@
-import { users } from "../../models/user";
+import { users } from "../../repositories/user";
 import { createMessage } from "../../repositories/message";
 import { messageCreated } from "../../controllers/notificationcontroller";
 

@@ -3,7 +3,7 @@ import {
   getMessages,
   getOneMessage as getMes,
 } from "../../repositories/message";
-import { users } from "../../models/user";
+import { users } from "../../repositories/user";
 import { getMediaFromMessageId } from "../../repositories/media";
 
 export async function getMessage(
