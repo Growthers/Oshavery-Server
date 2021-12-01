@@ -23,6 +23,17 @@ export async function createServerInfo(
     res.log.error("Failed to create to InstanceInfo");
     return res.status(400).send("Invalid Request");
   } else {
-    return res.status(201).send(resp);
+    const r = {
+      name: resp.instance_name,
+      user_count: resp.user_count,
+      message_count: resp.message_count,
+      admin: {
+        account: resp.admin_id,
+        mail: "",
+      },
+      tos: resp.tos,
+      privacy_policy: resp.privacy_policy,
+    };
+    return res.status(201).send(r);
   }
 }
