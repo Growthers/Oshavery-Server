@@ -135,7 +135,7 @@ export async function updateMessage(id: string, content: string) {
 }
 
 export async function deleteMessage(messageId: string, time: Date) {
-  return prisma.messages.update({
+  const r = prisma.messages.update({
     where: {
       id: messageId,
     },
@@ -144,4 +144,9 @@ export async function deleteMessage(messageId: string, time: Date) {
       deleted_at: time,
     },
   });
+  if (!r) {
+    return null;
+  } else {
+    return r;
+  }
 }

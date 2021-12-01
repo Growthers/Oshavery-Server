@@ -1,7 +1,6 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { message } from "../../repositories/message";
+import deleteMes from "../../service/messages/delete";
 import { messageDeleted } from "../notificationcontroller";
-import { logger } from "../../main";
 import { GetOneMessageParams } from "../../types/message_types";
 
 export async function deleteMessage(
@@ -9,18 +8,16 @@ export async function deleteMessage(
   res: FastifyReply
 ) {
   const { messageId } = req.params;
-  const date: Date = new Date();
+
+  const resp = await deleteMes(messageId);
 
   // ここでの削除は論理削除で実際には削除されない(ユーザーに表示されなくなるだけ)
-  return message
-    .deleteMessage(messageId, date)
-    .then((r) => {
-      // ws
-      messageDeleted(r.channel_id, r.id);
-      return res.status(204);
-    })
-    .catch((e) => {
-      logger.error(e);
-      return res.status(404).send("Not found");
-    });
+  if (resp === null) {
+    res.log.error("Message Not Found");
+    return res.status(404).send("Not found");
+  } else {
+    // ws
+    await messageDeleted(resp.channel_id, resp.id);
+    return res.status(204);
+  }
 }
