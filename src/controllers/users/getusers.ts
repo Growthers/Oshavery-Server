@@ -1,13 +1,15 @@
 import { FastifyRequest, FastifyReply } from "fastify";
-import { users } from "../../repositories/user";
+import { getAllUsers as allUsers } from "../../service/user/allusers";
 import { userIdParams } from "../../types/user_types";
 import { getUser } from "../../service/user/get";
 
 export async function getAllUsers(_req: FastifyRequest, res: FastifyReply) {
-  return users
-    .getAllUsers()
-    .then((r) => res.status(200).send(r))
-    .catch((e) => console.log(e));
+  const users = allUsers();
+  if (users === null) {
+    return res.status(400).send("Invalid Request");
+  } else {
+    return res.status(200).send(users);
+  }
 }
 
 export async function getUsers(

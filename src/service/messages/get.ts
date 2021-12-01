@@ -3,8 +3,8 @@ import {
   getMessages,
   getOneMessage as getMes,
 } from "../../repositories/message";
-import { users } from "../../repositories/user";
 import { getMediaFromMessageId } from "../../repositories/media";
+import { getUser } from "../user/get";
 
 export async function getMessage(
   beforeId: string | undefined,
@@ -34,7 +34,7 @@ export async function getMessage(
   }
 
   for (let i = 0; i < messages.length; i++) {
-    const usr = await users.get(messages[i].userId || "");
+    const usr = await getUser(messages[i].userId || "");
     if (!usr) {
       return null;
     }

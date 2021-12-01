@@ -1,6 +1,6 @@
-import { users } from "../../repositories/user";
 import { createMessage } from "../../repositories/message";
 import { messageCreated } from "../../controllers/notificationcontroller";
+import { getUser } from "../user/get";
 
 export default async function CreateMessage(data: {
   ip: string;
@@ -10,7 +10,7 @@ export default async function CreateMessage(data: {
   const now = new Date();
 
   // ToDo: ここでテスト用アカウントを使うことを強制しているのでそれをやめる(開発モードの影響)
-  const author = await users.getFromSub("oshavery|1");
+  const author = await getUser("oshavery|1");
 
   if (!author) {
     return null;
