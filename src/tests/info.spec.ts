@@ -14,34 +14,34 @@ describe("Check: Info Router", () => {
     });
   });
 
-  // it("インスタンス情報を登録できるか", async function () {
-  //   const fastify = build();
-  //   await fastify.ready();
-  //
-  //   const res = await supertest(fastify.server)
-  //     .post("/server-info")
-  //     .type("application/json")
-  //     .send({
-  //       name: "string",
-  //       admin: {
-  //         account: "string",
-  //         mail: "string",
-  //       },
-  //       tos: "string",
-  //       privacy_policy: "string",
-  //     });
-  //
-  //   await expect(res.statusCode).toBe(201);
-  //   expect(res.body).toStrictEqual({
-  //     instance_name: "string",
-  //     user_count: "number",
-  //     messeage_count: "number",
-  //     admin: {
-  //       account: "string",
-  //       mail: "string",
-  //     },
-  //     tos: "string",
-  //     privacy_policy: "string",
-  //   });
-  // });
+  it("インスタンス情報を登録できるか", async function () {
+    const fastify = build();
+    await fastify.ready();
+
+    const res = await supertest(fastify.server)
+      .post("/server-info")
+      .type("application/json")
+      .send({
+        name: "string",
+        admin: {
+          account: "string",
+          mail: "string",
+        },
+        tos: "string",
+        privacy_policy: "string",
+      });
+
+    await expect(res.statusCode).toBe(201);
+    expect(res.body).toStrictEqual({
+      name: "string",
+      admin: {
+        account: "string",
+        mail: "string",
+      },
+      tos: "string",
+      privacy_policy: "string",
+      user_count: 0,
+      message_count: 0,
+    });
+  });
 });

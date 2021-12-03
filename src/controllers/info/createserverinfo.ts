@@ -9,7 +9,7 @@ export async function createServerInfo(
   const Requestbody = req.body;
 
   const serverInfo = {
-    name: req.body.name,
+    name: Requestbody.name,
     admin: {
       account: Requestbody.admin.account,
       mail: Requestbody.admin.mail,
@@ -29,7 +29,7 @@ export async function createServerInfo(
       message_count: resp.message_count,
       admin: {
         account: resp.admin_id,
-        mail: "",
+        mail: resp.admin_mail,
       },
       tos: resp.tos,
       privacy_policy: resp.privacy_policy,

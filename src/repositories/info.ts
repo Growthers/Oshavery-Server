@@ -13,11 +13,12 @@ export async function get() {
     instance_name: info[0].instance_name,
     admin: {
       account: info[0].admin_id,
+      mail: info[0].admin_mail,
     },
     tos: info[0].tos,
     privacy_policy: info[0].privacy_policy,
-    user_count,
-    message_count,
+    user_count: user_count,
+    message_count: message_count,
   };
 }
 
@@ -38,6 +39,7 @@ export async function create(body: {
       user_count: 0,
       message_count: 0,
       admin_id: body.admin.account,
+      admin_mail: body.admin.mail,
       tos: body.tos,
       privacy_policy: body.policy,
     },
