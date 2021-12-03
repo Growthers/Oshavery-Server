@@ -19,7 +19,8 @@ async function init() {
   console.log("DBを設定しています...");
 
   process.stdout.write(chalk.cyan("テーブルを初期化しています..."));
-  if (process.env.NODE_ENV === "production") {
+  if (process.env.OSHAVERY_MODE === "production") {
+    process.stdout.write(chalk.cyan("プロダクションDBを初期化中..."));
     await exec("npx prisma db push", (e, o, re) => {
       if (o) {
         console.log(o);
