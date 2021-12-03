@@ -1,9 +1,8 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { guild } from "../../models/guild";
-import { logger } from "../../main";
 import { GuildIdParam, UpdateGuildInfo } from "../../types/guild_types";
 import { Server } from "https";
 import { IncomingMessage } from "http";
+import update from "../../service/guild/update";
 
 export type guild = {
   id: string; // id
@@ -24,15 +23,17 @@ export async function updateGuild(
   res: FastifyReply
 ) {
   const guild_id = req.params.guildId;
-  const { body } = req;
+  const body = {
+    name: req.body.name,
+    icon: req.body.icon,
+    owner: req.body.owner_id,
+  };
 
-  await guild
-    .update(guild_id, body)
-    .then(() => {
-      res.status(204).send();
-    })
-    .catch((e) => {
-      logger.error(e);
-      res.status(400).send("Invalid reqest");
-    });
+  const resp = await update(guild_id, body);
+  if (resp !== null) {
+    return res.status(204).send();
+  } else {
+    req.log.error("Guild Update failed");
+    return res.status(400).send("Invalid Request");
+  }
 }

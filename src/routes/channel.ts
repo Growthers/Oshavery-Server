@@ -1,7 +1,7 @@
 import { FastifyInstance } from "fastify";
 
-import { createChannel } from "../controllers/channels/createchannel";
-import { getChannels } from "../controllers/channels/getchannels";
+import { createChannel } from "../controllers/channels/channelcontroler";
+import { getChannels } from "../controllers/channels/channelcontroler";
 import { GuildIdParam } from "../types/guild_types";
 import { CreateChannel } from "../types/channel_types";
 

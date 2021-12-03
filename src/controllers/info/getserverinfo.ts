@@ -1,9 +1,11 @@
 import { FastifyRequest, FastifyReply } from "fastify";
-import { info } from "../../models/info";
+import { getInstanceInfo } from "../../service/info/get";
 
 export async function getServerInfo(_req: FastifyRequest, res: FastifyReply) {
-  // サーバー情報を返す
-  const inf = await info.get();
-  res.send(inf);
-  return inf;
+  const resp = await getInstanceInfo();
+  if (resp !== null) {
+    return res.status(200).send(resp);
+  } else {
+    return res.status(400).send("Invalid Request");
+  }
 }

@@ -1,9 +1,8 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { guild, guild_struct_post } from "../../models/guild";
-import { logger } from "../../main";
 import { CreateGuild } from "../../types/guild_types";
 import { Server } from "https";
 import { IncomingMessage } from "http";
+import create from "../../service/guild/create";
 
 export type guild = {
   id: string; // id
@@ -20,18 +19,14 @@ export async function createGuild(
   res: FastifyReply
 ) {
   const body = req.body;
-  const data: guild_struct_post = {
-    guild_name: body.name,
-    guild_topics: body.topic,
-  };
-  await guild
-    .create(data)
-    .then((gld) => {
-      logger.info("Guild created");
-      res.status(201).send(gld);
-    })
-    .catch((e) => {
-      logger.error(e);
-      res.status(400).send("Invaild reqest");
-    });
+
+  const resp = await create({ name: body.name, topics: body.topic });
+
+  if (resp !== null) {
+    res.log.info("Guild Created");
+    return res.status(201).send(resp);
+  } else {
+    res.log.error("Failed to create Guild");
+    return res.status(400).send("Invalid Request");
+  }
 }

@@ -86,10 +86,10 @@ model guild_users_mappings {
   id   String @id @default(uuid())
   name String
 
-  guild    guilds? @relation(fields: [guild_id], references: [id])
-  guild_id String?
-  users    users?  @relation(fields: [usersId], references: [id])
-  usersId  String?
+  guild    guilds @relation(fields: [guild_id], references: [id])
+  guild_id String
+  users    users  @relation(fields: [usersId], references: [id])
+  usersId  String
 }
 
 model users {

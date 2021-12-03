@@ -1,11 +1,9 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { message } from "../../models/message";
-import { messageUpdated } from "../notificationcontroller";
-import { logger } from "../../main";
 import {
   GetOneMessageParams,
   updateMessageRequestBody,
 } from "../../types/message_types";
+import update from "../../service/messages/update";
 
 export async function updateMessage(
   req: FastifyRequest<{
@@ -16,15 +14,12 @@ export async function updateMessage(
 ) {
   const id = req.params.messageId;
   const { content } = req.body;
-  return message
-    .updateMessage(id, content)
-    .then((r) => {
-      // ws
-      messageUpdated(r.channel_id, r.id);
-      return res.status(200).send(r);
-    })
-    .catch((e) => {
-      logger.error(e);
-      return res.status(400).send("Invalid request");
-    });
+
+  const resp = await update(id, content);
+  if (resp !== null) {
+    return res.status(200).send(resp);
+  } else {
+    res.log.error("Failed to update message");
+    return res.status(400).send("Invalid Request");
+  }
 }
