@@ -1,6 +1,5 @@
 import { PrismaClient } from "@prisma/client";
 import chalk from "chalk";
-import { exec } from "child_process";
 
 const prisma = new PrismaClient();
 const { GIT_COMMIT_HASH } = process.env;
