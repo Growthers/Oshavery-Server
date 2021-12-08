@@ -8,6 +8,7 @@ export interface register {
   name: string;
   avatar: string;
   sub: string;
+  password: string;
 }
 
 export interface user {
@@ -37,6 +38,7 @@ export async function get(user_id: string) {
     name: res.name,
     bot: res.bot,
     avatarurl: res.avatarurl,
+    password: res.password,
   };
 }
 
@@ -72,6 +74,7 @@ export async function createUserAccount(data: register) {
       origin: "oshavery-app.net", // ToDo: オリジンの設定を変更できるようにする
       sub: data.sub,
       avatarurl: data.avatar,
+      password: data.password,
     },
   });
 }
