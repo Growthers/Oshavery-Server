@@ -144,3 +144,9 @@ model media {
   users      users?    @relation(fields: [uploaderId], references: [id])
   uploaderId String?
 }
+
+model revokedtokens {
+  id         String   @id @default(uuid())
+  token      String   @unique
+  revoked_at DateTime @default(now())
+}

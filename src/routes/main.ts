@@ -16,8 +16,7 @@ export async function MainRouting(server: FastifyInstance) {
     let token = req.headers.authorization;
 
     if (!token) {
-      req.log.error("Missing Token");
-      return res.status(401).send("Unauthorized");
+      return res.status(400).send("No Token");
     }
 
     if (token.split(" ")[0] === "Bearer") {
@@ -25,9 +24,8 @@ export async function MainRouting(server: FastifyInstance) {
     } else {
       return res.status(401).send("Unauthorized");
     }
-
     const check = await loginCheck(token);
-    if (check) {
+    if (!check) {
       req.log.error("Invalid Token");
       return res.status(401).send("Unauthorized");
     } else {
