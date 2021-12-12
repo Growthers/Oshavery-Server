@@ -1,6 +1,5 @@
 import { PrismaClient } from "@prisma/client";
 import chalk from "chalk";
-import { exec } from "child_process";
 
 const prisma = new PrismaClient();
 const { GIT_COMMIT_HASH } = process.env;
@@ -18,37 +17,39 @@ async function init() {
   await Sleep(5000);
   console.log("DBを設定しています...");
 
-  process.stdout.write(chalk.cyan("テーブルを初期化しています..."));
-  if (process.env.NODE_ENV === "production") {
-    await exec("npx prisma db push", (e, o, re) => {
-      if (o) {
-        console.log(o);
-      }
-      if (e) {
-        console.log(e);
-      }
-      if (re != null) {
-        console.log(re);
-      }
-    });
-  } else {
-    await exec(
-      "npx prisma db push --schema ./prisma/test.schema.prisma",
-      (e, o, re) => {
-        if (o) {
-          console.log(o);
-        }
-        if (e) {
-          console.log(e);
-        }
-        if (re != null) {
-          console.log(re);
-        }
-      }
-    );
-  }
-  await Sleep(4000);
-  console.log(chalk.cyan("完了\n"));
+  // process.stdout.write(chalk.cyan("テーブルを初期化しています..."));
+  // if (process.env.OSHAVERY_MODE === "production") {
+  //   process.stdout.write(chalk.cyan("プロダクションDBを初期化中..."));
+  //   await exec("npx prisma db push", (e, o, re) => {
+  //     if (o) {
+  //       console.log(o);
+  //     }
+  //     if (e) {
+  //       console.log(e);
+  //     }
+  //     if (re != null) {
+  //       console.log(re);
+  //     }
+  //   });
+  // } else {
+  //   process.stdout.write(chalk.cyan("テスト用DBを初期化中..."));
+  //   await exec(
+  //     "npx prisma db push --schema ./prisma/test.schema.prisma",
+  //     (e, o, re) => {
+  //       if (o) {
+  //         console.log(o);
+  //       }
+  //       if (e) {
+  //         console.log(e);
+  //       }
+  //       if (re != null) {
+  //         console.log(re);
+  //       }
+  //     }
+  //   );
+  // }
+  // await Sleep(4000);
+  // console.log(chalk.cyan("完了\n"));
 
   process.stdout.write(chalk.cyan("システムアカウントを作成しています..."));
 

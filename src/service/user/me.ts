@@ -26,7 +26,7 @@ export async function getAccessedUser() {
   const userJoinedGuildsDatas: Array<Guilds> = [];
   // eslint-disable-next-line
   for (let i in userJoinedGuilds) {
-    const tmp = await get(userJoinedGuilds[i].guild_id);
+    const tmp = await get(userJoinedGuilds[i].guild_id || "");
     if (tmp === null) {
       return null;
     }
