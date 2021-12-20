@@ -10,7 +10,7 @@ type me = {
   // eslint-disable-next-line
   guilds: any;
 };
-
+// Todo 未使用関数
 // eslint-disable-next-line
 export async function getMe(_req: any, res: FastifyReply) {
   const resp = await getAccessedUser();

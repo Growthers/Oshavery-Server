@@ -20,11 +20,11 @@ export interface user {
 
 // GET
 // /users/:userId
-export async function get(user_id: string) {
+export async function get(id: string) {
   const res = await prisma.users
     .findUnique({
       where: {
-        id: user_id,
+        id: id,
       },
     })
     .catch((e) => logger.error(e));

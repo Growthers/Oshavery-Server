@@ -1,6 +1,7 @@
 import jsonwebtoken, { JwtPayload, verify } from "jsonwebtoken";
 import { checkUserTokenNotRevoked } from "../../repositories/auth";
 
+// ToDo: JWT用の署名鍵を読み込むようにする
 export const Secret = "";
 
 export async function genJWTAuthToken(data: { id: string }) {
