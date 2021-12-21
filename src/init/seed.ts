@@ -59,9 +59,10 @@ async function seed() {
     where: { id: "00000000-0000-0000-0000-000000000000" },
     update: {},
     create: {
+      id: "00000000-0000-0000-0000-000000000000",
       name: "general",
       topic: "general",
-      type: "text",
+      type: "HOME",
       latest_message_id: "",
       guilds: { connect: { id: guild.id } },
       position: 0,
