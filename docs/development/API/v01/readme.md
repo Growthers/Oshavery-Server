@@ -1,5 +1,5 @@
 # Oshavery API Document v0.1.0
-Oshavery API v0.1.0 のドキュメントです.  
+Oshavery API v0.1.0 のドキュメントです.
 エンドポイントは `http://localhost:3080/api/v1/` から始まります
 
 ## EndPoints
@@ -13,3 +13,4 @@ Oshavery API v0.1.0 のドキュメントです.
 | [/version](./version.md)         | 1        | バージョンAPI  |
 | [/server-info](./server-info.md) | 3        | サーバー情報API |
 | [/files](./files.md)             | 3        | ファイルAPI   |
+| [/](./others.md)                 | 2        | 認証など      |

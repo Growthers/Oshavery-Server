@@ -25,12 +25,7 @@ Log4js.configure("log-config.json");
 export const logger = Log4js.getLogger("system");
 dotenv.config();
 
-console.log(
-  chalk.red("Now Working On ") +
-    chalk.red.bold("*DEVELOP MODE*") +
-    chalk.red(". Server ") +
-    chalk.red.bold("*WILL NOT* ask for an authentication token.")
-);
+console.log(chalk.red("Now Working On ") + chalk.red.bold("*DEVELOP MODE*"));
 
 Server.listen(3080, async () => {
   console.log(

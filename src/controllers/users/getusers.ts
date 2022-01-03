@@ -16,7 +16,7 @@ export async function getUsers(
   req: FastifyRequest<{ Params: userIdParams }>,
   res: FastifyReply
 ) {
-  const user_id = req.params.id;
+  const user_id = req.params.userId;
   const resp = await getUser(user_id);
   if (resp !== null) {
     return res.status(200).send(resp);

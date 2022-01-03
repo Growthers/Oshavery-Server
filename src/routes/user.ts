@@ -6,7 +6,6 @@ import { userIdParams } from "../types/user_types";
 
 export async function UserRouter(server: FastifyInstance) {
   // server.get("/users", getAllUsers).post("/users", register);
-
   server.get<{ Params: userIdParams }>("/users/:userId", getUsers);
 
   server.patch("/users/:userId", updateUser);

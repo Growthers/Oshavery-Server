@@ -69,6 +69,7 @@ async function init() {
       bot: true,
       origin: "",
       avatarurl: "",
+      password: "Oshavery",
       sub: "oshavery|0",
     },
   });
@@ -84,6 +85,7 @@ async function init() {
       bot: true,
       origin: "",
       avatarurl: "",
+      password: "Oshavery",
       sub: "oshavery|1",
     },
   });
