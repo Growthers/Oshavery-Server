@@ -98,6 +98,7 @@ model users {
   bot                  Boolean
   origin               String
   sub                  String                 @unique
+  password             String
   avatarurl            String
   medias               media[]
   messages             messages[]
@@ -143,4 +144,10 @@ model media {
   channelId  String?
   users      users?    @relation(fields: [uploaderId], references: [id])
   uploaderId String?
+}
+
+model revokedtokens {
+  id         String   @id @default(uuid())
+  token      String   @db.MediumText
+  revoked_at DateTime @default(now())
 }

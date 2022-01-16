@@ -33,11 +33,11 @@ jobs:
       - name: Build
         run: yarn run build
 
-      - name: Init
-        run: yarn run init
-
-      - name: Run test
-        run: yarn test
+#      - name: Init
+#        run: yarn run init
+#
+#      - name: Run test
+#        run: yarn test
 
       - name: Audit
         run: yarn audit

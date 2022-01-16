@@ -1,4 +1,4 @@
-import { getFromSub } from "../../repositories/user";
+import { get as getUser } from "../../repositories/user";
 import { get, searchJoinedGuilds } from "../../repositories/guild";
 
 export type Guilds = {
@@ -12,7 +12,9 @@ export type Guilds = {
 };
 
 export async function getAccessedUser() {
-  const userdata = await getFromSub("oshavery|1");
+  // ToDo: ここが決め打ちになっているので修正する
+  const id = "00000000-0000-0000-0000-000000000000";
+  const userdata = await getUser(id);
   if (userdata === null) {
     return null;
   }

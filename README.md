@@ -1,30 +1,21 @@
-# Oshavery-server: A Discord-like Chat App
+# Discord Like Chat Application `Oshavery`
 
 ![oshavery logo](https://media.oshavery-app.net/logos/logo_long.png)
 
-## What is Oshavery?
-Oshavery is Discord/Slack-like chat tool.
-The Backend is written by TypeScript.
+## Oshaveryについて
+Oshavery は Discord ライクなウェブアプリケーションです。
+Node.js v14以上で動作します。
+このレポジトリはバックエンドのレポジトリです。
+フロントエンドはこちらにあります。 [Oshavery-Front](https://github.com/Undecided-Discord/Oshavery-Front)
 
-* Backend:This Repository
-* Frontend: [Oshavery-Front](https://github.com/Undecided-Discord/Oshavery-Front)
+## Deployment
 
-## Requirement
+~~Oshaveryを手元で実行したい方向けのドキュメントはこちらにあります。~~
+※準備中です。
 
-- Node.js 14+
-- Yarn 2+
-- MariaDB
+## Development
 
-## Usage
-
-1. `yarn install`
-2. `npx prisma db push`
-3. `yarn start`
-
-![Oshavery-Server's Screen Shot](docs/oshavery.png)
-
-## Screenshot
-![Screenshot](docs/oshavery-screenshot.png)
+Oshaveryに対してコントリビュートしたい方は[こちら](./docs/development/development.md)をご覧ください
 
 ## Authors
 |  <img src="https://github.com/sigumaa.png" width="130px"> | <img src="https://github.com/yusuke4869.png" width="130px"> | <img src="https://github.com/laminne.png" width="130px"> | <img src="https://github.com/sobonn.png" width="130px"> |
@@ -46,3 +37,7 @@ The Backend is written by TypeScript.
 
 ## Licence
 MIT
+
+## ScreenShot
+![Oshavery-Server's Screen Shot](docs/oshavery.png)
+![Screenshot](docs/oshavery-screenshot.png)

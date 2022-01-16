@@ -12,7 +12,7 @@ export type Register = {
 };
 
 export type userIdParams = {
-  id: string;
+  userId: string;
 };
 
 export type updateMeAccountInfo = {
