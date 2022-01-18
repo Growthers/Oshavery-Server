@@ -14,6 +14,7 @@ async function seed() {
       bot: true,
       origin: "",
       avatarurl: "",
+      password: "$2a$10$S75zuQxZMbbiWW4UCMjjYeSA3y9UKzGwwNQ7zeGSRhGrvw5Vl3vjm",
       sub: "oshavery|0",
     },
   });
@@ -29,6 +30,7 @@ async function seed() {
       bot: true,
       origin: "",
       avatarurl: "",
+      password: "$2a$10$S75zuQxZMbbiWW4UCMjjYeSA3y9UKzGwwNQ7zeGSRhGrvw5Vl3vjm",
       sub: "oshavery|1",
     },
   });
