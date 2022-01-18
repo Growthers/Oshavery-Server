@@ -25,6 +25,10 @@ export async function createChannel(
     guildId: guild_id,
   });
 
+  if (!response) {
+    return res.status(400).send("Invalid Request");
+  }
+
   req.log.info("Channel Created");
   return res.status(200).send(response);
 }

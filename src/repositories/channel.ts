@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
 
 const prisma = new PrismaClient();
 
@@ -26,38 +27,46 @@ export async function createChannel(data: {
   position: number;
   guildId: string;
 }) {
-  // チャンネルを先に作る
-  const res = await prisma.channels.create({
-    data: {
-      latest_message_id: "",
-      guilds: { connect: { id: data.guildId } },
-      name: data.name,
-      topic: data.topics,
-      type: data.type,
-      position: data.position,
-    },
-  });
-  // Todo: この部分を分離してServiceに動かす
-  // チャンネルの作成通知のシステムメッセージを登録する
-  const SysMessage = await prisma.messages.create({
-    data: {
-      content: `チャンネルが作成されました ここが${res.name}のはじまりです`,
-      ip: "SYSTEM",
-      channels: { connect: { id: res.id } },
-      user: { connect: { id: "00000000-0000-0000-0000-000000000000" } },
-      // システムアカウントのIDは 00000000-0000-0000-0000-000000000000 で完全固定 (初期設定で自動生成されている
-    },
-  });
+  let res;
+  try {
+    // チャンネルを先に作る
+    res = await prisma.channels.create({
+      data: {
+        latest_message_id: "",
+        guilds: { connect: { id: data.guildId } },
+        name: data.name,
+        topic: data.topics,
+        type: data.type,
+        position: data.position,
+      },
+    });
 
-  // チャンネルの最新メッセージを更新
-  await prisma.channels.update({
-    where: {
-      id: res.id,
-    },
-    data: {
-      latest_message_id: SysMessage.id,
-    },
-  });
+    // Todo: この部分を分離してServiceに動かす
+    // チャンネルの作成通知のシステムメッセージを登録する
+    const SysMessage = await prisma.messages.create({
+      data: {
+        content: `チャンネルが作成されました ここが${res.name}のはじまりです`,
+        ip: "SYSTEM",
+        channels: { connect: { id: res.id } },
+        user: { connect: { id: "00000000-0000-0000-0000-000000000000" } },
+        // システムアカウントのIDは 00000000-0000-0000-0000-000000000000 で完全固定 (初期設定で自動生成されている
+      },
+    });
+
+    // チャンネルの最新メッセージを更新
+    await prisma.channels.update({
+      where: {
+        id: res.id,
+      },
+      data: {
+        latest_message_id: SysMessage.id,
+      },
+    });
+  } catch (e) {
+    if (e instanceof PrismaClientKnownRequestError) {
+      return undefined;
+    }
+  }
 
   return res;
 }

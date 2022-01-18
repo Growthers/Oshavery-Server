@@ -3,8 +3,8 @@
   "version": "0.1.1",
   "description": "Oshavery ServerSide Project",
   "main": "main.js",
-  "repository": "https://github.com/undecided-discord/oshavery-server",
-  "author": "Undecided Oshavery Development Team",
+  "repository": "https://github.com/Growthers/oshavery-server",
+  "author": "Growthers Oshavery Development Team",
   "license": "MIT",
   "scripts": {
     "start": "npx tsc -p . --noImplicitAny && echo *build done* && GIT_COMMIT_HASH=$(git rev-parse --short HEAD) node ./build/main.js",
@@ -13,7 +13,10 @@
     "lint": "eslint --ignore-path .gitignore 'src/**/*.{js,jsx,ts,tsx}'",
     "lint:fix": "eslint --ignore-path .gitignore 'src/**/*.{js,jsx,ts,tsx}' --fix",
     "format": "prettier --write src/",
-    "test": "jest --forceExit"
+    "test": "jest --forceExit",
+    "db:generate": "prisma generate",
+    "db:push": "prisma db push",
+    "db:seed": "prisma db seed"
   },
   "devDependencies": {
     "@types/jest": "^27.0.2",
@@ -58,5 +61,8 @@
     "supertest": "^6.1.6",
     "tree-kill": "^1.2.2",
     "ws": "^8.2.2"
+  },
+  "prisma": {
+    "seed": "ts-node src/init/seed.ts"
   }
 }

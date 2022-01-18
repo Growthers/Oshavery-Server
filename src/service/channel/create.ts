@@ -8,16 +8,29 @@ export default async function (data: {
   position: number;
   guildId: string;
 }) {
-  const res = await createChannel({
-    name: data.name,
-    topics: data.topics,
-    type: data.type,
-    position: data.position,
-    guildId: data.guildId,
-  });
+  if (
+    data.type === "TEXT" ||
+    data.type === "HOME" ||
+    data.type === "VOICE" ||
+    data.type === "DM"
+  ) {
+    const res = await createChannel({
+      name: data.name,
+      topics: data.topics,
+      type: data.type,
+      position: data.position,
+      guildId: data.guildId,
+    });
 
-  // 通知
-  await channelCreated(res.id);
+    if (!res) {
+      return undefined;
+    }
 
-  return res;
+    // 通知
+    await channelCreated(res.id);
+
+    return res;
+  } else {
+    return undefined;
+  }
 }
