@@ -13,7 +13,7 @@
 
 -----
 
-### GET /guilds/{guildId}
+### GET /guilds/{guildId}/channels
 チャンネルリストの取得
 
 | パラメーター名 | データ型    | 必須か |
@@ -38,7 +38,7 @@
 
 ------
 
-### PATCH /guilds/{guildId}
+### PATCH /guilds/{guildId}/channels
 チャンネル情報の変更
 #### Request Body (application/json)
 ```json
@@ -71,8 +71,12 @@
 
 ------
 
-### POST /guilds
-ギルドの作成
+### POST /guilds/{guildId}/channels
+チャンネルの作成
+
+| パラメーター名   | データ型    | 必須か |
+|-----------|---------|-----|
+| guildId   | uuid_v4 | yes |
 
 #### Request Body (application/json)
 ```json

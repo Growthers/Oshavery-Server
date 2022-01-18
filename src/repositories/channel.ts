@@ -20,6 +20,30 @@ export async function getChannels(guild_id: string) {
   }
 }
 
+export async function updateChannel(data: {
+  id: string;
+  name: string;
+  topic: string;
+  position: number;
+}) {
+  if (data.name === "") {
+    return undefined;
+  }
+
+  const res = await prisma.channels.update({
+    where: {
+      id: data.id,
+    },
+    data: { name: data.name, topic: data.topic, position: data.position },
+  });
+
+  if (!res) {
+    return undefined;
+  } else {
+    return res;
+  }
+}
+
 export async function createChannel(data: {
   name: string;
   topics: string;
