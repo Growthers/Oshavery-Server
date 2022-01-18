@@ -17,7 +17,7 @@ export async function ChannelRouter(server: FastifyInstance) {
     createChannel
   );
 
-  await server.post<{ Params: GuildIdParam; Body: UpdateChannel }>(
+  await server.patch<{ Params: GuildIdParam; Body: UpdateChannel }>(
     "/guilds/:guildId/channels",
     updateChannel
   );
