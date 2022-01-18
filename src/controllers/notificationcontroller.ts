@@ -5,14 +5,43 @@ import {
   opeMessageBody,
   opeUserBody,
 } from "../types/notification_types";
+import { verifyToken } from "../service/auth/jwt";
 
 const wss = new WebSocket.Server({ port: 8080 });
 
+/*
+  ToDo: 全体/個別送信のメソッドを生やす 認証生やす-> ok
+*/
+
+wss.on("connection", async (ws, req) => {
+  if (req.url) {
+    // Todo: 設定でURL指定できるように
+    // ホスト部にwsから渡されるクエリパラメータをくっつける
+    const u = new URL("ws://localhost:8080" + req.url);
+    if (!u) {
+      return ws.close(-1, "Token required");
+    }
+    // URLをパースして、クエリパラメータ"token"を取得
+    const token = new URLSearchParams(u.search);
+    const get = token.get("token");
+    if (!get) {
+      return ws.close(-1, "Authentication failed");
+    } else {
+      const checker = await verifyToken(get);
+      if (checker) {
+        ws.send(JSON.stringify(checker));
+      } else {
+        return ws.close();
+      }
+    }
+  }
+});
+
 async function channel(type: string, channelId: string) {
   const channel: notification<opeChannelBody> = {
-    type,
+    type: type,
     body: {
-      channelId,
+      channelId: channelId,
     },
   };
   console.log(JSON.stringify(channel));
