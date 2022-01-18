@@ -1,20 +1,15 @@
 import WebSocket from "ws";
-// import { guild } from "../models/guild";
+import {
+  notification,
+  opeChannelBody,
+  opeMessageBody,
+  opeUserBody,
+} from "../types/notification_types";
 
 const wss = new WebSocket.Server({ port: 8080 });
 
-// 資料が少ないため実装は間違ってると思われる
-// というか絶対間違っているので再実装必須
-
-interface opeChannel {
-  type: string;
-  body: {
-    channelId: string;
-  };
-}
-
 async function channel(type: string, channelId: string) {
-  const channel: opeChannel = {
+  const channel: notification<opeChannelBody> = {
     type,
     body: {
       channelId,
@@ -26,16 +21,8 @@ async function channel(type: string, channelId: string) {
   });
 }
 
-interface opeMessage {
-  type: string;
-  body: {
-    channelId: string;
-    messageId: string;
-  };
-}
-
 async function message(type: string, channelId: string, messageId: string) {
-  const message: opeMessage = {
+  const message: notification<opeMessageBody> = {
     type,
     body: {
       channelId,
@@ -48,16 +35,8 @@ async function message(type: string, channelId: string, messageId: string) {
   });
 }
 
-interface opeUser {
-  type: string;
-  body: {
-    userId: string;
-    guildId: string;
-  };
-}
-
 async function user(type: string, userId: string, guildId: string) {
-  const user: opeUser = {
+  const user: notification<opeUserBody> = {
     type,
     body: {
       userId,
