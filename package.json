@@ -55,7 +55,7 @@
     "fastify-cors": "^6.0.2",
     "file-type": "^16.5.3",
     "jsonwebtoken": "^8.5.1",
-    "log4js": "^6.3.0",
+    "log4js": "^6.4.0",
     "multer": "^1.4.3",
     "pino-pretty": "^7.1.0",
     "supertest": "^6.1.6",
