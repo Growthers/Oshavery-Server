@@ -1,7 +1,14 @@
 import WebSocket from "ws";
 // import { guild } from "../models/guild";
 
-const wss = new WebSocket.Server({ port: 8080 });
+console.log("呼び出されました");
+
+export const wss = new WebSocket.Server({ port: 8080 });
+
+export function wsClose() {
+  console.log("消されました");
+  wss.close();
+}
 
 // 資料が少ないため実装は間違ってると思われる
 // というか絶対間違っているので再実装必須

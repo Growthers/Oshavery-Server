@@ -24,6 +24,7 @@ describe("Service/Channel/Create", () => {
       deleted_at: null,
       guildId: data.guildId,
     });
+    wsClose();
   });
 
   it("should not create channel", async () => {
@@ -37,5 +38,6 @@ describe("Service/Channel/Create", () => {
 
     const res = await Create(data);
     expect(res).toBeFalsy();
+    wsClose();
   });
 });
