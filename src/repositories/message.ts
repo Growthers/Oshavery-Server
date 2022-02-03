@@ -1,6 +1,4 @@
-import { PrismaClient } from "@prisma/client";
-// import { channelController } from "../controllers/channelcontroller";
-const prisma = new PrismaClient();
+import { prisma } from "./client";
 
 // ToDo: Prismaの型を使う
 export interface message_struct {
