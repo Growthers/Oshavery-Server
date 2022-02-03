@@ -20,7 +20,7 @@ describe("Service/Channel/Update", () => {
       created_at: expect.anything(),
       updated_at: expect.anything(),
       deleted_at: null,
-      guildId: null,
+      guildId: expect.anything(),
     });
   });
 

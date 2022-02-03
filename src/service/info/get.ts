@@ -1,7 +1,7 @@
-import { get } from "../../repositories/info";
+import { getInstanceInfoFromDB } from "../../repositories/info";
 
 export async function getInstanceInfo() {
-  const res = await get();
+  const res = await getInstanceInfoFromDB();
   if (res !== null) {
     return res;
   } else {

@@ -14,6 +14,7 @@ async function seed() {
       bot: true,
       origin: "",
       avatarurl: "",
+      password: "",
       sub: "oshavery|0",
     },
   });
@@ -29,6 +30,7 @@ async function seed() {
       bot: true,
       origin: "",
       avatarurl: "",
+      password: "",
       sub: "oshavery|1",
     },
   });

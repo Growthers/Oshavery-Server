@@ -1,10 +1,8 @@
-import { PrismaClient } from "@prisma/client";
 import { logger } from "../main";
-
-const prisma = new PrismaClient();
+import { prisma } from "./client";
 
 // GET /server-info
-export async function get() {
+export async function getInstanceInfoFromDB() {
   const info = await prisma.server_info.findMany();
   const user_count = await prisma.users.count();
   const message_count = await prisma.messages.count();

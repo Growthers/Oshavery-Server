@@ -1,4 +1,4 @@
-import { get as getUser } from "../../repositories/user";
+import { getUserByID as getUser } from "../../repositories/user";
 import { checkLoginPassword } from "./checkpassword";
 import { genJWTAuthToken } from "./jwt";
 

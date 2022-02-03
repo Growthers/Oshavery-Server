@@ -1,7 +1,5 @@
-import { PrismaClient } from "@prisma/client";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
-
-const prisma = new PrismaClient();
+import { prisma } from "./client";
 
 export async function getChannels(guild_id: string) {
   const res = await prisma.channels.findMany({

@@ -1,7 +1,6 @@
-import { PrismaClient } from "@prisma/client";
 import { logger } from "../main";
 import { users } from "@prisma/client";
-const prisma = new PrismaClient();
+import { prisma } from "./client";
 
 // ToDo: Prismaの吐く型を使う
 export interface register {
@@ -20,7 +19,7 @@ export interface user {
 
 // GET
 // /users/:userId
-export async function get(id: string) {
+export async function getUserByID(id: string) {
   const res = await prisma.users
     .findUnique({
       where: {

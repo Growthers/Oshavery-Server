@@ -1,4 +1,4 @@
-import { get as getMedia } from "../../repositories/media";
+import { getMedia as getMedia } from "../../repositories/media";
 
 export default async function get(id: string) {
   const media = getMedia(id);

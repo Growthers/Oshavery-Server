@@ -1,7 +1,3 @@
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
-
 // メディアの型
 // export interface media {
 //   name: string; // ファイル名
@@ -16,7 +12,9 @@ const prisma = new PrismaClient();
 //   guildId?: string; // ギルドのID
 // }
 
-export async function get(id: string) {
+import { prisma } from "./client";
+
+export async function getMedia(id: string) {
   const media = await prisma.media.findUnique({
     where: {
       id,

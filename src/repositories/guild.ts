@@ -1,10 +1,8 @@
-import { PrismaClient } from "@prisma/client";
 import {
   messageCreated,
   userJoined,
 } from "../controllers/notificationcontroller";
-
-const prisma = new PrismaClient();
+import { prisma } from "./client";
 
 export class GuildNotFoundError extends Error {}
 
