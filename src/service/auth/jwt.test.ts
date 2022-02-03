@@ -1,4 +1,3 @@
-import { checkLoginPassword } from "./checkpassword";
 import { genJWTAuthToken, verifyToken } from "./jwt";
 
 describe("Service/Auth/Jwt", () => {

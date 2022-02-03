@@ -1,4 +1,5 @@
 import { default as Create } from "./create";
+import { wsClose } from "../../controllers/notificationcontroller";
 
 describe("Service/Channel/Create", () => {
   it("should create channel", async function () {
