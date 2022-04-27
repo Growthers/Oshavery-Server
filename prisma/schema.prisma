@@ -6,7 +6,82 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+  provider = "sqlite"
+  url      = "file:./dev.db"
 }
 
+model user {
+  id     String @id
+  name   String @unique
+  hashed String
+
+  messages     message[]
+  owned_guilds guild[]   @relation("owned_guilds")
+
+  guild_members guild_members[]
+  medias        media[]
+  user_profiles user_profile[]
+}
+
+model user_profile {
+  id             String @id
+  user_status    String
+  status_message String
+  nickname       String
+
+  guild    guild  @relation(fields: [guild_id], references: [id])
+  guild_id String
+  user     user   @relation(fields: [user_id], references: [id])
+  user_id  String
+}
+
+model guild {
+  id   String @id
+  name String
+
+  owner    user   @relation("owned_guilds", fields: [owner_id], references: [id])
+  owner_id String
+
+  user_profiles user_profile[]
+  guild_mebers  guild_members[]
+}
+
+model guild_members {
+  member    user   @relation(fields: [member_id], references: [id])
+  member_id String
+
+  guild    guild  @relation(fields: [guild_id], references: [id])
+  guild_id String
+
+  @@id([member_id, guild_id])
+}
+
+model channel {
+  id    String @id
+  name  String
+  topic String
+
+  messages message[]
+}
+
+model message {
+  id   String @id
+  text String
+
+  author     user    @relation(fields: [author_id], references: [id])
+  author_id  String
+  channel    channel @relation(fields: [channel_id], references: [id])
+  channel_id String
+  medias     media[]
+}
+
+model media {
+  id         String @id
+  media_path String
+  name       String
+
+  uploader    user     @relation(fields: [uploader_id], references: [id])
+  uploader_id String
+  message     message? @relation(fields: [message_id], references: [id])
+  message_id   String?
+}
