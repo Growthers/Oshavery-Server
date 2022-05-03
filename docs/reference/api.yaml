@@ -1,0 +1,233 @@
+openapi: 3.1.0
+info:
+  title: Oshavery API
+  version: '0.2'
+  summary: Oshavery API ver. 0.2です
+  description: ''
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /login:
+    post:
+      summary: ログイン
+      tags:
+        - auth
+      responses:
+        '200':
+          description: ログイン成功
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                properties:
+                  token:
+                    type: string
+                required:
+                  - token
+                x-examples:
+                  example-1:
+                    token: ''
+        '401':
+          description: 認証情報が間違っています
+        '403':
+          description: ログイン対象のユーザーアカウントに問題があります.
+      operationId: post-login
+      description: ログインします
+      security: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: ''
+              type: object
+              properties:
+                name:
+                  type: string
+                password:
+                  type: string
+                  minLength: 1
+              required:
+                - name
+                - password
+              x-examples:
+                example-1:
+                  name: ''
+                  password: 1m
+    delete:
+      summary: ログアウト
+      tags:
+        - auth
+      responses:
+        '204':
+          description: ログアウトしました
+      operationId: delete-login
+      description: ログアウト
+      security:
+        - 'API Key ': []
+  '/users/{user_id}':
+    parameters:
+      - schema:
+          type: string
+        name: user_id
+        in: path
+        required: true
+        description: ユーザーID
+    get:
+      summary: 特定ユーザーのユーザー情報を取得
+      tags:
+        - user
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                x-examples:
+                  example-1:
+                    id: ''
+                    name: ''
+                    icon: ''
+                properties:
+                  id:
+                    type: string
+                  name:
+                    type: string
+                  suspended:
+                    type: string
+                  profile:
+                    type: object
+                    properties:
+                      status:
+                        type: string
+                      ststus_message:
+                        type: string
+                      icon:
+                        type: string
+                required:
+                  - id
+                  - name
+              examples: {}
+      operationId: get-users-user_id
+      description: ''
+      security:
+        - API Key　: []
+      parameters: []
+  /users/@me:
+    get:
+      summary: 自分のユーザー情報を取得
+      tags:
+        - user
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                properties:
+                  id:
+                    type: string
+                    minLength: 1
+                  name:
+                    type: string
+                    minLength: 1
+                  suspended:
+                    type: string
+                    minLength: 1
+                  profile:
+                    type: object
+                    properties:
+                      status:
+                        type: string
+                        minLength: 1
+                      ststus_message:
+                        type: string
+                        minLength: 1
+                      icon:
+                        type: string
+                        minLength: 1
+                    required:
+                      - status
+                      - ststus_message
+                      - icon
+                required:
+                  - id
+                  - name
+                  - suspended
+                  - profile
+                x-examples:
+                  example-1:
+                    id: string
+                    name: string
+                    suspended: string
+                    profile:
+                      status: string
+                      ststus_message: string
+                      icon: string
+      operationId: get-users-@me
+    patch:
+      summary: 自分のユーザー情報を更新
+      tags:
+        - user
+      responses: {}
+      operationId: patch-users-@me
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: ''
+              type: object
+              properties:
+                name:
+                  type: string
+                password:
+                  type: string
+              required:
+                - name
+                - password
+              x-examples:
+                example-1:
+                  name: ''
+                  password: ''
+  /:
+    get:
+      summary: インスタンスコンフィギュレーション表示
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                properties:
+                  version:
+                    type: string
+                  ws:
+                    type: string
+                  app:
+                    type: string
+                required:
+                  - version
+                  - ws
+                  - app
+                x-examples:
+                  example-1:
+                    version: ''
+                    ws: ''
+                    app: ''
+      operationId: get
+      description: ''
+components:
+  schemas: {}
+  securitySchemes:
+    API Key　:
+      type: http
+      scheme: bearer
+security:
+  - 'API Key ': []
