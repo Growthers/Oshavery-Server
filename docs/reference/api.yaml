@@ -4,6 +4,8 @@ info:
   version: '0.2'
   summary: Oshavery API ver. 0.2です
   description: ''
+  license:
+    identifier: AGPL-3.0-only
 servers:
   - url: 'http://localhost:3000'
 paths:
@@ -99,6 +101,10 @@ paths:
                     type: string
                   profile:
                     type: object
+                    required:
+                      - status
+                      - ststus_message
+                      - icon
                     properties:
                       status:
                         type: string
@@ -109,6 +115,8 @@ paths:
                 required:
                   - id
                   - name
+                  - suspended
+                  - profile
               examples: {}
       operationId: get-users-user_id
       description: ''
@@ -118,6 +126,70 @@ paths:
   /users/@me:
     get:
       summary: 自分のユーザー情報を取得
+      tags:
+        - user
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                x-examples:
+                  example-1:
+                    id: string
+                    name: string
+                    suspended: string
+                    profile:
+                      status: string
+                      ststus_message: string
+                      icon: string
+                properties:
+                  id:
+                    type: string
+                    minLength: 1
+                  name:
+                    type: string
+                    minLength: 1
+                  suspended:
+                    type: string
+                    minLength: 1
+                  profile:
+                    type: object
+                    required:
+                      - status
+                      - ststus_message
+                      - icon
+                    properties:
+                      status:
+                        type: string
+                        minLength: 1
+                      ststus_message:
+                        type: string
+                        minLength: 1
+                      icon:
+                        type: string
+                        minLength: 1
+                required:
+                  - id
+                  - name
+                  - suspended
+                  - profile
+              examples:
+                example-1:
+                  id: string
+                  name: string
+                  suspended: string
+                  profile:
+                    status: string
+                    ststus_message: string
+                    icon: string
+      operationId: get-users-me
+      security:
+        - API Key　: []
+    patch:
+      summary: 自分のユーザー情報を更新
       tags:
         - user
       responses:
@@ -168,31 +240,37 @@ paths:
                       status: string
                       ststus_message: string
                       icon: string
-      operationId: get-users-@me
-    patch:
-      summary: 自分のユーザー情報を更新
-      tags:
-        - user
-      responses: {}
-      operationId: patch-users-@me
+      operationId: patch-users-me
       requestBody:
         content:
           application/json:
             schema:
               description: ''
               type: object
+              x-examples:
+                example-1:
+                  name: string
+                  password: string
+                  profile:
+                    status: ''
+                    status_message: ''
               properties:
                 name:
                   type: string
+                  minLength: 1
                 password:
                   type: string
-              required:
-                - name
-                - password
-              x-examples:
-                example-1:
-                  name: ''
-                  password: ''
+                  minLength: 1
+                profile:
+                  type: object
+                  properties:
+                    status:
+                      type: string
+                    status_message:
+                      type: string
+            examples: {}
+      security:
+        - API Key　: []
   /:
     get:
       summary: インスタンスコンフィギュレーション表示
@@ -223,6 +301,504 @@ paths:
                     app: ''
       operationId: get
       description: ''
+  '/guilds/{guild_id}':
+    parameters:
+      - schema:
+          type: string
+        name: guild_id
+        in: path
+        required: true
+    get:
+      summary: ギルドを取得
+      tags:
+        - guild
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  name:
+                    type: string
+                  icon:
+                    type: string
+                  created_at:
+                    type: string
+                  channels:
+                    type: object
+                    required:
+                      - id
+                      - topic
+                      - name
+                      - created_at
+                    properties:
+                      id:
+                        type: string
+                      topic:
+                        type: string
+                      name:
+                        type: string
+                      created_at:
+                        type: string
+                required:
+                  - id
+                  - name
+                  - icon
+                  - created_at
+                  - channels
+              examples: {}
+      operationId: get-guilds-guild_id
+      security:
+        - API Key　: []
+    patch:
+      summary: ギルドを編集
+      tags:
+        - guild
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                properties:
+                  id:
+                    type: string
+                    minLength: 1
+                  name:
+                    type: string
+                    minLength: 1
+                  icon:
+                    type: string
+                    minLength: 1
+                  created_at:
+                    type: string
+                    minLength: 1
+                  channels:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        minLength: 1
+                      topic:
+                        type: string
+                        minLength: 1
+                      name:
+                        type: string
+                        minLength: 1
+                      created_at:
+                        type: string
+                        minLength: 1
+                    required:
+                      - id
+                      - topic
+                      - name
+                      - created_at
+                required:
+                  - id
+                  - name
+                  - icon
+                  - created_at
+                  - channels
+                x-examples:
+                  example-1:
+                    id: string
+                    name: string
+                    icon: string
+                    created_at: string
+                    channels:
+                      id: string
+                      topic: string
+                      name: string
+                      created_at: string
+      operationId: patch-guilds-guild_id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: ''
+              type: object
+              properties:
+                name:
+                  type: string
+                  minLength: 1
+              required:
+                - name
+              x-examples:
+                example-1:
+                  name: string
+      security:
+        - API Key　: []
+  '/channels/{id}':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    get:
+      summary: チャンネルを取得
+      tags:
+        - channel
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                properties:
+                  id:
+                    type: string
+                  topic:
+                    type: string
+                  name:
+                    type: string
+                  created_at:
+                    type: string
+                required:
+                  - id
+                  - topic
+                  - name
+                  - created_at
+                x-examples:
+                  example-1:
+                    id: ''
+                    topic: ''
+                    name: ''
+                    created_at: ''
+        '':
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                properties:
+                  id:
+                    type: string
+                  topic:
+                    type: string
+                  name:
+                    type: string
+                required:
+                  - id
+                  - topic
+                  - name
+                x-examples:
+                  example-1:
+                    id: ''
+                    topic: ''
+                    name: ''
+      operationId: get-channels-id
+  '/channels/{channel_id}/messages':
+    parameters:
+      - schema:
+          type: string
+        name: channel_id
+        in: path
+        required: true
+    get:
+      summary: メッセージの取得
+      tags:
+        - message
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                properties:
+                  id:
+                    type: string
+                    minLength: 1
+                  content:
+                    type: string
+                    minLength: 1
+                  author:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        minLength: 1
+                      name:
+                        type: string
+                        minLength: 1
+                    required:
+                      - id
+                      - name
+                  posted_at:
+                    type: string
+                  edited_at:
+                    type: string
+                required:
+                  - id
+                  - content
+                  - author
+                  - posted_at
+                  - edited_at
+                x-examples:
+                  example-1:
+                    id: string
+                    content: string
+                    author:
+                      id: string
+                      name: string
+                    posted_at: ''
+                    edited_at: ''
+              examples: {}
+      operationId: get-channels-channel_id-messages
+      description: ''
+      security:
+        - API Key　: []
+    post:
+      summary: メッセージの投稿
+      tags:
+        - message
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                properties:
+                  id:
+                    type: string
+                    minLength: 1
+                  content:
+                    type: string
+                    minLength: 1
+                  author:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        minLength: 1
+                      name:
+                        type: string
+                        minLength: 1
+                    required:
+                      - id
+                      - name
+                  posted_at:
+                    type: string
+                  edited_at:
+                    type: string
+                required:
+                  - id
+                  - content
+                  - author
+                  - posted_at
+                  - edited_at
+                x-examples:
+                  example-1:
+                    id: string
+                    content: string
+                    author:
+                      id: string
+                      name: string
+                    posted_at: ''
+                    edited_at: ''
+      operationId: post-channels-channel_id-messages
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: ''
+              type: object
+              properties:
+                content:
+                  type: string
+              required:
+                - content
+              x-examples:
+                example-1:
+                  content: ''
+      security:
+        - API Key　: []
+  '/channels/{channel_id}/messages/{message_id}':
+    parameters:
+      - schema:
+          type: string
+        name: channel_id
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: message_id
+        in: path
+        required: true
+    get:
+      summary: メッセージを1件取得
+      tags:
+        - message
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                properties:
+                  id:
+                    type: string
+                    minLength: 1
+                  content:
+                    type: string
+                    minLength: 1
+                  author:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        minLength: 1
+                      name:
+                        type: string
+                        minLength: 1
+                    required:
+                      - id
+                      - name
+                  posted_at:
+                    type: string
+                  edited_at:
+                    type: string
+                required:
+                  - id
+                  - content
+                  - author
+                  - posted_at
+                  - edited_at
+                x-examples:
+                  example-1:
+                    id: string
+                    content: string
+                    author:
+                      id: string
+                      name: string
+                    posted_at: ''
+                    edited_at: ''
+      operationId: get-channels-channel_id-messages-message_id
+      security:
+        - API Key　: []
+    patch:
+      summary: メッセージを更新
+      tags:
+        - message
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                properties:
+                  id:
+                    type: string
+                    minLength: 1
+                  content:
+                    type: string
+                    minLength: 1
+                  author:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        minLength: 1
+                      name:
+                        type: string
+                        minLength: 1
+                    required:
+                      - id
+                      - name
+                  posted_at:
+                    type: string
+                  edited_at:
+                    type: string
+                required:
+                  - id
+                  - content
+                  - author
+                  - posted_at
+                  - edited_at
+                x-examples:
+                  example-1:
+                    id: string
+                    content: string
+                    author:
+                      id: string
+                      name: string
+                    posted_at: ''
+                    edited_at: ''
+      operationId: patch-channels-channel_id-messages-message_id
+      security:
+        - API Key　: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: ''
+              type: object
+              properties:
+                content:
+                  type: string
+              required:
+                - content
+              x-examples:
+                example-1:
+                  content: ''
+    delete:
+      summary: メッセージを削除
+      tags:
+        - message
+      responses:
+        '204':
+          description: No Content
+      operationId: delete-channels-channel_id-messages-message_id
+      security:
+        - API Key　: []
+  /users/@me/icon:
+    post:
+      summary: アイコンをアップロード
+      tags:
+        - user
+      responses:
+        '200':
+          description: OK
+      operationId: post-users-@me-icon
+      description: ''
+      security:
+        - API Key　: []
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties: {}
+        description: '`file`: 画像ファイル'
+    put:
+      summary: アイコンを変更
+      tags:
+        - user
+      responses: {}
+      operationId: put-users-@me-icon
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties: {}
+        description: '`file`: アイコン'
 components:
   schemas: {}
   securitySchemes:
