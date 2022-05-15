@@ -18,6 +18,9 @@ model user {
   messages     message[]
   owned_guilds guild[]   @relation("owned_guilds")
 
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
   guild_members guild_members[]
   medias        media[]
   user_profiles user_profile[]
@@ -29,10 +32,12 @@ model user_profile {
   status_message String
   nickname       String
 
-  guild    guild  @relation(fields: [guild_id], references: [id])
-  guild_id String
-  user     user   @relation(fields: [user_id], references: [id])
-  user_id  String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  guild      guild    @relation(fields: [guild_id], references: [id])
+  guild_id   String
+  user       user     @relation(fields: [user_id], references: [id])
+  user_id    String
 }
 
 model guild {
@@ -42,6 +47,8 @@ model guild {
   owner    user   @relation("owned_guilds", fields: [owner_id], references: [id])
   owner_id String
 
+  created_at    DateTime        @default(now())
+  updated_at    DateTime        @updatedAt
   user_profiles user_profile[]
   guild_mebers  guild_members[]
 }
@@ -50,8 +57,10 @@ model guild_members {
   member    user   @relation(fields: [member_id], references: [id])
   member_id String
 
-  guild    guild  @relation(fields: [guild_id], references: [id])
-  guild_id String
+  guild      guild    @relation(fields: [guild_id], references: [id])
+  guild_id   String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 
   @@id([member_id, guild_id])
 }
@@ -61,12 +70,17 @@ model channel {
   name  String
   topic String
 
-  messages message[]
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  messages   message[]
 }
 
 model message {
   id   String @id
   text String
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 
   author     user    @relation(fields: [author_id], references: [id])
   author_id  String
@@ -76,12 +90,14 @@ model message {
 }
 
 model media {
-  id         String @id
+  id         String   @id
   media_path String
   name       String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 
   uploader    user     @relation(fields: [uploader_id], references: [id])
   uploader_id String
   message     message? @relation(fields: [message_id], references: [id])
-  message_id   String?
+  message_id  String?
 }
