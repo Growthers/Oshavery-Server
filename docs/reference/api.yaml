@@ -5,7 +5,7 @@ info:
   summary: Oshavery API ver. 0.2です
   description: ''
   license:
-    identifier: AGPL-3.0-only
+    identifier: AGPL-3.0-or-later
 servers:
   - url: 'http://localhost:3000'
 paths:
@@ -112,6 +112,10 @@ paths:
                         type: string
                       icon:
                         type: string
+                  created_at:
+                    type: string
+                  updated_at:
+                    type: string
                 required:
                   - id
                   - name
@@ -200,6 +204,15 @@ paths:
               schema:
                 description: ''
                 type: object
+                x-examples:
+                  example-1:
+                    id: string
+                    name: string
+                    suspended: string
+                    profile:
+                      status: string
+                      ststus_message: string
+                      icon: string
                 properties:
                   id:
                     type: string
@@ -212,6 +225,10 @@ paths:
                     minLength: 1
                   profile:
                     type: object
+                    required:
+                      - status
+                      - ststus_message
+                      - icon
                     properties:
                       status:
                         type: string
@@ -222,24 +239,15 @@ paths:
                       icon:
                         type: string
                         minLength: 1
-                    required:
-                      - status
-                      - ststus_message
-                      - icon
+                  created_at:
+                    type: string
+                  updated_at:
+                    type: string
                 required:
                   - id
                   - name
                   - suspended
                   - profile
-                x-examples:
-                  example-1:
-                    id: string
-                    name: string
-                    suspended: string
-                    profile:
-                      status: string
-                      ststus_message: string
-                      icon: string
       operationId: patch-users-me
       requestBody:
         content:
