@@ -1,0 +1,17 @@
+{
+  "name": "oshavery-server",
+  "version": "0.2.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+  },
+  "keywords": [],
+  "author": "",
+  "license": "AGPLv3",
+  "devDependencies": {
+    "prisma": "^3.6.0"
+  },
+  "dependencies": {
+    "@prisma/client": "^3.6.0"
+  }
+}
